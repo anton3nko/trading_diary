@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
-import 'rounded_button.dart';
+import '../styles.dart';
+import 'widgets/rounded_button.dart';
 
 class RegistrationScreen extends StatelessWidget {
   static final String id = 'registration_screen';
