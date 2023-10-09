@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const kYellowColor = Color(0xFFffed18);
 const kBlackColor = Color(0xFF000000);
+const kGreyColor = Color(0xFFF6F6F6);
+const kDartkGreyColor = Color(0xFFbdbdbd);
 
 const kTextFieldDecoration = InputDecoration(
   hintStyle: TextStyle(color: Color(0xFFbdbdbd)),
