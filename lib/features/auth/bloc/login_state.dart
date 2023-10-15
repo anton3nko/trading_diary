@@ -1,3 +1,5 @@
+part of 'login_bloc.dart';
+
 sealed class LoginState {
   LoginState(this.username, this.password);
   final String username;
