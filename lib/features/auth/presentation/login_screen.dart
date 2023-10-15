@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trading_diary/features/registration_screen.dart';
-import '../styles.dart';
-import 'widgets/rounded_button.dart';
+import '../../../styles.dart';
+import '../../widgets/rounded_button.dart';
 
 class LoginScreen extends StatelessWidget {
   static String id = 'login_screen';

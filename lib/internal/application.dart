@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trading_diary/features/login_screen.dart';
+import 'package:trading_diary/features/auth/presentation/login_screen.dart';
 import 'package:trading_diary/features/registration_screen.dart';
 import 'package:trading_diary/features/home_screen.dart';
+
+//TODO Куда переместить данный файл в структуре из статьи https://habr.com/ru/articles/733960/#folders_structure
 
 class Application extends StatelessWidget {
   @override
