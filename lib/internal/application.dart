@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_diary/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:trading_diary/features/auth/presentation/login_screen.dart';
 import 'package:trading_diary/features/registration_screen.dart';
 import 'package:trading_diary/features/home_screen.dart';
@@ -14,9 +16,12 @@ class Application extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: HomeScreen.id,
+      initialRoute: LoginScreen.id,
       routes: {
-        LoginScreen.id: (context) => LoginScreen(),
+        LoginScreen.id: (context) => BlocProvider(
+              create: (context) => LoginBloc(),
+              child: LoginScreen(),
+            ),
         RegistrationScreen.id: (context) => RegistrationScreen(),
         HomeScreen.id: (context) => HomeScreen(),
       },

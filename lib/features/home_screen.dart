@@ -9,6 +9,8 @@ import 'package:trading_diary/features/widgets/bottom_nav_bar.dart';
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
 
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
