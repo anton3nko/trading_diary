@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/auth/presentation/bloc/login_bloc.dart';
@@ -8,16 +6,28 @@ import 'package:trading_diary/features/registration_screen.dart';
 import '../../../styles.dart';
 import '../../widgets/rounded_button.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
 
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController controller1 = TextEditingController();
-    final TextEditingController controller2 = TextEditingController();
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailFieldController = TextEditingController();
+  final TextEditingController passwordFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailFieldController.dispose();
+    passwordFieldController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -36,22 +46,14 @@ class LoginScreen extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              if (state is LoginLoading) {
-                log('LoginLoading');
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
               return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  //crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextField(
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Email',
                       ),
-                      controller: controller1,
+                      controller: emailFieldController,
                     ),
                     const SizedBox(
                       height: 10,
@@ -61,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Password',
                       ),
-                      controller: controller2,
+                      controller: passwordFieldController,
                     ),
                     const SizedBox(
                       height: 35,
@@ -76,8 +78,8 @@ class LoginScreen extends StatelessWidget {
                           onPressed: () {
                             BlocProvider.of<LoginBloc>(context).add(
                               LoginPressedEvent(
-                                controller1.text,
-                                controller2.text,
+                                emailFieldController.text,
+                                passwordFieldController.text,
                               ),
                             );
                           },
@@ -102,6 +104,15 @@ class LoginScreen extends StatelessWidget {
                         style: TextStyle(
                           color: kBlackColor,
                         ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Center(
+                        child: state is LoginLoading
+                            ? const CircularProgressIndicator()
+                            : Container(),
                       ),
                     ),
                   ]);

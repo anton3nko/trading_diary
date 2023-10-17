@@ -8,3 +8,8 @@ class LoginPressedEvent extends LoginEvent {
   final String password;
   LoginPressedEvent(this.userName, this.password);
 }
+
+//TODO где обработать данный ивент?
+class SignUpPressedEvent extends LoginEvent {
+  SignUpPressedEvent();
+}

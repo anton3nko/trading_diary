@@ -20,7 +20,7 @@ class Application extends StatelessWidget {
       routes: {
         LoginScreen.id: (context) => BlocProvider(
               create: (context) => LoginBloc(),
-              child: LoginScreen(),
+              child: const LoginScreen(),
             ),
         RegistrationScreen.id: (context) => RegistrationScreen(),
         HomeScreen.id: (context) => HomeScreen(),
