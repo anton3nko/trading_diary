@@ -16,14 +16,14 @@ class Application extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: LoginScreen.id,
+      initialRoute: HomeScreen.id,
       routes: {
         LoginScreen.id: (context) => BlocProvider(
               create: (context) => LoginBloc(),
               child: const LoginScreen(),
             ),
         RegistrationScreen.id: (context) => RegistrationScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
+        HomeScreen.id: (context) => const HomeScreen(),
       },
     );
   }
