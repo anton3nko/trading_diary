@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTile extends StatelessWidget {
-  CustomTile({required this.title});
+  const CustomTile({super.key, required this.title});
   final String title;
 
   @override
@@ -15,7 +15,7 @@ class CustomTile extends StatelessWidget {
             fontSize: 15.0,
           ),
         ),
-        leading: Icon(Icons.area_chart_sharp),
+        leading: const Icon(Icons.area_chart_sharp),
         trailing: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

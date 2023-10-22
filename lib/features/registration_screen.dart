@@ -3,14 +3,16 @@ import '../styles.dart';
 import 'widgets/rounded_button.dart';
 
 class RegistrationScreen extends StatelessWidget {
-  static final String id = 'registration_screen';
+  static const String id = 'registration_screen';
+
+  const RegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.all(18.0),
+          padding: const EdgeInsets.all(18.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -20,7 +22,7 @@ class RegistrationScreen extends StatelessWidget {
                     hintText: 'Email',
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextField(
@@ -29,7 +31,7 @@ class RegistrationScreen extends StatelessWidget {
                     hintText: 'Password',
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 35,
                 ),
                 Column(
@@ -41,7 +43,7 @@ class RegistrationScreen extends StatelessWidget {
                       buttonName: 'Register',
                       onPressed: () {},
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10.0,
                     ),
                     RoundedButton(

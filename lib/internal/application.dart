@@ -4,10 +4,11 @@ import 'package:trading_diary/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:trading_diary/features/auth/presentation/login_screen.dart';
 import 'package:trading_diary/features/registration_screen.dart';
 import 'package:trading_diary/features/home_screen.dart';
-
-//TODO Куда переместить данный файл в структуре из статьи https://habr.com/ru/articles/733960/#folders_structure
+import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 
 class Application extends StatelessWidget {
+  const Application({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,8 +23,11 @@ class Application extends StatelessWidget {
               create: (context) => LoginBloc(),
               child: const LoginScreen(),
             ),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        HomeScreen.id: (context) => const HomeScreen(),
+        RegistrationScreen.id: (context) => const RegistrationScreen(),
+        HomeScreen.id: (context) => BlocProvider<NavBarCubit>(
+              create: (context) => NavBarCubit(),
+              child: const HomeScreen(),
+            ),
       },
     );
   }
