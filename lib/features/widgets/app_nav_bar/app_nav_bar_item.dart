@@ -29,7 +29,7 @@ class AppNavBarItem extends StatelessWidget {
               label,
               style: TextStyle(
                 color: isActive ? Colors.black : Colors.grey,
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
               ),
             ),
