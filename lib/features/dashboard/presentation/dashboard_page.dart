@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:trading_diary/features/dashboard/presentation/custom_tile.dart';
+import 'package:trading_diary/features/widgets/date_range_picker.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -35,8 +36,9 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 40.0,
+              height: 5.0,
             ),
+            DateRangePicker(),
             SizedBox(
               width: 250,
               height: 250,
@@ -58,12 +60,28 @@ class DashboardPage extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            SizedBox(
-              height: 150,
-              child: ListView(
-                children: const [
-                  CustomTile(title: 'MACD-CCI'),
-                ],
+            Flexible(
+              child: SizedBox(
+                height: 175,
+                child: ListView(
+                  children: [
+                    CustomTile(
+                      title: 'MACD-CCI',
+                      onTap: () => 'onTap',
+                      iconColor: Colors.red.shade500,
+                    ),
+                    CustomTile(
+                      title: 'MACD-CCI',
+                      onTap: () => 'onTap',
+                      iconColor: Colors.amber.shade300,
+                    ),
+                    CustomTile(
+                      title: 'MACD-CCI',
+                      onTap: () => 'onTap',
+                      iconColor: Colors.greenAccent,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

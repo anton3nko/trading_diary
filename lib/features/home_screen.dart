@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trading_diary/features/dashboard_page.dart';
+import 'package:trading_diary/features/dashboard/presentation/dashboard_page.dart';
 import 'package:trading_diary/features/settings_page.dart';
 import 'package:trading_diary/features/strategies_page.dart';
 import 'package:trading_diary/features/transactions_page.dart';
