@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NestedTabBar extends StatefulWidget {
-  List<Widget> tabs;
-  NestedTabBar({required this.tabs});
+  final List<Widget> tabs;
+  const NestedTabBar({super.key, required this.tabs});
 
   @override
   State<NestedTabBar> createState() => _NestedTabBarState();
@@ -44,6 +44,7 @@ class _NestedTabBarState extends State<NestedTabBar>
               ),
             ]),
         Container(
+          padding: const EdgeInsets.only(top: 5.0),
           height: MediaQuery.of(context).size.height * 0.22,
           child: TabBarView(
             controller: _nestedTabController,

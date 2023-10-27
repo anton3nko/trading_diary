@@ -39,20 +39,31 @@ class DashboardPage extends StatelessWidget {
             const SizedBox(
               height: 5.0,
             ),
-            DateRangePicker(),
+            const DateRangePicker(),
             SizedBox(
               width: 250,
               height: 250,
               child: PieChart(
                 PieChartData(
+                  centerSpaceRadius: 0.0,
                   sections: [
                     PieChartSectionData(
-                      color: Colors.blue,
-                      value: 30,
+                      color: Colors.red.shade500,
+                      value: 60,
+                      title: '60%',
+                      radius: 100,
                     ),
                     PieChartSectionData(
-                      color: Colors.green,
-                      value: 70,
+                      color: Colors.amber.shade300,
+                      value: 30,
+                      title: '30%',
+                      radius: 100,
+                    ),
+                    PieChartSectionData(
+                      color: Colors.greenAccent,
+                      value: 10,
+                      title: '10%',
+                      radius: 100,
                     ),
                   ],
                 ),
@@ -73,7 +84,7 @@ class DashboardPage extends StatelessWidget {
                         iconColor: Colors.red.shade500,
                       ),
                       CustomTile(
-                        title: 'MACD-CCI',
+                        title: 'Trend Channel',
                         onTap: () => 'onTap',
                         iconColor: Colors.amber.shade300,
                       ),

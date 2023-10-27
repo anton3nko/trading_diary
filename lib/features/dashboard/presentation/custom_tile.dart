@@ -23,7 +23,7 @@ class CustomTile extends StatelessWidget {
           ),
         ),
         child: ListTile(
-          iconColor: iconColor,
+          tileColor: iconColor,
           title: Text(
             title,
             style: const TextStyle(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateRangePicker extends StatefulWidget {
+  const DateRangePicker({super.key});
+
   @override
   State<DateRangePicker> createState() => _DateRangePickerState();
 }
