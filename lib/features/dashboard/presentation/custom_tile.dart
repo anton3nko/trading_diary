@@ -6,10 +6,10 @@ class CustomTile extends StatelessWidget {
       {super.key,
       required this.title,
       required this.onTap,
-      required this.iconColor});
+      required this.tileColor});
   final String title;
   final Function onTap;
-  final Color iconColor;
+  final Color tileColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,9 @@ class CustomTile extends StatelessWidget {
           ),
         ),
         child: ListTile(
-          tileColor: iconColor,
+          //Решил закрасить не иконку, а весь ListTile для более
+          //понятного сопоставления цветов диаграммы с цветами стратегий
+          tileColor: tileColor,
           title: Text(
             title,
             style: const TextStyle(

@@ -43,6 +43,9 @@ class DashboardPage extends StatelessWidget {
             SizedBox(
               width: 250,
               height: 250,
+              //Не удаётся добавить виджеты с метриками по профиту,
+              //объему сделок, прибыльности/убыточности сделок
+              //в центр диаграммы
               child: PieChart(
                 PieChartData(
                   centerSpaceRadius: 0.0,
@@ -79,19 +82,21 @@ class DashboardPage extends StatelessWidget {
                   child: ListView(
                     children: [
                       CustomTile(
+                        //Не удаётся добавить переход на экран Strategies
+                        //по нажатию на название стратегии
                         title: 'MACD-CCI',
                         onTap: () => 'onTap',
-                        iconColor: Colors.red.shade500,
+                        tileColor: Colors.red.shade500,
                       ),
                       CustomTile(
                         title: 'Trend Channel',
                         onTap: () => 'onTap',
-                        iconColor: Colors.amber.shade300,
+                        tileColor: Colors.amber.shade300,
                       ),
                       CustomTile(
                         title: 'MACD-CCI',
                         onTap: () => 'onTap',
-                        iconColor: Colors.greenAccent,
+                        tileColor: Colors.greenAccent,
                       ),
                     ],
                   ),
@@ -103,17 +108,17 @@ class DashboardPage extends StatelessWidget {
                       CustomTile(
                         title: 'GPBUSD',
                         onTap: () => 'onTap',
-                        iconColor: Colors.pink,
+                        tileColor: Colors.pink,
                       ),
                       CustomTile(
                         title: 'NZDUSD',
                         onTap: () => 'onTap',
-                        iconColor: Colors.deepPurple,
+                        tileColor: Colors.deepPurple,
                       ),
                       CustomTile(
                         title: 'GBPJPY',
                         onTap: () => 'onTap',
-                        iconColor: Colors.yellowAccent,
+                        tileColor: Colors.yellowAccent,
                       ),
                     ],
                   ),
