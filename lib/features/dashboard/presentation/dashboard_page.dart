@@ -43,6 +43,9 @@ class DashboardPage extends StatelessWidget {
             SizedBox(
               width: 250,
               height: 250,
+              //Не удаётся добавить виджеты с метриками по профиту,
+              //объему сделок, прибыльности/убыточности сделок
+              //в центр диаграммы
               child: PieChart(
                 PieChartData(
                   centerSpaceRadius: 0.0,
@@ -79,6 +82,8 @@ class DashboardPage extends StatelessWidget {
                   child: ListView(
                     children: [
                       CustomTile(
+                        //Не удаётся добавить переход на экран Strategies
+                        //по нажатию на название стратегии
                         title: 'MACD-CCI',
                         onTap: () => 'onTap',
                         iconColor: Colors.red.shade500,
