@@ -12,7 +12,7 @@ class _DateRangePickerState extends State<DateRangePicker> {
   String startDate = DateFormat.yMMMd()
       .format(DateTime(DateTime.now().year, DateTime.now().month, 1));
   String endDate = DateFormat.yMMMd().format(DateTime.now());
-  DateTime currentDate = DateTime.now();
+  String currentDate = DateFormat("yMMMM").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _DateRangePickerState extends State<DateRangePicker> {
           });
         }
       },
-      child: Text('$startDate - $endDate'),
+      child: Text(currentDate),
     );
   }
 }

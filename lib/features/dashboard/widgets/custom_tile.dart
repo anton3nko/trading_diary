@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 //import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar_item.dart';
 
 class CustomTile extends StatelessWidget {
-  const CustomTile(
-      {super.key,
-      required this.title,
-      required this.onTap,
-      required this.tileColor});
+  const CustomTile({
+    super.key,
+    required this.title,
+    required this.onTap,
+    required this.tileColor,
+  });
   final String title;
   final Function onTap;
   final Color tileColor;
@@ -16,21 +17,20 @@ class CustomTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(),
       child: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Colors.black),
-            //top: BorderSide(color: Colors.black),
-          ),
+        margin: const EdgeInsets.only(
+          top: 7,
         ),
         child: ListTile(
-          //Решил закрасить не иконку, а весь ListTile для более
-          //понятного сопоставления цветов диаграммы с цветами стратегий
           tileColor: tileColor,
           title: Text(
             title,
             style: const TextStyle(
               fontSize: 15.0,
             ),
+          ),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: Colors.grey.shade700, width: 1),
+            borderRadius: BorderRadius.circular(5),
           ),
           leading: const Icon(Icons.area_chart_sharp),
           trailing: const Column(

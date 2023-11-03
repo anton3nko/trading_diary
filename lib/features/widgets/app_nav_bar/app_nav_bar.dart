@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:trading_diary/features/dashboard_page.dart';
-// import 'package:trading_diary/features/settings_page.dart';
-// import 'package:trading_diary/features/strategies_page.dart';
-// import 'package:trading_diary/features/transactions_page.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar_item.dart';
 
@@ -16,7 +12,7 @@ class AppNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<NavBarCubit>();
     return SizedBox(
-      height: 91,
+      height: kBottomNavigationBarHeight,
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
@@ -60,48 +56,47 @@ class AppNavBar extends StatelessWidget {
                     vm.setPageIndex(1);
                   },
                 ),
-                const Spacer(),
                 AppNavBarItem(
-                  isActive: vm.pageIndex == 3,
+                  isActive: vm.pageIndex == 2,
                   iconSrc: Icons.auto_graph_sharp,
                   label: 'Strategies',
                   onTap: () {
-                    vm.setPageIndex(3);
+                    vm.setPageIndex(2);
                   },
                 ),
                 AppNavBarItem(
-                  isActive: vm.pageIndex == 4,
+                  isActive: vm.pageIndex == 3,
                   iconSrc: Icons.settings,
                   label: 'Settings',
                   onTap: () {
-                    vm.setPageIndex(4);
+                    vm.setPageIndex(3);
                   },
                 ),
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: CircleAvatar(
-              backgroundColor: Colors.orange,
-              radius: 34,
-              child: CircleAvatar(
-                backgroundColor: Colors.orange,
-                radius: 30,
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    vm.setPageIndex(2);
-                  },
-                  icon: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.topCenter,
+          //   child: CircleAvatar(
+          //     backgroundColor: Colors.orange,
+          //     radius: 34,
+          //     child: CircleAvatar(
+          //       backgroundColor: Colors.orange,
+          //       radius: 30,
+          //       child: IconButton(
+          //         padding: EdgeInsets.zero,
+          //         onPressed: () {
+          //           vm.setPageIndex(2);
+          //         },
+          //         icon: const Icon(
+          //           Icons.add,
+          //           color: Colors.white,
+          //           size: 32,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

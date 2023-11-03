@@ -5,7 +5,7 @@ class Transaction {
   //TODO Нужен ли идектификатор сделки? В таком виде?
   final int id;
   final double volume;
-  final CurrencyPair currencyPair;
+  // final CurrencyPair currencyPair;
   final DateTime openDate;
   //TODO необязательные поля объявлять таким образом?
   DateTime? closeDate;
@@ -19,7 +19,7 @@ class Transaction {
   Transaction({
     required this.id,
     required this.volume,
-    required this.currencyPair,
+    // required this.currencyPair,
     required this.openDate,
     this.closeDate,
     required this.mainStrategy,
