@@ -1,4 +1,3 @@
-import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 
 class Transaction {
