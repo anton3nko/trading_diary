@@ -7,6 +7,7 @@ import 'package:trading_diary/features/home_screen.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_diary/theme_provider.dart';
+import 'package:trading_diary/features/strategies/strategy_add_page.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
@@ -32,6 +33,7 @@ class Application extends StatelessWidget {
                   create: (context) => NavBarCubit(),
                   child: const HomeScreen(),
                 ),
+            StrategyAddPage.id: (context) => const StrategyAddPage(),
           },
         );
       },

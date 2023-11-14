@@ -10,4 +10,9 @@ class Strategy {
   List<Transaction> transactions = [];
 
   Strategy({required this.title, required this.strategyColor});
+
+  @override
+  String toString() {
+    return 'Strategy "$title" with $strategyColor';
+  }
 }
