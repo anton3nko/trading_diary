@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//TODO в какую директорию убрать этот файл?
 class ThemeProvider extends ChangeNotifier {
   String currentTheme = 'light';
 
