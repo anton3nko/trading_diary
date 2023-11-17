@@ -6,7 +6,7 @@ sealed class StrategyEvent extends Equatable {
 
 class AddStrategyEvent extends StrategyEvent {
   final String title;
-  final int color;
+  final Color color;
 
   const AddStrategyEvent({required this.title, required this.color});
 
