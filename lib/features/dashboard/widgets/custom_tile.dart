@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar_item.dart';
+import 'package:trading_diary/styles.dart';
 
 class CustomTile extends StatelessWidget {
   const CustomTile({
@@ -28,10 +28,7 @@ class CustomTile extends StatelessWidget {
               fontSize: 15.0,
             ),
           ),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.grey.shade700, width: 1),
-            borderRadius: BorderRadius.circular(5),
-          ),
+          shape: kRoundedRectangleTileShape,
           leading: const Icon(Icons.area_chart_sharp),
           trailing: const Column(
             mainAxisAlignment: MainAxisAlignment.center,

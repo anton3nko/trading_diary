@@ -31,7 +31,7 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
             ),
-            //Добавил DropdownMenu для выбора темы приложения. Дефолтное значение = light
+            //Добавил DropdownMenu для выбора темы приложения. Дефолтное значение = system
             Consumer<ThemeProvider>(builder: (context, provider, child) {
               return DropdownMenu<String>(
                 initialSelection: provider.currentTheme,
@@ -50,7 +50,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
                 onSelected: (String? value) {
-                  provider.changeTheme(value ?? 'light');
+                  provider.changeTheme(value ?? 'system');
                 },
               );
             }),

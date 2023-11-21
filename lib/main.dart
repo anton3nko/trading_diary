@@ -6,7 +6,7 @@ import 'internal/application.dart';
 void main() {
   runApp(
     ChangeNotifierProvider<ThemeProvider>(
-      create: (_) => ThemeProvider(),
+      create: (_) => ThemeProvider()..initialize(),
       child: const Application(),
     ),
   );

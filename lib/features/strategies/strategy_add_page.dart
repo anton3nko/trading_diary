@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/styles.dart';
 import 'package:trading_diary/features/strategies/data/bloc/strategies_crud_bloc.dart';
 

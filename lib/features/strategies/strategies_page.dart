@@ -14,11 +14,11 @@ class StrategiesPage extends StatefulWidget {
 }
 
 //Добавил сохранение и выгрузку стратегий с базы.
-//TODO барахлит UI, вылетает exception Incorrect use of ParentDataWidget.
 class _StrategiesPageState extends State<StrategiesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       floatingActionButton: FloatingActionButton(
         backgroundColor: kYellowColor,
         child: const Icon(
@@ -41,41 +41,44 @@ class _StrategiesPageState extends State<StrategiesPage> {
               padding: const EdgeInsets.all(8.0),
               height: MediaQuery.of(context).size.height,
               child: state.strategies.isNotEmpty
-                  ? Expanded(
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: state.strategies.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                state.strategies[index].title,
-                                style: const TextStyle(
-                                    color: kBlackColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        context.read<StrategyBloc>().add(
-                                            DeleteStrategyEvent(
-                                                id: state
-                                                    .strategies[index].id!));
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                          duration: Duration(milliseconds: 500),
-                                          content: Text("Deleted Strategy"),
-                                        ));
-                                      },
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ))
-                                ],
-                              ),
-                            );
-                          }))
+                  ? ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: state.strategies.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.all(3.0),
+                          child: ListTile(
+                            tileColor: state.strategies[index].strategyColor,
+                            shape: kRoundedRectangleTileShape,
+                            leading: const Icon(Icons.area_chart_sharp),
+                            title: Text(
+                              state.strategies[index].title,
+                              style: const TextStyle(
+                                  color: kBlackColor, fontSize: 15.0),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      context.read<StrategyBloc>().add(
+                                          DeleteStrategyEvent(
+                                              id: state.strategies[index].id!));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                        duration: Duration(milliseconds: 500),
+                                        content: Text("Deleted Strategy"),
+                                      ));
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ))
+                              ],
+                            ),
+                          ),
+                        );
+                      })
                   : const Text(''),
             ));
           }
