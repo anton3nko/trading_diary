@@ -3,6 +3,10 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:trading_diary/domain/model/strategy.dart';
 
+//Класс для взаимодействия с БД
+//TODO Вопрос - Все ли методы-операции создавать здесь?
+//Вопрос касаемо методов для формирования списков на Dashboard
+//(топ стратегий/валютных пар по прибыльности)
 class DatabaseService {
   static final DatabaseService instance = DatabaseService._init();
   static Database? _database;

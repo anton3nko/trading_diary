@@ -1,10 +1,10 @@
 import 'package:trading_diary/domain/model/strategy.dart';
+import 'package:trading_diary/domain/model/currency_pair.dart';
 
 class Transaction {
-  //TODO Нужен ли идектификатор сделки? В таком виде?
-  final int id;
+  final int? id;
   final double volume;
-  // final CurrencyPair currencyPair;
+  final CurrencyPair currencyPair;
   final DateTime openDate;
   //TODO необязательные поля объявлять таким образом?
   DateTime? closeDate;
@@ -16,9 +16,9 @@ class Transaction {
   double? profit;
 
   Transaction({
-    required this.id,
+    this.id,
     required this.volume,
-    // required this.currencyPair,
+    required this.currencyPair,
     required this.openDate,
     this.closeDate,
     required this.mainStrategy,

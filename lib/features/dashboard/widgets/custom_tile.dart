@@ -33,6 +33,10 @@ class CustomTile extends StatelessWidget {
           trailing: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              //TODO Здесь(в Trailing'e CustomTile) нужно отобразить статистику по всем сделкам
+              //с ипользованием каждой из стратегий/валют.пары: общая прибыль/убыток, общее число сделок/прибыльные сделки
+              //ВОПРОС - Создать отдельные модели для этих данных?
+              //ВОПРОС - Для каждого списка(стратегия/валют.пара) отдельный bloc?
               Text(
                 '\$124',
                 style: TextStyle(
