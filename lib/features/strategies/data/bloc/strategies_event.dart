@@ -1,4 +1,4 @@
-part of 'package:trading_diary/features/strategies/data/bloc/strategies_crud_bloc.dart';
+part of 'package:trading_diary/features/strategies/data/bloc/strategies_bloc.dart';
 
 sealed class StrategyEvent extends Equatable {
   const StrategyEvent();

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:trading_diary/features/home_screen.dart';
 import 'package:trading_diary/features/registration_screen.dart';
-import '../../../styles.dart';
+import '../../../styles/styles.dart';
 import '../../widgets/rounded_button.dart';
 
 class LoginScreen extends StatefulWidget {

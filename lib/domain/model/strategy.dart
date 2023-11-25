@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:trading_diary/domain/model/transaction.dart';
 
 const String strategyTable = 'strategies';
 
@@ -14,13 +13,9 @@ class StrategyFields {
 class Strategy {
   final int? id;
   final String title;
-  final Color strategyColor;
+  final Color? strategyColor;
 
-  //Для нахождения количества сделок по данной стратегии
-  //TODO так норм? Или лучше для этого использовать запрос к базе?
-  List<Transaction> transactions = [];
-
-  Strategy({this.id, required this.title, required this.strategyColor});
+  Strategy({this.id, required this.title, this.strategyColor});
   Strategy copy({
     int? id,
     String? title,
@@ -40,7 +35,7 @@ class Strategy {
   Map<String, Object?> toJson() => {
         StrategyFields.id: id,
         StrategyFields.title: title,
-        StrategyFields.color: strategyColor.value,
+        StrategyFields.color: strategyColor?.value,
       };
 
   @override

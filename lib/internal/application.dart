@@ -6,9 +6,9 @@ import 'package:trading_diary/features/registration_screen.dart';
 import 'package:trading_diary/features/home_screen.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:provider/provider.dart';
-import 'package:trading_diary/theme_provider.dart';
+import 'package:trading_diary/styles/theme_provider.dart';
 import 'package:trading_diary/features/strategies/strategy_add_page.dart';
-import 'package:trading_diary/features/strategies/data/bloc/strategies_crud_bloc.dart';
+import 'package:trading_diary/features/strategies/data/bloc/strategies_bloc.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});

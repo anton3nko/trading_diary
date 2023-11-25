@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trading_diary/styles.dart';
-import 'package:trading_diary/features/strategies/data/bloc/strategies_crud_bloc.dart';
+import 'package:trading_diary/styles/styles.dart';
+import 'package:trading_diary/features/strategies/data/bloc/strategies_bloc.dart';
 
 class StrategyAddPage extends StatefulWidget {
   static const String id = 'strategy_add_page';

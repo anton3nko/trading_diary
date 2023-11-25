@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trading_diary/styles.dart';
+import 'package:trading_diary/styles/styles.dart';
 
 class CustomTile extends StatelessWidget {
   const CustomTile({

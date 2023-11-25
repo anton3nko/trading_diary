@@ -2,12 +2,37 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:trading_diary/domain/model/strategy.dart';
+import 'package:trading_diary/domain/model/trading_transaction.dart';
 
 //Класс для взаимодействия с БД
-//TODO Вопрос - Все ли методы-операции создавать здесь?
-//Вопрос касаемо методов для формирования списков на Dashboard
-//(топ стратегий/валютных пар по прибыльности)
+//TODO Найти более лаконичное решение(не все методы взаимодействия с БД в этом классе)
 class DatabaseService {
+  static const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+  static const textType = 'TEXT NOT NULL';
+  static const integerType = 'INTEGER NOT NULL';
+
+  static const _createStrategiesTable = '''
+    CREATE TABLE $strategyTable (
+        _id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        color INTEGER NOT NULL
+      )''';
+//TODO подумать не сохранять ли mainStrategy и secondaryStrategy в виде id из таблицы Strategies?
+  static const _createTradingTransactionsTable = '''
+    CREATE TABLE $transactionTable (
+        _id INTEGER PRIMARY KEY AUTOINCREMENT,
+        volume double NOT NULL,
+        currencyPair TEXT NOT NULL,
+        openDate TEXT NOT NULL,
+        closeDate TEXT,
+        mainStrategy TEXT NOT NULL,
+        secondaryStrategy TEXT NOT NULL,
+        timeFrame TEXT NOT NULL,
+        profit double,
+        comment TEXT,
+    )
+''';
+
   static final DatabaseService instance = DatabaseService._init();
   static Database? _database;
   DatabaseService._init();
@@ -27,17 +52,14 @@ class DatabaseService {
   }
 
   Future _createDB(Database db, int version) async {
-    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const textType = 'TEXT NOT NULL';
-    const integerType = 'INTEGER NOT NULL';
+    await db.execute(_createStrategiesTable);
+    await db.execute(_createTradingTransactionsTable);
+  }
 
-    await db.execute('''
-      CREATE TABLE strategies (
-        _id $idType,
-        title $textType,
-        color $integerType
-      )
-    ''');
+  Future close() async {
+    final db = await instance.database;
+
+    db.close();
   }
 
 //Strategy CRUD - методы (create, read, update, delete)
@@ -93,9 +115,58 @@ class DatabaseService {
     );
   }
 
-  Future close() async {
+  //Transaction CRUD - методы (create, read, update, delete)
+  Future<TradingTransaction> createTradingTransaction(
+      TradingTransaction transaction) async {
+    final db = await instance.database;
+    final id = await db.insert(transactionTable, transaction.toJson());
+    return transaction.copy(id: id);
+  }
+
+  Future<TradingTransaction> readTradingTransaction({required int id}) async {
     final db = await instance.database;
 
-    db.close();
+    final maps = await db.query(
+      transactionTable,
+      columns: TransactionFields.values,
+      where: '${TransactionFields.id} = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return TradingTransaction.fromJson(maps.first);
+    } else {
+      throw Exception('ID $id was not found');
+    }
+  }
+
+  Future<List<TradingTransaction>> readAllTradingTransactions() async {
+    final db = await instance.database;
+    const orderBy = '${TransactionFields.id} ASC';
+    final result = await db.query(strategyTable, orderBy: orderBy);
+
+    return result.map((json) => TradingTransaction.fromJson(json)).toList();
+  }
+
+  Future<int> updateTradingTransaction(
+      {required TradingTransaction transaction}) async {
+    final db = await instance.database;
+
+    return db.update(
+      transactionTable,
+      transaction.toJson(),
+      where: '${TransactionFields.id} = ?',
+      whereArgs: [transaction.id],
+    );
+  }
+
+  Future<int> deleteTradingTransaction({required int id}) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      transactionTable,
+      where: '${TransactionFields.id} = ?',
+      whereArgs: [id],
+    );
   }
 }

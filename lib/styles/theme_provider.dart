@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//TODO в какую директорию убрать этот файл?
 class ThemeProvider extends ChangeNotifier {
   String currentTheme = 'system';
 
