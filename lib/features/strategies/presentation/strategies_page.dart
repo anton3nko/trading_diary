@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trading_diary/features/strategies/strategy_add_page.dart';
+import 'package:trading_diary/features/strategies/presentation/strategy_add_page.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/strategies/data/bloc/strategies_bloc.dart';

@@ -46,6 +46,7 @@ class _StrategyAddPageState extends State<StrategyAddPage> {
                     label: const Text('Strategy Name')),
               ),
             ),
+            //TODO Почему здесь используется BlocBuilder, а не BlocListener?
             BlocBuilder<StrategyBloc, StrategyState>(
               builder: (context, state) {
                 return ElevatedButton(
