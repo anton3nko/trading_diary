@@ -19,9 +19,10 @@ class _TradingTransactionAddPageState extends State<TradingTransactionAddPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder(
+        /// TODO: Ну тут ты понял, короче. Не указал, какого блока этот билдер, и он не работает.
+        body: BlocBuilder<TradingTransactionBloc, TradingTransactionState>(
           builder: (context, state) {
-            return Container(
+            return SizedBox(
               height: MediaQuery.of(context).size.height,
               child: Column(
                 children: [

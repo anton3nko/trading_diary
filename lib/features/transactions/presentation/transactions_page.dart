@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:trading_diary/domain/model/currency_pair.dart';
-import 'package:trading_diary/domain/model/strategy.dart';
-import 'package:trading_diary/domain/model/trading_transaction.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
 import 'package:trading_diary/features/transactions/data/bloc/trading_transaction_bloc.dart';
 import 'package:trading_diary/styles/styles.dart';
@@ -22,19 +19,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget build(BuildContext context) {
     //TODO Добавление здесь FloatingActionButton ломает Add-button на Strategies page
     //Как лучше это пофиксить?
+    // Гугли лучше, лопата корейская:
+    // https://stackoverflow.com/questions/63492211/flutter-floatingactionbutton-is-not-working
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: kYellowColor,
-      //   child: const Icon(
-      //     Icons.add,
-      //     size: 30,
-      //     color: kBlackColor,
-      //   ),
-      //   onPressed: () {
-      //     //addFakeTransaction('USDCAD');
-      //     Navigator.pushNamed(context, TradingTransactionAddPage.id);
-      //   },
-      // ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'addTransaction',
+        backgroundColor: kYellowColor,
+        child: const Icon(
+          Icons.add,
+          size: 30,
+          color: kBlackColor,
+        ),
+        onPressed: () {
+          //addFakeTransaction('USDCAD');
+          Navigator.pushNamed(context, TradingTransactionAddPage.id);
+        },
+      ),
       body: Center(
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -122,10 +122,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             : const Text(''),
                       ));
                     }
-                    return Container(
-                      color: Colors.white,
-                      child: const CircularProgressIndicator(),
-                    );
+                    return const SizedBox.shrink();
                   },
                 )
               ],

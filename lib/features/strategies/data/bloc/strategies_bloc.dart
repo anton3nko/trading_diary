@@ -8,6 +8,7 @@ part 'strategies_event.dart';
 part 'strategies_state.dart';
 
 //TODO Верно ли то, что положил этот файл в Strategies->Data->bloc?
+// Можешь просто в папку блок, отдельно Data не нужна
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   StrategyBloc() : super(StrategyInitialState()) {
     List<Strategy> strategies = [];
