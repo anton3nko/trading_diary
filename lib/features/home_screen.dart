@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/dashboard/dashboard_page.dart';
 import 'package:trading_diary/features/settings_page.dart';
 import 'package:trading_diary/features/strategies/strategies_page.dart';
-import 'package:trading_diary/features/transactions_page.dart';
+import 'package:trading_diary/features/transactions/presentation/transactions_page.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 

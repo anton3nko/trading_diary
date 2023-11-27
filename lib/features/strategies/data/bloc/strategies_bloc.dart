@@ -12,14 +12,16 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   StrategyBloc() : super(StrategyInitialState()) {
     List<Strategy> strategies = [];
 
-    on<AddStrategyEvent>((event, emit) async {
-      await DatabaseService.instance.createStrategy(
-        Strategy(
-          title: event.title,
-          strategyColor: event.color,
-        ),
-      );
-    });
+    on<AddStrategyEvent>(
+      (event, emit) async {
+        await DatabaseService.instance.createStrategy(
+          Strategy(
+            title: event.title,
+            strategyColor: event.color,
+          ),
+        );
+      },
+    );
 
     on<UpdateStrategyEvent>((event, emit) async {
       await DatabaseService.instance.updateStrategy(

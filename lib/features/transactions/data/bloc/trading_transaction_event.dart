@@ -8,14 +8,14 @@ class AddTradingTransactionEvent extends TradingTransactionEvent {
   final double volume;
   final CurrencyPair currencyPair;
   final DateTime openDate;
-  DateTime? closeDate;
+  final DateTime? closeDate;
   final Strategy mainStrategy;
   final Strategy secondaryStrategy;
   final TimeFrame timeFrame;
-  double? profit;
-  String? comment;
+  final double? profit;
+  final String? comment;
 
-  AddTradingTransactionEvent({
+  const AddTradingTransactionEvent({
     required this.volume,
     required this.currencyPair,
     required this.openDate,
