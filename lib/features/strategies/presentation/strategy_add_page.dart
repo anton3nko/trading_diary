@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/styles/styles.dart';
-import 'package:trading_diary/features/strategies/data/bloc/strategies_bloc.dart';
+import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 
 class StrategyAddPage extends StatefulWidget {
   static const String id = 'strategy_add_page';
@@ -46,7 +46,6 @@ class _StrategyAddPageState extends State<StrategyAddPage> {
                     label: const Text('Strategy Name')),
               ),
             ),
-            //TODO Почему здесь используется BlocBuilder, а не BlocListener?
             BlocBuilder<StrategyBloc, StrategyState>(
               builder: (context, state) {
                 return ElevatedButton(

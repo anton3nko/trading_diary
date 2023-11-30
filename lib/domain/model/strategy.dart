@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const String strategyTable = 'strategies';
+const String strategyTable = 'strategies_table';
 
 class StrategyFields {
   static final List<String> values = [id, title, color];

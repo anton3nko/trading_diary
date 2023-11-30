@@ -4,11 +4,9 @@ import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/services/database_service.dart';
 import 'package:flutter/material.dart';
 
-part 'strategies_event.dart';
-part 'strategies_state.dart';
+part 'package:trading_diary/features/strategies/bloc/strategies_event.dart';
+part 'package:trading_diary/features/strategies/bloc/strategies_state.dart';
 
-//TODO Верно ли то, что положил этот файл в Strategies->Data->bloc?
-// Можешь просто в папку блок, отдельно Data не нужна
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   StrategyBloc() : super(StrategyInitialState()) {
     List<Strategy> strategies = [];

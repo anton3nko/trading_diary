@@ -5,18 +5,18 @@ import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/services/database_service.dart';
 
-part 'trading_transaction_event.dart';
-part 'trading_transaction_state.dart';
+part 'transaction_event.dart';
+part 'transaction_state.dart';
 
-class TradingTransactionBloc
-    extends Bloc<TradingTransactionEvent, TradingTransactionState> {
-  TradingTransactionBloc() : super(TradingTransactionInitialState()) {
+class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
+  TransactionBloc() : super(TransactionInitialState()) {
     List<TradingTransaction> transactions = [];
 
-    on<AddTradingTransactionEvent>(
+    on<AddTransactionEvent>(
       (event, emit) async {
-        await DatabaseService.instance.createTradingTransaction(
+        await DatabaseService.instance.createTransaction(
           TradingTransaction(
+              transactionType: event.transactionType,
               volume: event.volume,
               currencyPair: event.currencyPair,
               openDate: event.openDate,
@@ -29,30 +29,29 @@ class TradingTransactionBloc
         );
       },
     );
-    on<UpdateTradingTransactionEvent>(
+    on<UpdateTransactionEvent>(
       (event, emit) async {
         await DatabaseService.instance
-            .updateTradingTransaction(transaction: event.transaction);
+            .updateTransaction(transaction: event.transaction);
       },
     );
-    on<FetchTradingTransactionsEvent>(
+    on<FetchTransactionsEvent>(
       (event, emit) async {
-        transactions =
-            await DatabaseService.instance.readAllTradingTransactions();
-        emit(DisplayTradingTransactionsState(transactions: transactions));
+        transactions = await DatabaseService.instance.readAllTransactions();
+        emit(DisplayTransactionsState(transactions: transactions));
       },
     );
-    on<FetchSpecificTradingTransactionEvent>(
+    on<FetchSpecificTransactionEvent>(
       (event, emit) async {
         TradingTransaction transaction =
-            await DatabaseService.instance.readTradingTransaction(id: event.id);
-        emit(DisplaySpecificTradingTransactionState(transaction: transaction));
+            await DatabaseService.instance.readTransaction(id: event.id);
+        emit(DisplaySpecificTransactionState(transaction: transaction));
       },
     );
-    on<DeleteTradingTransactionEvent>(
+    on<DeleteTransactionEvent>(
       (event, emit) async {
-        await DatabaseService.instance.deleteTradingTransaction(id: event.id);
-        add(const FetchTradingTransactionsEvent());
+        await DatabaseService.instance.deleteTransaction(id: event.id);
+        add(const FetchTransactionsEvent());
       },
     );
   }

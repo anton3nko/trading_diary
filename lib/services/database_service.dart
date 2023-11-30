@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -18,18 +20,19 @@ class DatabaseService {
         color INTEGER NOT NULL
       )''';
 //TODO подумать не сохранять ли mainStrategy и secondaryStrategy в виде id из таблицы Strategies?
-  static const _createTradingTransactionsTable = '''
+  static const _createTransactionsTable = '''
     CREATE TABLE $transactionTable (
         _id INTEGER PRIMARY KEY AUTOINCREMENT,
-        volume double NOT NULL,
+        ${TransactionFields.transactionType} TEXT NOT NULL,
+        volume REAL NOT NULL,
         currencyPair TEXT NOT NULL,
         openDate TEXT NOT NULL,
         closeDate TEXT,
         mainStrategy TEXT NOT NULL,
         secondaryStrategy TEXT NOT NULL,
         timeFrame TEXT NOT NULL,
-        profit double,
-        comment TEXT,
+        profit REAL,
+        comment TEXT
     )
 ''';
 
@@ -45,6 +48,7 @@ class DatabaseService {
   }
 
   Future<Database> _initDB(String filePath) async {
+    log('_initDB');
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
@@ -53,7 +57,11 @@ class DatabaseService {
 
   Future _createDB(Database db, int version) async {
     await db.execute(_createStrategiesTable);
-    await db.execute(_createTradingTransactionsTable);
+    await db.execute(_createTransactionsTable);
+    // log('DB tables created; _createdDB');
+    // (await db.query('sqlite_master', columns: ['type', 'name'])).forEach((row) {
+    //   log(row.values.toString());
+    // });
   }
 
   Future close() async {
@@ -116,14 +124,14 @@ class DatabaseService {
   }
 
   //Transaction CRUD - методы (create, read, update, delete)
-  Future<TradingTransaction> createTradingTransaction(
+  Future<TradingTransaction> createTransaction(
       TradingTransaction transaction) async {
     final db = await instance.database;
     final id = await db.insert(transactionTable, transaction.toJson());
     return transaction.copy(id: id);
   }
 
-  Future<TradingTransaction> readTradingTransaction({required int id}) async {
+  Future<TradingTransaction> readTransaction({required int id}) async {
     final db = await instance.database;
 
     final maps = await db.query(
@@ -140,15 +148,16 @@ class DatabaseService {
     }
   }
 
-  Future<List<TradingTransaction>> readAllTradingTransactions() async {
+  Future<List<TradingTransaction>> readAllTransactions() async {
+    log('readAllTransactions() call');
     final db = await instance.database;
     const orderBy = '${TransactionFields.id} ASC';
-    final result = await db.query(strategyTable, orderBy: orderBy);
+    final result = await db.query(transactionTable, orderBy: orderBy);
 
     return result.map((json) => TradingTransaction.fromJson(json)).toList();
   }
 
-  Future<int> updateTradingTransaction(
+  Future<int> updateTransaction(
       {required TradingTransaction transaction}) async {
     final db = await instance.database;
 
@@ -160,7 +169,7 @@ class DatabaseService {
     );
   }
 
-  Future<int> deleteTradingTransaction({required int id}) async {
+  Future<int> deleteTransaction({required int id}) async {
     final db = await instance.database;
 
     return await db.delete(

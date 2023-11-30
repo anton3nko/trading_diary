@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
-import 'package:trading_diary/features/transactions/data/bloc/trading_transaction_bloc.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/styles/styles.dart';
-import 'package:trading_diary/features/transactions/presentation/trading_transaction_add_page.dart';
+import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -17,11 +19,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
   // void addFakeTransaction(String? currencyPairTitle) {
   @override
   Widget build(BuildContext context) {
-    //TODO Добавление здесь FloatingActionButton ломает Add-button на Strategies page
-    //Как лучше это пофиксить?
-    // Гугли лучше, лопата корейская:
-    // https://stackoverflow.com/questions/63492211/flutter-floatingactionbutton-is-not-working
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       floatingActionButton: FloatingActionButton(
         heroTag: 'addTransaction',
         backgroundColor: kYellowColor,
@@ -32,7 +31,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
         ),
         onPressed: () {
           //addFakeTransaction('USDCAD');
-          Navigator.pushNamed(context, TradingTransactionAddPage.id);
+          Navigator.pushNamed(context, TransactionAddPage.id);
         },
       ),
       body: Center(
@@ -75,14 +74,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                BlocBuilder<TradingTransactionBloc, TradingTransactionState>(
+                BlocBuilder<TransactionBloc, TransactionState>(
                   builder: (context, state) {
-                    if (state is TradingTransactionInitialState) {
+                    if (state is TransactionInitialState) {
+                      log('state is TransactionInitialState');
                       context
-                          .read<TradingTransactionBloc>()
-                          .add(const FetchTradingTransactionsEvent());
+                          .read<TransactionBloc>()
+                          .add(const FetchTransactionsEvent());
                     }
-                    if (state is DisplayTradingTransactionsState) {
+                    if (state is DisplayTransactionsState) {
+                      log('state is DisplayTransactionState');
+                      log(state.transactions.isNotEmpty
+                          ? 'transactions are not Empty'
+                          : 'transactions are Empty');
                       return SafeArea(
                           child: Container(
                         padding: const EdgeInsets.all(8.0),
@@ -91,31 +95,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ? ListView.builder(
                                 itemCount: state.transactions.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    shape: kRoundedRectangleTileShape,
-                                    leading: Text(state.transactions[index]
-                                        .currencyPair.currencyPairTitle),
-                                    trailing: Row(
-                                      children: [
-                                        Text(
-                                            '${state.transactions[index].profit.toString()}\$'),
-                                        IconButton(
-                                            onPressed: () {
-                                              context
-                                                  .read<
-                                                      TradingTransactionBloc>()
-                                                  .add(
-                                                    DeleteTradingTransactionEvent(
-                                                        id: state
-                                                            .transactions[index]
-                                                            .id!),
-                                                  );
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ))
-                                      ],
+                                  return Container(
+                                    margin: const EdgeInsets.all(3.0),
+                                    child: ListTile(
+                                      shape: kRoundedRectangleTileShape,
+                                      leading: Text(state.transactions[index]
+                                          .currencyPair.currencyPairTitle),
+                                      trailing: Text(
+                                          '${state.transactions[index].profit.toString()}\$'),
                                     ),
                                   );
                                 })
