@@ -8,9 +8,9 @@ part 'package:trading_diary/features/strategies/bloc/strategies_event.dart';
 part 'package:trading_diary/features/strategies/bloc/strategies_state.dart';
 
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
-  StrategyBloc() : super(StrategyInitialState()) {
-    List<Strategy> strategies = [];
+  List<Strategy> strategies = [];
 
+  StrategyBloc() : super(StrategyInitialState()) {
     on<AddStrategyEvent>(
       (event, emit) async {
         await DatabaseService.instance.createStrategy(
@@ -44,4 +44,6 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
       add(const FetchStrategiesEvent());
     });
   }
+
+  List<Strategy> get strategyList => strategies;
 }

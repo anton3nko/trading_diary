@@ -28,3 +28,8 @@ const kRoundedRectangleTileShape = RoundedRectangleBorder(
   side: BorderSide(color: Color.fromRGBO(97, 97, 97, 1), width: 1),
   borderRadius: BorderRadius.all(Radius.circular(5)),
 );
+
+const kTextFieldLabelStyle = TextStyle(
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+);
