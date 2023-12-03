@@ -58,6 +58,7 @@ class DatabaseService {
   Future _createDB(Database db, int version) async {
     await db.execute(_createStrategiesTable);
     await db.execute(_createTransactionsTable);
+    //await createStrategy(Strategy(title: 'none', strategyColor: Colors.amber));
     // log('DB tables created; _createdDB');
     // (await db.query('sqlite_master', columns: ['type', 'name'])).forEach((row) {
     //   log(row.values.toString());

@@ -30,6 +30,6 @@ const kRoundedRectangleTileShape = RoundedRectangleBorder(
 );
 
 const kTextFieldLabelStyle = TextStyle(
-  fontSize: 18.0,
+  fontSize: 14.0,
   fontWeight: FontWeight.bold,
 );

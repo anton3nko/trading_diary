@@ -1,12 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
-import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
+import 'package:trading_diary/domain/model/transaction_dates.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_dates_cubit.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/widgets/date_time_picker.dart';
 import 'package:trading_diary/features/transactions/widgets/strategy_drop_down_menu.dart';
@@ -24,8 +23,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   late TextEditingController _typeFieldController;
   late TextEditingController _volumeFieldController;
   late TextEditingController _currencyFieldController;
-  late TextEditingController _openDateController;
-  late TextEditingController _closeDateController;
   late TextEditingController _mainStrategyController;
   late TextEditingController _secStrategyController;
   late TextEditingController _timeFrameController;
@@ -43,8 +40,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     _typeFieldController = TextEditingController();
     _volumeFieldController = TextEditingController();
     _currencyFieldController = TextEditingController();
-    _openDateController = TextEditingController();
-    _closeDateController = TextEditingController();
     _mainStrategyController = TextEditingController();
     _secStrategyController = TextEditingController();
     _timeFrameController = TextEditingController();
@@ -58,8 +53,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     _typeFieldController.dispose();
     _volumeFieldController.dispose();
     _currencyFieldController.dispose();
-    _openDateController.dispose();
-    _closeDateController.dispose();
     _mainStrategyController.dispose();
     _secStrategyController.dispose();
     _timeFrameController.dispose();
@@ -84,6 +77,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                //TODO Вопрос - не сильно ли нагруженный получился виджет?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -98,12 +92,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                         DropdownMenuEntry<TransactionType>(
                             value: TransactionType.sell, label: 'Sell'),
                       ],
-                      onSelected: (value) {
-                        log(value.toString());
-                      },
                     ),
                     DropdownMenu<CurrencyPair>(
                       initialSelection: currencies.first,
+                      controller: _currencyFieldController,
                       label: const Text('*Currency'),
                       dropdownMenuEntries: currencies
                           .map<DropdownMenuEntry<CurrencyPair>>(
@@ -112,9 +104,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                       value: currency,
                                       label: currency.currencyPairTitle))
                           .toList(),
-                      onSelected: (value) {
-                        log(value!.currencyPairTitle);
-                      },
                     ),
                   ],
                 ),
@@ -134,9 +123,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     labelStyle: kTextFieldLabelStyle,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  onChanged: (value) {
-                    log(value);
-                  },
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -154,13 +140,19 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     ),
                   ],
                 ),
-                const StrategyDropDownMenu(
-                    labelText: 'Main Strategy', isRequired: true),
+                StrategyDropDownMenu(
+                  labelText: 'Main Strategy',
+                  isRequired: true,
+                  controller: _mainStrategyController,
+                ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                const StrategyDropDownMenu(
-                    labelText: 'Secondary Strategy', isRequired: false),
+                StrategyDropDownMenu(
+                  labelText: 'Secondary Strategy',
+                  isRequired: false,
+                  controller: _secStrategyController,
+                ),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -177,9 +169,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     labelStyle: kTextFieldLabelStyle,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  onChanged: (value) {
-                    log(value);
-                  },
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -193,12 +182,71 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     labelStyle: kTextFieldLabelStyle,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  onChanged: (value) {
-                    log(value);
-                  },
                 ),
-                ElevatedButton(
-                    onPressed: () {}, child: const Text('Add Transaction')),
+                //TODO BlocBuilder вложенный в BlocBuilder
+                //Вопрос - так можно?
+                BlocBuilder<TransactionDatesCubit, TransactionDates>(
+                    builder: (context, state) {
+                  return BlocBuilder<TransactionBloc, TransactionState>(
+                      builder: (context, state) {
+                    return ElevatedButton(
+                        onPressed: () {
+                          final dates =
+                              BlocProvider.of<TransactionDatesCubit>(context)
+                                  .dates;
+                          if (_volumeFieldController.text.isNotEmpty &&
+                              dates.openDate.year != 1970) {
+                            final buyOrSell = TransactionType.fromJson(
+                                _typeFieldController.text.toLowerCase());
+                            final currency = CurrencyPair(
+                                currencyPairTitle:
+                                    _currencyFieldController.text);
+                            final volume =
+                                double.parse(_volumeFieldController.text);
+                            final mainStrat =
+                                Strategy(title: _mainStrategyController.text);
+                            final secStrat =
+                                Strategy(title: _secStrategyController.text);
+                            const timeFrame = TimeFrame.h1;
+                            final profit =
+                                double.tryParse(_profitFieldController.text);
+                            final comment = _commentFieldController.text;
+
+                            BlocProvider.of<TransactionBloc>(context).add(
+                              AddTransactionEvent(
+                                transactionType: buyOrSell,
+                                volume: volume,
+                                currencyPair: currency,
+                                openDate: dates.openDate,
+                                closeDate: dates.closeDate,
+                                mainStrategy: mainStrat,
+                                secondaryStrategy: secStrat,
+                                timeFrame: timeFrame,
+                                profit: profit,
+                                comment: comment,
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(seconds: 1),
+                                content: Text('Transaction added successfully'),
+                              ),
+                            );
+                            context
+                                .read<TransactionBloc>()
+                                .add(const FetchTransactionsEvent());
+                            Navigator.pop(context);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('*Please fill required fileds'
+                                    .toUpperCase())));
+                          }
+
+                          //log('$buyOrSell $currency $volume ${dates.openDate} ${dates.closeDate} $mainStrat $secStrat $profit $comment');
+                        },
+                        child: const Text('Add Transaction'));
+                  });
+                }),
               ],
             ),
           ),

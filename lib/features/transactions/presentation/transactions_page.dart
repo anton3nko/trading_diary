@@ -95,14 +95,32 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ? ListView.builder(
                                 itemCount: state.transactions.length,
                                 itemBuilder: (context, index) {
+                                  final transactionBloc =
+                                      BlocProvider.of<TransactionBloc>(context);
                                   return Container(
                                     margin: const EdgeInsets.all(3.0),
-                                    child: ListTile(
-                                      shape: kRoundedRectangleTileShape,
-                                      leading: Text(state.transactions[index]
-                                          .currencyPair.currencyPairTitle),
-                                      trailing: Text(
-                                          '${state.transactions[index].profit.toString()}\$'),
+                                    child: GestureDetector(
+                                      child: ListTile(
+                                        shape: kRoundedRectangleTileShape,
+                                        leading: Text(state.transactions[index]
+                                            .currencyPair.currencyPairTitle),
+                                        trailing: Text(
+                                            '${state.transactions[index].profit.toString()}\$'),
+                                      ),
+                                      //TODO Почему-то иногда не удаляются транзакции. Посмотрю позже
+                                      onLongPress: () {
+                                        transactionBloc.add(
+                                            DeleteTransactionEvent(id: index));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            content:
+                                                Text('Deleted Transaction'),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   );
                                 })

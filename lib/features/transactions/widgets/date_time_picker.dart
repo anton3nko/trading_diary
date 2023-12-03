@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:trading_diary/styles/styles.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_dates_cubit.dart';
+import 'package:trading_diary/domain/model/transaction_dates.dart';
 
 class DateTimePickerWidget extends StatefulWidget {
   final String initialButtonText;
@@ -52,14 +54,14 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     return selectedTime;
   }
 
+  //TODO Вопрос - нормальное ли решение для сохранения openDate и closeDate
+  //с использованием TransactionDatesCubit и model->TransactionDates??
   Future _selectDateTime(BuildContext context) async {
     final date = await _selectDate(context);
-    //if (date == null) return;
 
     //TODO Как правильно обработать этот Warning?
     final time = await _selectTime(context);
-    //if (time == null) return;
-
+    final vm = BlocProvider.of<TransactionDatesCubit>(context);
     setState(() {
       dateTime = DateTime(
         date.year,
@@ -69,6 +71,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         time.minute,
       );
     });
+    widget.isRequired ? vm.setOpenDate(dateTime) : vm.setCloseDate(dateTime);
   }
 
   String getDateTime() {
@@ -78,28 +81,29 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   @override
   Widget build(BuildContext context) {
     String isRequiredSymbol = widget.isRequired ? '*' : '';
-    return Column(
-      children: [
-        Text(
-          '$isRequiredSymbol${widget.initialButtonText}',
-          style: const TextStyle(
-            fontSize: 13.0,
-            fontWeight: FontWeight.bold,
+    return BlocBuilder<TransactionDatesCubit, TransactionDates>(
+        builder: (context, state) {
+      return Column(
+        children: [
+          Text(
+            '$isRequiredSymbol${widget.initialButtonText}',
+            style: const TextStyle(
+              fontSize: 13.0,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.left,
           ),
-          textAlign: TextAlign.left,
-        ),
-        TextButton(
-          onPressed: () async {
-            await _selectDateTime(context);
-            setState(() {
-              dateButtonText = getDateTime();
-              //log(getDateTime());
-            });
-            //log(widget.buttonText);
-          },
-          child: Text(dateButtonText ?? widget.initialButtonText),
-        ),
-      ],
-    );
+          TextButton(
+            onPressed: () async {
+              await _selectDateTime(context);
+              setState(() {
+                dateButtonText = getDateTime();
+              });
+            },
+            child: Text(dateButtonText ?? widget.initialButtonText),
+          ),
+        ],
+      );
+    });
   }
 }

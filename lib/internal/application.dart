@@ -12,6 +12,7 @@ import 'package:trading_diary/features/strategies/presentation/strategy_add_page
 import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_dates_cubit.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
@@ -24,6 +25,7 @@ class Application extends StatelessWidget {
         BlocProvider(create: (context) => NavBarCubit()),
         BlocProvider(create: (context) => StrategyBloc()),
         BlocProvider(create: (context) => TransactionBloc()),
+        BlocProvider(create: (context) => TransactionDatesCubit()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, provider, child) {

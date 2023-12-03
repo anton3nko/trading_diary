@@ -9,11 +9,13 @@ import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 class StrategyDropDownMenu extends StatelessWidget {
   final String labelText;
   final bool isRequired;
+  final TextEditingController controller;
 
   const StrategyDropDownMenu({
     super.key,
     required this.labelText,
     required this.isRequired,
+    required this.controller,
   });
 
   @override
@@ -23,6 +25,7 @@ class StrategyDropDownMenu extends StatelessWidget {
       builder: (context, state) {
         var strategiesList = context.read<StrategyBloc>().strategyList;
         return DropdownMenu<Strategy>(
+          controller: controller,
           label: Text(
             '$isRequiredSymbol$labelText',
             style: const TextStyle(fontWeight: FontWeight.bold),
