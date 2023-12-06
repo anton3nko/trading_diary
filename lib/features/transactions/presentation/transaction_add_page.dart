@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
@@ -110,8 +111,23 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                //TODO Добавить фильтр на текстовые символы(только числа)
+                DropdownMenu<TimeFrame>(
+                  initialSelection: TimeFrame.m1,
+                  controller: _timeFrameController,
+                  label: const Text('*TimeFrame'),
+                  dropdownMenuEntries: TimeFrame.values
+                      .map((TimeFrame timeFrame) =>
+                          DropdownMenuEntry<TimeFrame>(
+                              value: timeFrame, label: timeFrame.name))
+                      .toList(),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
                 TextField(
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*'))
+                  ],
                   controller: _volumeFieldController,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
@@ -156,8 +172,11 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                //TODO Добавить фильтр на текстовые символы(только числа)
                 TextField(
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(
+                        RegExp(r'^\-?(\d+\.?\d*)?'))
+                  ],
                   controller: _profitFieldController,
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
@@ -165,7 +184,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   ),
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Profit',
-                    label: const Text('*Profit'),
+                    label: const Text('Profit'),
                     labelStyle: kTextFieldLabelStyle,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
@@ -207,7 +226,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                 Strategy(title: _mainStrategyController.text);
                             final secStrat =
                                 Strategy(title: _secStrategyController.text);
-                            const timeFrame = TimeFrame.h1;
+                            final timeFrame = TimeFrame.values
+                                .byName(_timeFrameController.text);
                             final profit =
                                 double.tryParse(_profitFieldController.text);
                             final comment = _commentFieldController.text;

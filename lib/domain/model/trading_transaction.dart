@@ -110,24 +110,52 @@ class TradingTransaction {
 
   static TradingTransaction fromJson(Map<String, dynamic> json) {
     log('TradingTransaction.fromJson');
-    return TradingTransaction(
-      id: json[TransactionFields.id] as int?,
-      transactionType: TransactionType.fromJson(
-          json[TransactionFields.transactionType] as String),
-      volume: json[TransactionFields.volume] as double,
-      currencyPair: CurrencyPair(
-          currencyPairTitle: json[TransactionFields.currencyPair] as String),
-      openDate: DateTime.parse(json[TransactionFields.openDate] as String),
-      closeDate: DateTime.tryParse(json[TransactionFields.closeDate] as String),
-      mainStrategy:
-          Strategy(title: json[TransactionFields.mainStrategy] as String),
-      secondaryStrategy:
-          Strategy(title: json[TransactionFields.secondaryStrategy] as String),
-      timeFrame:
-          TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
-      profit: json[TransactionFields.profit] as double?,
-      comment: json[TransactionFields.comment] as String?,
-    );
+    TradingTransaction result;
+    try {
+      result = TradingTransaction(
+        id: json[TransactionFields.id] as int?,
+        transactionType: TransactionType.fromJson(
+            json[TransactionFields.transactionType] as String),
+        volume: json[TransactionFields.volume] as double,
+        currencyPair: CurrencyPair(
+            currencyPairTitle: json[TransactionFields.currencyPair] as String),
+        openDate: DateTime.parse(json[TransactionFields.openDate] as String),
+        //TODO При считывании с БД Ошибка "_typeError 'Null' is not a subtype of type 'String",
+        //если closeDate = null
+        //Работы приложения не прерывается
+        //Попытался обработать через try/catch - не выходит
+        closeDate:
+            DateTime.tryParse(json[TransactionFields.closeDate].toString()),
+        mainStrategy:
+            Strategy(title: json[TransactionFields.mainStrategy] as String),
+        secondaryStrategy: Strategy(
+            title: json[TransactionFields.secondaryStrategy] as String),
+        timeFrame:
+            TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
+        profit: json[TransactionFields.profit] as double?,
+        comment: json[TransactionFields.comment] as String?,
+      );
+    } on FormatException catch (e) {
+      log(e.toString());
+      result = TradingTransaction(
+        id: json[TransactionFields.id] as int?,
+        transactionType: TransactionType.fromJson(
+            json[TransactionFields.transactionType] as String),
+        volume: json[TransactionFields.volume] as double,
+        currencyPair: CurrencyPair(
+            currencyPairTitle: json[TransactionFields.currencyPair] as String),
+        openDate: DateTime.parse(json[TransactionFields.openDate] as String),
+        mainStrategy:
+            Strategy(title: json[TransactionFields.mainStrategy] as String),
+        secondaryStrategy: Strategy(
+            title: json[TransactionFields.secondaryStrategy] as String),
+        timeFrame:
+            TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
+        profit: json[TransactionFields.profit] as double?,
+        comment: json[TransactionFields.comment] as String?,
+      );
+    }
+    return result;
   }
 
   Map<String, Object?> toJson() => {

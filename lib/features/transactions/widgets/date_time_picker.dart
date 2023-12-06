@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +15,7 @@ class DateTimePickerWidget extends StatefulWidget {
   State<DateTimePickerWidget> createState() => _DateTimePickerWidgetState();
 }
 
+//TODO Изменить логику работы DatePicker'а в случае нажатия cancel
 class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
@@ -29,7 +28,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2030),
+      lastDate: DateTime.now(),
     );
     if (selected != null && selected != selectedDate) {
       setState(() {
@@ -46,11 +45,9 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     );
     if (selected != null && selected != selectedTime) {
       setState(() {
-        log('${selected.hour}:${selected.minute}');
         selectedTime = selected;
       });
     }
-    log(selectedTime.toString());
     return selectedTime;
   }
 

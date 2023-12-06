@@ -19,7 +19,6 @@ class DatabaseService {
         title TEXT NOT NULL,
         color INTEGER NOT NULL
       )''';
-//TODO подумать не сохранять ли mainStrategy и secondaryStrategy в виде id из таблицы Strategies?
   static const _createTransactionsTable = '''
     CREATE TABLE $transactionTable (
         _id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -154,7 +153,7 @@ class DatabaseService {
     final db = await instance.database;
     const orderBy = '${TransactionFields.id} ASC';
     final result = await db.query(transactionTable, orderBy: orderBy);
-
+    log(result.toString(), name: 'readAllTransactions');
     return result.map((json) => TradingTransaction.fromJson(json)).toList();
   }
 
@@ -172,11 +171,11 @@ class DatabaseService {
 
   Future<int> deleteTransaction({required int id}) async {
     final db = await instance.database;
-
-    return await db.delete(
+    final result = await db.delete(
       transactionTable,
       where: '${TransactionFields.id} = ?',
       whereArgs: [id],
     );
+    return result;
   }
 }

@@ -77,16 +77,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 BlocBuilder<TransactionBloc, TransactionState>(
                   builder: (context, state) {
                     if (state is TransactionInitialState) {
-                      log('state is TransactionInitialState');
+                      //log('state is TransactionInitialState');
                       context
                           .read<TransactionBloc>()
                           .add(const FetchTransactionsEvent());
                     }
                     if (state is DisplayTransactionsState) {
-                      log('state is DisplayTransactionState');
-                      log(state.transactions.isNotEmpty
-                          ? 'transactions are not Empty'
-                          : 'transactions are Empty');
+                      //log('state is DisplayTransactionState');
+                      // log(state.transactions.isNotEmpty
+                      //     ? 'transactions are not Empty'
+                      //     : 'transactions are Empty');
                       return SafeArea(
                           child: Container(
                         padding: const EdgeInsets.all(8.0),
@@ -104,13 +104,18 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                         shape: kRoundedRectangleTileShape,
                                         leading: Text(state.transactions[index]
                                             .currencyPair.currencyPairTitle),
-                                        trailing: Text(
-                                            '${state.transactions[index].profit.toString()}\$'),
+                                        trailing: Text(state.transactions[index]
+                                                    .profit !=
+                                                null
+                                            ? '${state.transactions[index].profit.toString()}\$'
+                                            : ''),
                                       ),
-                                      //TODO Почему-то иногда не удаляются транзакции. Посмотрю позже
                                       onLongPress: () {
+                                        log('onLongPress');
                                         transactionBloc.add(
-                                            DeleteTransactionEvent(id: index));
+                                            DeleteTransactionEvent(
+                                                id: state
+                                                    .transactions[index].id!));
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -120,6 +125,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                                 Text('Deleted Transaction'),
                                           ),
                                         );
+                                      },
+                                      onDoubleTap: () {
+                                        log(state.transactions.length
+                                            .toString());
+                                        for (var transaction
+                                            in state.transactions) {
+                                          log('id = ${transaction.id.toString()} currency = ${transaction.currencyPair.currencyPairTitle}');
+                                        }
                                       },
                                     ),
                                   );
