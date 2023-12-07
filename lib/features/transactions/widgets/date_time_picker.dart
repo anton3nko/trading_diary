@@ -22,62 +22,10 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   DateTime dateTime = DateTime.now();
   String? dateButtonText;
 
-  //TODO Изменить формат даты на dd:mm:yyyy в тектовом вводе showDatePicker
-  Future<DateTime> _selectDate(BuildContext context) async {
-    final selected = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (selected != null && selected != selectedDate) {
-      setState(() {
-        selectedDate = selected;
-      });
-    }
-    return selectedDate;
-  }
-
-  Future<TimeOfDay> _selectTime(BuildContext context) async {
-    final selected = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-    );
-    if (selected != null && selected != selectedTime) {
-      setState(() {
-        selectedTime = selected;
-      });
-    }
-    return selectedTime;
-  }
-
-  //TODO Вопрос - нормальное ли решение для сохранения openDate и closeDate
-  //с использованием TransactionDatesCubit и model->TransactionDates??
-  Future _selectDateTime(BuildContext context) async {
-    final date = await _selectDate(context);
-
-    //TODO Как правильно обработать этот Warning?
-    final time = await _selectTime(context);
-    final vm = BlocProvider.of<TransactionDatesCubit>(context);
-    setState(() {
-      dateTime = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        time.hour,
-        time.minute,
-      );
-    });
-    widget.isRequired ? vm.setOpenDate(dateTime) : vm.setCloseDate(dateTime);
-  }
-
-  String getDateTime() {
-    return DateFormat('dd-MM-yyyy HH:mm').format(dateTime);
-  }
-
   @override
   Widget build(BuildContext context) {
     String isRequiredSymbol = widget.isRequired ? '*' : '';
+    final vm = BlocProvider.of<TransactionDatesCubit>(context);
     return BlocBuilder<TransactionDatesCubit, TransactionDates>(
         builder: (context, state) {
       return Column(
@@ -92,7 +40,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
           ),
           TextButton(
             onPressed: () async {
-              await _selectDateTime(context);
+              await _selectDateTime(vm);
               setState(() {
                 dateButtonText = getDateTime();
               });
@@ -102,5 +50,59 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         ],
       );
     });
+  }
+
+  //TODO Изменить формат даты на dd:mm:yyyy в тектовом вводе showDatePicker
+  Future<DateTime> _selectDate() async {
+    final selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+      });
+    }
+    return selectedDate;
+  }
+
+  Future<TimeOfDay> _selectTime() async {
+    final selected = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (selected != null && selected != selectedTime) {
+      setState(() {
+        selectedTime = selected;
+      });
+    }
+    return selectedTime;
+  }
+
+  //TODO Вопрос - нормальное ли решение для сохранения openDate и closeDate
+  //с использованием TransactionDatesCubit и model->TransactionDates??
+  //Ответ: Нормальное, если тебя смущает, то можно ChangeNotifier использовать
+  Future _selectDateTime(TransactionDatesCubit vm) async {
+    final date = await _selectDate();
+
+    //TODO Как правильно обработать этот Warning?
+    // Ответ: Как-то так :) Если говорят избегать использования контекста, то избегай его.
+    final time = await _selectTime();
+    setState(() {
+      dateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      );
+    });
+    widget.isRequired ? vm.setOpenDate(dateTime) : vm.setCloseDate(dateTime);
+  }
+
+  String getDateTime() {
+    return DateFormat('dd-MM-yyyy HH:mm').format(dateTime);
   }
 }

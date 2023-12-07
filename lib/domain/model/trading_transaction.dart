@@ -120,7 +120,7 @@ class TradingTransaction {
         currencyPair: CurrencyPair(
             currencyPairTitle: json[TransactionFields.currencyPair] as String),
         openDate: DateTime.parse(json[TransactionFields.openDate] as String),
-        //TODO При считывании с БД Ошибка "_typeError 'Null' is not a subtype of type 'String",
+        // FIXME: При считывании с БД Ошибка "_typeError 'Null' is not a subtype of type 'String",
         //если closeDate = null
         //Работы приложения не прерывается
         //Попытался обработать через try/catch - не выходит

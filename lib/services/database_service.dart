@@ -7,7 +7,6 @@ import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
 
 //Класс для взаимодействия с БД
-//TODO Найти более лаконичное решение(не все методы взаимодействия с БД в этом классе)
 class DatabaseService {
   static const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static const textType = 'TEXT NOT NULL';

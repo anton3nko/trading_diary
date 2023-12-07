@@ -79,6 +79,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 //TODO Вопрос - не сильно ли нагруженный получился виджет?
+                /// Ответ: Немного есть такое, те же текстфилды и DropdownMenu можно вынести в отдельные виджеты или сделать parts внутри этого файла
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -204,6 +205,8 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 ),
                 //TODO BlocBuilder вложенный в BlocBuilder
                 //Вопрос - так можно?
+                // Ответ: да, можно, вложенные BlocBuilder'ы это ок
+                //надо только обращать внимание на то, когда изменяются стейты у каждого из соответствующих блоков и ребилдятся твои виджеты
                 BlocBuilder<TransactionDatesCubit, TransactionDates>(
                     builder: (context, state) {
                   return BlocBuilder<TransactionBloc, TransactionState>(
@@ -232,20 +235,22 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                 double.tryParse(_profitFieldController.text);
                             final comment = _commentFieldController.text;
 
-                            BlocProvider.of<TransactionBloc>(context).add(
-                              AddTransactionEvent(
-                                transactionType: buyOrSell,
-                                volume: volume,
-                                currencyPair: currency,
-                                openDate: dates.openDate,
-                                closeDate: dates.closeDate,
-                                mainStrategy: mainStrat,
-                                secondaryStrategy: secStrat,
-                                timeFrame: timeFrame,
-                                profit: profit,
-                                comment: comment,
-                              ),
-                            );
+                            /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
+                            context.read<TransactionBloc>().add(
+                                  AddTransactionEvent(
+                                    transactionType: buyOrSell,
+                                    volume: volume,
+                                    currencyPair: currency,
+                                    openDate: dates.openDate,
+                                    closeDate: dates.closeDate,
+                                    mainStrategy: mainStrat,
+                                    secondaryStrategy: secStrat,
+                                    timeFrame: timeFrame,
+                                    profit: profit,
+                                    comment: comment,
+                                  ),
+                                );
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(seconds: 1),
