@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -19,8 +21,13 @@ class DateTimePickerWidget extends StatefulWidget {
 class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
-  DateTime dateTime = DateTime.now();
+  DateTime? dateTime;
   String? dateButtonText;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +48,11 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
           TextButton(
             onPressed: () async {
               await _selectDateTime(vm);
-              setState(() {
-                dateButtonText = getDateTime();
-              });
+              if (dateTime != null) {
+                setState(() {
+                  dateButtonText = getDateTime();
+                });
+              }
             },
             child: Text(dateButtonText ?? widget.initialButtonText),
           ),
@@ -53,7 +62,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   }
 
   //TODO Изменить формат даты на dd:mm:yyyy в тектовом вводе showDatePicker
-  Future<DateTime> _selectDate() async {
+  Future<DateTime?> _selectDate() async {
     final selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -65,10 +74,10 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         selectedDate = selected;
       });
     }
-    return selectedDate;
+    return selected;
   }
 
-  Future<TimeOfDay> _selectTime() async {
+  Future<TimeOfDay?> _selectTime() async {
     final selected = await showTimePicker(
       context: context,
       initialTime: selectedTime,
@@ -78,31 +87,33 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         selectedTime = selected;
       });
     }
-    return selectedTime;
+    return selected;
   }
 
-  //TODO Вопрос - нормальное ли решение для сохранения openDate и closeDate
-  //с использованием TransactionDatesCubit и model->TransactionDates??
   //Ответ: Нормальное, если тебя смущает, то можно ChangeNotifier использовать
   Future _selectDateTime(TransactionDatesCubit vm) async {
     final date = await _selectDate();
-
-    //TODO Как правильно обработать этот Warning?
-    // Ответ: Как-то так :) Если говорят избегать использования контекста, то избегай его.
-    final time = await _selectTime();
-    setState(() {
-      dateTime = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        time.hour,
-        time.minute,
-      );
-    });
-    widget.isRequired ? vm.setOpenDate(dateTime) : vm.setCloseDate(dateTime);
+    if (date != null) {
+      final time = await _selectTime();
+      if (time != null) {
+        setState(() {
+          dateTime = DateTime(
+            date.year,
+            date.month,
+            date.day,
+            time.hour,
+            time.minute,
+          );
+        });
+        widget.isRequired
+            ? vm.setOpenDate(dateTime!)
+            : vm.setCloseDate(dateTime);
+      }
+    }
   }
 
   String getDateTime() {
-    return DateFormat('dd-MM-yyyy HH:mm').format(dateTime);
+    //log(dateTime!.toString());
+    return DateFormat('dd-MM-yyyy HH:mm').format(dateTime!);
   }
 }

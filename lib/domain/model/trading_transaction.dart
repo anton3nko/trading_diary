@@ -109,6 +109,8 @@ class TradingTransaction {
       );
 
   static TradingTransaction fromJson(Map<String, dynamic> json) {
+    log('closeDate from DB = ${json[TransactionFields.closeDate].toString()}',
+        name: 'closeDate');
     log('TradingTransaction.fromJson');
     TradingTransaction result;
     try {
@@ -122,10 +124,11 @@ class TradingTransaction {
         openDate: DateTime.parse(json[TransactionFields.openDate] as String),
         // FIXME: При считывании с БД Ошибка "_typeError 'Null' is not a subtype of type 'String",
         //если closeDate = null
-        //Работы приложения не прерывается
+        //Работа приложения не прерывается
         //Попытался обработать через try/catch - не выходит
-        closeDate:
-            DateTime.tryParse(json[TransactionFields.closeDate].toString()),
+        closeDate: json[TransactionFields.closeDate].toString() == 'null'
+            ? null
+            : DateTime.parse(json[TransactionFields.closeDate].toString()),
         mainStrategy:
             Strategy(title: json[TransactionFields.mainStrategy] as String),
         secondaryStrategy: Strategy(

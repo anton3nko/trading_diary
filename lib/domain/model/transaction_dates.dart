@@ -1,6 +1,11 @@
 class TransactionDates {
-  DateTime openDate;
+  DateTime? openDate;
   DateTime? closeDate;
 
-  TransactionDates({required this.openDate, this.closeDate});
+  TransactionDates({this.openDate, this.closeDate});
+
+  void resetDates() {
+    openDate = null;
+    closeDate = null;
+  }
 }

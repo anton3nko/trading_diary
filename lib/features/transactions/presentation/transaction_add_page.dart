@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,8 @@ import 'package:trading_diary/features/transactions/bloc/transaction_dates_cubit
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/widgets/date_time_picker.dart';
 import 'package:trading_diary/features/transactions/widgets/strategy_drop_down_menu.dart';
+
+part 'package:trading_diary/features/transactions/widgets/transaction_add_page_widgets.dart';
 
 class TransactionAddPage extends StatefulWidget {
   static const String id = 'transaction_add_page';
@@ -78,68 +82,34 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                //TODO Вопрос - не сильно ли нагруженный получился виджет?
-                /// Ответ: Немного есть такое, те же текстфилды и DropdownMenu можно вынести в отдельные виджеты или сделать parts внутри этого файла
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    DropdownMenu<TransactionType>(
-                      hintText: '*Buy/Sell',
-                      label: const Text('*Buy/Sell'),
-                      controller: _typeFieldController,
-                      initialSelection: TransactionType.buy,
-                      dropdownMenuEntries: const [
-                        DropdownMenuEntry<TransactionType>(
-                            value: TransactionType.buy, label: 'Buy'),
-                        DropdownMenuEntry<TransactionType>(
-                            value: TransactionType.sell, label: 'Sell'),
-                      ],
+                    TrTypeDropdownMenu(
+                      typeFieldController: _typeFieldController,
                     ),
-                    DropdownMenu<CurrencyPair>(
-                      initialSelection: currencies.first,
-                      controller: _currencyFieldController,
-                      label: const Text('*Currency'),
-                      dropdownMenuEntries: currencies
-                          .map<DropdownMenuEntry<CurrencyPair>>(
-                              (CurrencyPair currency) =>
-                                  DropdownMenuEntry<CurrencyPair>(
-                                      value: currency,
-                                      label: currency.currencyPairTitle))
-                          .toList(),
+                    TrCurrencyDropdownMenu(
+                      currencies: currencies,
+                      currencyFieldController: _currencyFieldController,
                     ),
                   ],
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                DropdownMenu<TimeFrame>(
-                  initialSelection: TimeFrame.m1,
-                  controller: _timeFrameController,
-                  label: const Text('*TimeFrame'),
-                  dropdownMenuEntries: TimeFrame.values
-                      .map((TimeFrame timeFrame) =>
-                          DropdownMenuEntry<TimeFrame>(
-                              value: timeFrame, label: timeFrame.name))
-                      .toList(),
+                TrTimeFrameDropdownMenu(
+                  timeFrameController: _timeFrameController,
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                TextField(
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*'))
-                  ],
-                  controller: _volumeFieldController,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                    signed: false,
-                  ),
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Number of lots',
-                    label: const Text('*Volume'),
-                    labelStyle: kTextFieldLabelStyle,
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
+                NumericTextField(
+                  numericFieldController: _volumeFieldController,
+                  inputFormatters: kDoubleNoSignedFormat,
+                  isSigned: false,
+                  hintText: 'Number of lots',
+                  label: 'Volume',
+                  isRequired: true,
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -173,37 +143,20 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                TextField(
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^\-?(\d+\.?\d*)?'))
-                  ],
-                  controller: _profitFieldController,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                    signed: true,
-                  ),
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Profit',
-                    label: const Text('Profit'),
-                    labelStyle: kTextFieldLabelStyle,
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
+                NumericTextField(
+                  numericFieldController: _profitFieldController,
+                  inputFormatters: kDoubleSignedFormat,
+                  isSigned: true,
+                  hintText: 'Profit',
+                  label: 'Profit',
+                  isRequired: false,
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                TextField(
-                  controller: _commentFieldController,
-                  keyboardType: TextInputType.multiline,
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Comment',
-                    label: const Text('Comment'),
-                    labelStyle: kTextFieldLabelStyle,
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
+                MultilineCommentTextField(
+                  commentFieldController: _commentFieldController,
                 ),
-                //TODO BlocBuilder вложенный в BlocBuilder
                 //Вопрос - так можно?
                 // Ответ: да, можно, вложенные BlocBuilder'ы это ок
                 //надо только обращать внимание на то, когда изменяются стейты у каждого из соответствующих блоков и ребилдятся твои виджеты
@@ -213,11 +166,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                       builder: (context, state) {
                     return ElevatedButton(
                         onPressed: () {
-                          final dates =
-                              BlocProvider.of<TransactionDatesCubit>(context)
-                                  .dates;
+                          final transactionDatesCubit =
+                              BlocProvider.of<TransactionDatesCubit>(context);
                           if (_volumeFieldController.text.isNotEmpty &&
-                              dates.openDate.year != 1970) {
+                              transactionDatesCubit.dates.openDate != null) {
                             final buyOrSell = TransactionType.fromJson(
                                 _typeFieldController.text.toLowerCase());
                             final currency = CurrencyPair(
@@ -234,6 +186,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                             final profit =
                                 double.tryParse(_profitFieldController.text);
                             final comment = _commentFieldController.text;
+                            log('new openDate = ${transactionDatesCubit.dates.openDate.toString()}');
 
                             /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
                             context.read<TransactionBloc>().add(
@@ -241,8 +194,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     transactionType: buyOrSell,
                                     volume: volume,
                                     currencyPair: currency,
-                                    openDate: dates.openDate,
-                                    closeDate: dates.closeDate,
+                                    openDate:
+                                        transactionDatesCubit.dates.openDate!,
+                                    closeDate:
+                                        transactionDatesCubit.dates.closeDate,
                                     mainStrategy: mainStrat,
                                     secondaryStrategy: secStrat,
                                     timeFrame: timeFrame,
@@ -250,7 +205,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     comment: comment,
                                   ),
                                 );
-
+                            transactionDatesCubit.resetDates();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(seconds: 1),
@@ -263,11 +218,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                             Navigator.pop(context);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('*Please fill required fileds'
+                                content: Text('*Please fill required fields'
                                     .toUpperCase())));
                           }
-
-                          //log('$buyOrSell $currency $volume ${dates.openDate} ${dates.closeDate} $mainStrat $secStrat $profit $comment');
                         },
                         child: const Text('Add Transaction'));
                   });

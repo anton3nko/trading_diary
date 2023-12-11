@@ -140,7 +140,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             : const Text(''),
                       ));
                     }
-                    return const SizedBox.shrink();
+                    return const Center(
+                      child: SizedBox(
+                        height: 250,
+                        width: 250,
+                        child: Text(
+                          'Loading Data From The Database...',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
                   },
                 )
               ],

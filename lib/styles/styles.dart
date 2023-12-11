@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 const kYellowColor = Color(0xFFffed18);
 const kBlackColor = Color(0xFF000000);
@@ -33,3 +34,12 @@ const kTextFieldLabelStyle = TextStyle(
   fontSize: 14.0,
   fontWeight: FontWeight.bold,
 );
+
+//TODO Вопрос. Нельзя обозначить как const. Можно так сохранять подобные вещи?
+List<TextInputFormatter> kDoubleNoSignedFormat = <TextInputFormatter>[
+  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
+];
+
+List<TextInputFormatter> kDoubleSignedFormat = <TextInputFormatter>[
+  FilteringTextInputFormatter.allow(RegExp(r'^\-?(\d+\.?\d*)?'))
+];

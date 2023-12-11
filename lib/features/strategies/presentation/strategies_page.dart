@@ -82,14 +82,14 @@ class _StrategiesPageState extends State<StrategiesPage> {
                   : const Text(''),
             ));
           }
-
-          /// TODO: Лучше не оставляй просто так индикатор загрузки,
-          /// а покажи какой-нибудь текст или плейсхолдер, а то создается ощущение, что приложение зависло
           return const Center(
             child: SizedBox(
               height: 250,
               width: 250,
-              child: Placeholder(),
+              child: Text(
+                'Loading Data From The Database...',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           );
         },
