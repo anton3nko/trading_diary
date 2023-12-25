@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:trading_diary/data/repo/transactions_repo.dart';
 import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
@@ -40,6 +41,18 @@ class DashboardPage extends StatelessWidget {
                     fontSize: 30,
                     fontWeight: FontWeight.w400,
                   ),
+                ),
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              //For test purposes
+              IconButton(
+                onPressed: () async {
+                  //await TransactionsRepo.instance.calculateTopStrategies();
+                },
+                icon: const Icon(
+                  Icons.refresh,
                 ),
               ),
               const SizedBox(

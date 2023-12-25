@@ -74,3 +74,11 @@ class DeleteTransactionEvent extends TransactionEvent {
   @override
   List<Object?> get props => [id];
 }
+
+class CalculateTopStrategiesEvent extends TransactionEvent {
+  final List<Strategy> topStrategies;
+  const CalculateTopStrategiesEvent({required this.topStrategies});
+
+  @override
+  List<Object?> get props => [topStrategies];
+}

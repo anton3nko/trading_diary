@@ -7,6 +7,8 @@ import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+//import 'package:trading_diary/data/repo/transactions_repo.dart';
+
 class TransactionsPage extends StatefulWidget {
   static const String id = 'transactions_page';
   const TransactionsPage({super.key});
@@ -30,7 +32,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
           color: kBlackColor,
         ),
         onPressed: () {
-          //addFakeTransaction('USDCAD');
           Navigator.pushNamed(context, TransactionAddPage.id);
         },
       ),
@@ -83,10 +84,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           .add(const FetchTransactionsEvent());
                     }
                     if (state is DisplayTransactionsState) {
-                      //log('state is DisplayTransactionState');
-                      // log(state.transactions.isNotEmpty
-                      //     ? 'transactions are not Empty'
-                      //     : 'transactions are Empty');
                       return SafeArea(
                           child: Container(
                         padding: const EdgeInsets.all(8.0),
@@ -140,6 +137,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             : const Text(''),
                       ));
                     }
+                    //FIXME Отображается "Loading Data From The Database
+                    //При нажатии на кнопку "Back" в окне добавления транзакции
                     return const Center(
                       child: SizedBox(
                         height: 250,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
 
@@ -109,55 +107,28 @@ class TradingTransaction {
       );
 
   static TradingTransaction fromJson(Map<String, dynamic> json) {
-    log('closeDate from DB = ${json[TransactionFields.closeDate].toString()}',
-        name: 'closeDate');
-    log('TradingTransaction.fromJson');
     TradingTransaction result;
-    try {
-      result = TradingTransaction(
-        id: json[TransactionFields.id] as int?,
-        transactionType: TransactionType.fromJson(
-            json[TransactionFields.transactionType] as String),
-        volume: json[TransactionFields.volume] as double,
-        currencyPair: CurrencyPair(
-            currencyPairTitle: json[TransactionFields.currencyPair] as String),
-        openDate: DateTime.parse(json[TransactionFields.openDate] as String),
-        // FIXME: При считывании с БД Ошибка "_typeError 'Null' is not a subtype of type 'String",
-        //если closeDate = null
-        //Работа приложения не прерывается
-        //Попытался обработать через try/catch - не выходит
-        closeDate: json[TransactionFields.closeDate].toString() == 'null'
-            ? null
-            : DateTime.parse(json[TransactionFields.closeDate].toString()),
-        mainStrategy:
-            Strategy(title: json[TransactionFields.mainStrategy] as String),
-        secondaryStrategy: Strategy(
-            title: json[TransactionFields.secondaryStrategy] as String),
-        timeFrame:
-            TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
-        profit: json[TransactionFields.profit] as double?,
-        comment: json[TransactionFields.comment] as String?,
-      );
-    } on FormatException catch (e) {
-      log(e.toString());
-      result = TradingTransaction(
-        id: json[TransactionFields.id] as int?,
-        transactionType: TransactionType.fromJson(
-            json[TransactionFields.transactionType] as String),
-        volume: json[TransactionFields.volume] as double,
-        currencyPair: CurrencyPair(
-            currencyPairTitle: json[TransactionFields.currencyPair] as String),
-        openDate: DateTime.parse(json[TransactionFields.openDate] as String),
-        mainStrategy:
-            Strategy(title: json[TransactionFields.mainStrategy] as String),
-        secondaryStrategy: Strategy(
-            title: json[TransactionFields.secondaryStrategy] as String),
-        timeFrame:
-            TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
-        profit: json[TransactionFields.profit] as double?,
-        comment: json[TransactionFields.comment] as String?,
-      );
-    }
+    result = TradingTransaction(
+      id: json[TransactionFields.id] as int?,
+      transactionType: TransactionType.fromJson(
+          json[TransactionFields.transactionType] as String),
+      volume: json[TransactionFields.volume] as double,
+      currencyPair: CurrencyPair(
+          currencyPairTitle: json[TransactionFields.currencyPair] as String),
+      openDate: DateTime.parse(json[TransactionFields.openDate] as String),
+      closeDate: json[TransactionFields.closeDate].toString() == 'null'
+          ? null
+          : DateTime.parse(json[TransactionFields.closeDate].toString()),
+      mainStrategy:
+          Strategy(title: json[TransactionFields.mainStrategy] as String),
+      secondaryStrategy:
+          Strategy(title: json[TransactionFields.secondaryStrategy] as String),
+      timeFrame:
+          TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
+      profit: json[TransactionFields.profit] as double?,
+      comment: json[TransactionFields.comment] as String?,
+    );
+
     return result;
   }
 

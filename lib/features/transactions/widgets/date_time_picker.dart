@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +15,6 @@ class DateTimePickerWidget extends StatefulWidget {
   State<DateTimePickerWidget> createState() => _DateTimePickerWidgetState();
 }
 
-//TODO Изменить логику работы DatePicker'а в случае нажатия cancel
 class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:trading_diary/domain/model/transaction_dates.dart';
 
+//TODO Исправить на Cubit<NewTransaction>,
+//чтобы можно было сохранить там объект Strategy
 class TransactionDatesCubit extends Cubit<TransactionDates> {
   TransactionDates transactionDates = TransactionDates();
 

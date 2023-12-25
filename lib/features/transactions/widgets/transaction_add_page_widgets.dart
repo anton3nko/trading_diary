@@ -1,6 +1,7 @@
 part of 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 
 //Customizable Numeric TextField for Transaction Add Page
+//FIXME Перестали вводится отрицательные числа в Profit field
 class NumericTextField extends StatelessWidget {
   const NumericTextField({
     super.key,
@@ -40,6 +41,9 @@ class NumericTextField extends StatelessWidget {
         labelStyle: kTextFieldLabelStyle,
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
+      onChanged: (value) {
+        log(value);
+      },
     );
   }
 }

@@ -105,7 +105,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 ),
                 NumericTextField(
                   numericFieldController: _volumeFieldController,
-                  inputFormatters: kDoubleNoSignedFormat,
+                  inputFormatters: kDoubleUnsignedFormat,
                   isSigned: false,
                   hintText: 'Number of lots',
                   label: 'Volume',
@@ -177,8 +177,12 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     _currencyFieldController.text);
                             final volume =
                                 double.parse(_volumeFieldController.text);
+                            //TODO добавить id(из базы) стратегии
                             final mainStrat =
                                 Strategy(title: _mainStrategyController.text);
+                            log((_mainStrategyController.value as Strategy)
+                                .id
+                                .toString());
                             final secStrat =
                                 Strategy(title: _secStrategyController.text);
                             final timeFrame = TimeFrame.values

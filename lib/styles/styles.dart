@@ -36,7 +36,7 @@ const kTextFieldLabelStyle = TextStyle(
 );
 
 //TODO Вопрос. Нельзя обозначить как const. Можно так сохранять подобные вещи?
-List<TextInputFormatter> kDoubleNoSignedFormat = <TextInputFormatter>[
+List<TextInputFormatter> kDoubleUnsignedFormat = <TextInputFormatter>[
   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
 ];
 

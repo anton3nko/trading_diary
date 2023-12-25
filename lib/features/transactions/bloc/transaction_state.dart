@@ -24,3 +24,12 @@ class DisplaySpecificTransactionState extends TransactionState {
   @override
   List<Object> get props => [transaction];
 }
+
+class DisplayTopStrategiesState extends TransactionState {
+  final List<Strategy> topStrategies;
+
+  const DisplayTopStrategiesState({required this.topStrategies});
+
+  @override
+  List<Object?> get props => [topStrategies];
+}

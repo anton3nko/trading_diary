@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
-import 'package:trading_diary/services/database_service.dart';
+import 'package:trading_diary/data/repo/transactions_repo.dart';
 
 part 'transaction_event.dart';
 part 'transaction_state.dart';
@@ -14,7 +14,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
     on<AddTransactionEvent>(
       (event, emit) async {
-        await DatabaseService.instance.createTransaction(
+        await TransactionsRepo.instance.createTransaction(
           TradingTransaction(
               transactionType: event.transactionType,
               volume: event.volume,
@@ -31,28 +31,39 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     );
     on<UpdateTransactionEvent>(
       (event, emit) async {
-        await DatabaseService.instance
+        await TransactionsRepo.instance
             .updateTransaction(transaction: event.transaction);
       },
     );
     on<FetchTransactionsEvent>(
       (event, emit) async {
-        transactions = await DatabaseService.instance.readAllTransactions();
+        transactions = await TransactionsRepo.instance.readAllTransactions();
         emit(DisplayTransactionsState(transactions: transactions));
       },
     );
     on<FetchSpecificTransactionEvent>(
       (event, emit) async {
         TradingTransaction transaction =
-            await DatabaseService.instance.readTransaction(id: event.id);
+            await TransactionsRepo.instance.readTransaction(id: event.id);
         emit(DisplaySpecificTransactionState(transaction: transaction));
       },
     );
     on<DeleteTransactionEvent>(
       (event, emit) async {
-        await DatabaseService.instance.deleteTransaction(id: event.id);
+        await TransactionsRepo.instance.deleteTransaction(id: event.id);
         add(const FetchTransactionsEvent());
       },
     );
+    // on<CalculateTopStrategiesEvent>(
+    //   (event, emit) async {
+    //     // for (Strategy strategy in event.strategies){
+    //     //   for (TradingTransaction transaction in transactions){
+    //     //     if(transaction.mainStrategy)
+    //     //   }
+    //     // }
+    //     await TransactionsRepo.instance.calculateTopStrategies();
+    //     emit(DisplayTopStrategiesState(topStrategies: event.topStrategies));
+    //   },
+    // );
   }
 }
