@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:trading_diary/features/transactions/bloc/transaction_dates_cubit.dart';
-import 'package:trading_diary/domain/model/transaction_dates.dart';
+import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
+import 'package:trading_diary/domain/model/new_transaction.dart';
 
 class DateTimePickerWidget extends StatefulWidget {
   final String initialButtonText;
@@ -29,8 +29,8 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   @override
   Widget build(BuildContext context) {
     String isRequiredSymbol = widget.isRequired ? '*' : '';
-    final vm = BlocProvider.of<TransactionDatesCubit>(context);
-    return BlocBuilder<TransactionDatesCubit, TransactionDates>(
+    final vm = BlocProvider.of<NewTransactionCubit>(context);
+    return BlocBuilder<NewTransactionCubit, NewTransaction>(
         builder: (context, state) {
       return Column(
         children: [
@@ -58,7 +58,6 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
     });
   }
 
-  //TODO Изменить формат даты на dd:mm:yyyy в тектовом вводе showDatePicker
   Future<DateTime?> _selectDate() async {
     final selected = await showDatePicker(
       context: context,
@@ -88,7 +87,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   }
 
   //Ответ: Нормальное, если тебя смущает, то можно ChangeNotifier использовать
-  Future _selectDateTime(TransactionDatesCubit vm) async {
+  Future _selectDateTime(NewTransactionCubit vm) async {
     final date = await _selectDate();
     if (date != null) {
       final time = await _selectTime();

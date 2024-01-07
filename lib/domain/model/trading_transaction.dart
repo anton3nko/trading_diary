@@ -12,7 +12,9 @@ class TransactionFields {
     openDate,
     closeDate,
     mainStrategy,
+    mainStrategyId,
     secondaryStrategy,
+    secondaryStrategyId,
     timeFrame,
     profit,
     comment,
@@ -25,7 +27,9 @@ class TransactionFields {
   static const String openDate = 'openDate';
   static const String closeDate = 'closeDate';
   static const String mainStrategy = 'mainStrategy';
+  static const String mainStrategyId = 'mainStrategyId';
   static const String secondaryStrategy = 'secondaryStrategy';
+  static const String secondaryStrategyId = 'secondaryStrategyId';
   static const String timeFrame = 'timeFrame';
   static const String profit = 'profit';
   static const String comment = 'comment';
@@ -119,10 +123,12 @@ class TradingTransaction {
       closeDate: json[TransactionFields.closeDate].toString() == 'null'
           ? null
           : DateTime.parse(json[TransactionFields.closeDate].toString()),
-      mainStrategy:
-          Strategy(title: json[TransactionFields.mainStrategy] as String),
-      secondaryStrategy:
-          Strategy(title: json[TransactionFields.secondaryStrategy] as String),
+      mainStrategy: Strategy(
+          id: json[TransactionFields.mainStrategyId],
+          title: json[TransactionFields.mainStrategy] as String),
+      secondaryStrategy: Strategy(
+          id: json[TransactionFields.secondaryStrategyId],
+          title: json[TransactionFields.secondaryStrategy] as String),
       timeFrame:
           TimeFrame.fromJson(json[TransactionFields.timeFrame] as String),
       profit: json[TransactionFields.profit] as double?,
@@ -137,10 +143,12 @@ class TradingTransaction {
         TransactionFields.transactionType: transactionType.toJson(),
         TransactionFields.volume: volume,
         TransactionFields.currencyPair: currencyPair.currencyPairTitle,
-        TransactionFields.openDate: openDate.toIso8601String(),
-        TransactionFields.closeDate: closeDate?.toIso8601String(),
+        TransactionFields.openDate: openDate.toString(),
+        TransactionFields.closeDate: closeDate?.toString(),
         TransactionFields.mainStrategy: mainStrategy.title,
+        TransactionFields.mainStrategyId: mainStrategy.id,
         TransactionFields.secondaryStrategy: secondaryStrategy.title,
+        TransactionFields.secondaryStrategyId: secondaryStrategy.id,
         TransactionFields.timeFrame: timeFrame.toJson(),
         TransactionFields.profit: profit,
         TransactionFields.comment: comment,

@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
-import 'package:trading_diary/domain/model/transaction_dates.dart';
+import 'package:trading_diary/domain/model/new_transaction.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
-import 'package:trading_diary/features/transactions/bloc/transaction_dates_cubit.dart';
+import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/widgets/date_time_picker.dart';
 import 'package:trading_diary/features/transactions/widgets/strategy_drop_down_menu.dart';
@@ -160,16 +160,17 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 //Вопрос - так можно?
                 // Ответ: да, можно, вложенные BlocBuilder'ы это ок
                 //надо только обращать внимание на то, когда изменяются стейты у каждого из соответствующих блоков и ребилдятся твои виджеты
-                BlocBuilder<TransactionDatesCubit, TransactionDates>(
+                BlocBuilder<NewTransactionCubit, NewTransaction>(
                     builder: (context, state) {
                   return BlocBuilder<TransactionBloc, TransactionState>(
                       builder: (context, state) {
                     return ElevatedButton(
                         onPressed: () {
-                          final transactionDatesCubit =
-                              BlocProvider.of<TransactionDatesCubit>(context);
+                          final newTransactionCubit =
+                              BlocProvider.of<NewTransactionCubit>(context);
                           if (_volumeFieldController.text.isNotEmpty &&
-                              transactionDatesCubit.dates.openDate != null) {
+                              newTransactionCubit.newTransaction.openDate !=
+                                  null) {
                             final buyOrSell = TransactionType.fromJson(
                                 _typeFieldController.text.toLowerCase());
                             final currency = CurrencyPair(
@@ -177,20 +178,17 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     _currencyFieldController.text);
                             final volume =
                                 double.parse(_volumeFieldController.text);
-                            //TODO добавить id(из базы) стратегии
-                            final mainStrat =
-                                Strategy(title: _mainStrategyController.text);
-                            log((_mainStrategyController.value as Strategy)
-                                .id
-                                .toString());
-                            final secStrat =
-                                Strategy(title: _secStrategyController.text);
+                            final mainStrat = newTransactionCubit
+                                    .newTransaction.mainStrategy ??
+                                Strategy(id: 1, title: 'None');
+                            final secStrat = newTransactionCubit
+                                    .newTransaction.secondaryStrategy ??
+                                Strategy(id: 1, title: 'None');
                             final timeFrame = TimeFrame.values
                                 .byName(_timeFrameController.text);
                             final profit =
                                 double.tryParse(_profitFieldController.text);
                             final comment = _commentFieldController.text;
-                            log('new openDate = ${transactionDatesCubit.dates.openDate.toString()}');
 
                             /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
                             context.read<TransactionBloc>().add(
@@ -198,10 +196,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     transactionType: buyOrSell,
                                     volume: volume,
                                     currencyPair: currency,
-                                    openDate:
-                                        transactionDatesCubit.dates.openDate!,
-                                    closeDate:
-                                        transactionDatesCubit.dates.closeDate,
+                                    openDate: newTransactionCubit
+                                        .newTransaction.openDate!,
+                                    closeDate: newTransactionCubit
+                                        .newTransaction.closeDate,
                                     mainStrategy: mainStrat,
                                     secondaryStrategy: secStrat,
                                     timeFrame: timeFrame,
@@ -209,7 +207,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     comment: comment,
                                   ),
                                 );
-                            transactionDatesCubit.resetDates();
+                            newTransactionCubit.resetNewTransaction();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(seconds: 1),

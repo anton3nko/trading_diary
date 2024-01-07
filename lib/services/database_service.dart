@@ -8,6 +8,8 @@ import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
 
 //Базовый класс взаимодействия с БД
+//Перенёс CRUD-методы Transactions->transactions_repo.dart
+//Strategy->strategies_repo.dart
 class DatabaseService {
   static const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static const textType = 'TEXT NOT NULL';
@@ -28,7 +30,9 @@ class DatabaseService {
         openDate TEXT NOT NULL,
         closeDate TEXT,
         mainStrategy TEXT NOT NULL,
+        mainStrategyId INTEGER NOT NULL,
         secondaryStrategy TEXT NOT NULL,
+        secondaryStrategyId INTEGER NOT NULL,
         timeFrame TEXT NOT NULL,
         profit REAL,
         comment TEXT

@@ -4,6 +4,9 @@ sealed class StrategyState extends Equatable {
   const StrategyState();
 }
 
+//TODO Вопрос, как в InitialState'е вызвать обработчик FetchAllStrategiesEvent'a
+//для того, чтобы считать с БД дефолтную стратегию "None" и сохранить её
+//в StrategyBloc.strategies;
 class StrategyInitialState extends StrategyState {
   @override
   List<Object> get props => [];

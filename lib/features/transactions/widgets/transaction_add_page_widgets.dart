@@ -2,6 +2,8 @@ part of 'package:trading_diary/features/transactions/presentation/transaction_ad
 
 //Customizable Numeric TextField for Transaction Add Page
 //FIXME Перестали вводится отрицательные числа в Profit field
+//Copy-paste отрицательных чисел работает,
+//не вводится знак минуса с клавиатуры телефона.
 class NumericTextField extends StatelessWidget {
   const NumericTextField({
     super.key,

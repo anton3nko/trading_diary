@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-//import 'package:trading_diary/data/repo/transactions_repo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
 import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
+
+import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -47,14 +49,20 @@ class DashboardPage extends StatelessWidget {
                 height: 5.0,
               ),
               //For test purposes
-              IconButton(
-                onPressed: () async {
-                  //await TransactionsRepo.instance.calculateTopStrategies();
-                },
-                icon: const Icon(
-                  Icons.refresh,
-                ),
-              ),
+              BlocBuilder<TransactionBloc, TransactionState>(
+                  builder: (context, state) {
+                return IconButton(
+                  onPressed: () async {
+                    //await TransactionsRepo.instance.calculateTopStrategies();
+                    context
+                        .read<TransactionBloc>()
+                        .add(const CalculateTopStrategiesEvent());
+                  },
+                  icon: const Icon(
+                    Icons.refresh,
+                  ),
+                );
+              }),
               const SizedBox(
                 height: 32.0,
               ),
@@ -81,41 +89,67 @@ class DashboardPage extends StatelessWidget {
               ),
               NestedTabBar(
                 tabs: [
-                  Column(
-                    children: [
-                      CustomTile(
-                        title: 'MACD-CCI',
-                        onTap: () => 'onTap',
-                        tileColor: Colors.red.shade500,
-                      ),
-                      CustomTile(
-                        title: 'Trend Channel',
-                        onTap: () => 'onTap',
-                        tileColor: Colors.amber.shade300,
-                      ),
-                      CustomTile(
-                        title: 'MACD-CCI',
-                        onTap: () => 'onTap',
-                        tileColor: Colors.greenAccent,
-                      ),
-                    ],
-                  ),
-                  Column(
+                  BlocBuilder<TransactionBloc, TransactionState>(
+                      builder: (context, state) {
+                    if (state is DisplayTopStrategiesState) {
+                      final topStrategiesData = state.topStrategiesData;
+                      return ListView.builder(
+                        itemCount: topStrategiesData.length,
+                        itemBuilder: (context, index) {
+                          return CustomTile(
+                            title: topStrategiesData[index]['title'],
+                            tileColor: Color(topStrategiesData[index]['color'])
+                                .withOpacity(1),
+                            profitableCount: topStrategiesData[index]
+                                    ['profitable']
+                                .toString(),
+                            totalCount: topStrategiesData[index]['total_count']
+                                .toString(),
+                            totalProfit:
+                                topStrategiesData[index]['profit'].toString(),
+                          );
+                        },
+                      );
+                    } else {
+                      return const Text('Waiting For New Transactions...');
+                    }
+                  }),
+                  // Column(
+                  //   children: [
+                  //     CustomTile(
+                  //       title: 'MACD-CCI',
+                  //       onTap: () => 'onTap',
+                  //       tileColor: Colors.red.shade500,
+                  //     ),
+                  //     CustomTile(
+                  //       title: 'Trend Channel',
+                  //       onTap: () => 'onTap',
+                  //       tileColor: Colors.amber.shade300,
+                  //     ),
+                  //     CustomTile(
+                  //       title: 'MACD-CCI',
+                  //       onTap: () => 'onTap',
+                  //       tileColor: Colors.greenAccent,
+                  //     ),
+                  //   ],
+                  // ),
+                  const Column(
                     children: [
                       CustomTile(
                         title: 'GPBUSD',
-                        onTap: () => 'onTap',
+                        //onTap: () => 'onTap',
                         tileColor: Colors.pink,
+                        profitableCount: '10',
+                        totalCount: '11',
+                        totalProfit: '12.3',
                       ),
                       CustomTile(
                         title: 'NZDUSD',
-                        onTap: () => 'onTap',
-                        tileColor: Colors.deepPurple,
-                      ),
-                      CustomTile(
-                        title: 'GBPJPY',
-                        onTap: () => 'onTap',
-                        tileColor: Colors.yellowAccent,
+                        //onTap: () => 'onTap',
+                        tileColor: Colors.green,
+                        profitableCount: '10',
+                        totalCount: '11',
+                        totalProfit: '12.3',
                       ),
                     ],
                   ),

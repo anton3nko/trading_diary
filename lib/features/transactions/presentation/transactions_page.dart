@@ -99,8 +99,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                     child: GestureDetector(
                                       child: ListTile(
                                         shape: kRoundedRectangleTileShape,
-                                        leading: Text(state.transactions[index]
-                                            .currencyPair.currencyPairTitle),
+                                        leading: Column(
+                                          children: [
+                                            Text(state
+                                                .transactions[index]
+                                                .currencyPair
+                                                .currencyPairTitle),
+                                            Text(state.transactions[index]
+                                                .mainStrategy.title),
+                                          ],
+                                        ),
                                         trailing: Text(state.transactions[index]
                                                     .profit !=
                                                 null

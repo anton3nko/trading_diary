@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar_item.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 
 class AppNavBar extends StatelessWidget {
   const AppNavBar({
@@ -40,22 +41,38 @@ class AppNavBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                AppNavBarItem(
-                  isActive: vm.pageIndex == 0,
-                  iconSrc: Icons.pie_chart,
-                  label: 'Dashboard',
-                  onTap: () {
-                    vm.setPageIndex(0);
-                  },
-                ),
-                AppNavBarItem(
-                  isActive: vm.pageIndex == 1,
-                  iconSrc: Icons.list,
-                  label: 'Transactions',
-                  onTap: () {
-                    vm.setPageIndex(1);
-                  },
-                ),
+                //При смене табов не актуализируются данные по
+                //Transactions и Top Strategies(на Dashboard)
+                //Для этого решил посылать ивенты(CalculateTopStrategiesEvent
+                //и FetchTransactionsEvent)
+                BlocBuilder<TransactionBloc, TransactionState>(
+                    builder: (context, state) {
+                  return AppNavBarItem(
+                    isActive: vm.pageIndex == 0,
+                    iconSrc: Icons.pie_chart,
+                    label: 'Dashboard',
+                    onTap: () {
+                      vm.setPageIndex(0);
+                      context
+                          .read<TransactionBloc>()
+                          .add(const CalculateTopStrategiesEvent());
+                    },
+                  );
+                }),
+                BlocBuilder<TransactionBloc, TransactionState>(
+                    builder: (context, state) {
+                  return AppNavBarItem(
+                    isActive: vm.pageIndex == 1,
+                    iconSrc: Icons.list,
+                    label: 'Transactions',
+                    onTap: () {
+                      vm.setPageIndex(1);
+                      context
+                          .read<TransactionBloc>()
+                          .add(const FetchTransactionsEvent());
+                    },
+                  );
+                }),
                 AppNavBarItem(
                   isActive: vm.pageIndex == 2,
                   iconSrc: Icons.auto_graph_sharp,

@@ -8,9 +8,14 @@ import 'package:trading_diary/data/repo/transactions_repo.dart';
 part 'transaction_event.dart';
 part 'transaction_state.dart';
 
+//TODO Вопрос. Не могу придумать в какие моменты отправлять ивенты
+//FetchTransactionsEvent и CalculateTopStrategiesData
+//для обновления данных на Dashboard, Transactions Page.
+//
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc() : super(TransactionInitialState()) {
     List<TradingTransaction> transactions = [];
+    List<Map<String, dynamic>> topStrategiesData = [];
 
     on<AddTransactionEvent>(
       (event, emit) async {
@@ -54,16 +59,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         add(const FetchTransactionsEvent());
       },
     );
-    // on<CalculateTopStrategiesEvent>(
-    //   (event, emit) async {
-    //     // for (Strategy strategy in event.strategies){
-    //     //   for (TradingTransaction transaction in transactions){
-    //     //     if(transaction.mainStrategy)
-    //     //   }
-    //     // }
-    //     await TransactionsRepo.instance.calculateTopStrategies();
-    //     emit(DisplayTopStrategiesState(topStrategies: event.topStrategies));
-    //   },
-    // );
+    on<CalculateTopStrategiesEvent>(
+      (event, emit) async {
+        topStrategiesData =
+            await TransactionsRepo.instance.calculateTopStrategies();
+        emit(DisplayTopStrategiesState(topStrategiesData: topStrategiesData));
+      },
+    );
   }
 }

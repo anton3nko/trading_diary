@@ -5,17 +5,22 @@ class CustomTile extends StatelessWidget {
   const CustomTile({
     super.key,
     required this.title,
-    required this.onTap,
     required this.tileColor,
+    required this.totalProfit,
+    required this.profitableCount,
+    required this.totalCount,
   });
   final String title;
-  final Function onTap;
+  //final Function onTap;
   final Color tileColor;
+  final String totalProfit;
+  final String totalCount;
+  final String profitableCount;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: () => 'onTap()',
       child: Container(
         margin: const EdgeInsets.only(
           top: 7,
@@ -30,21 +35,21 @@ class CustomTile extends StatelessWidget {
           ),
           shape: kRoundedRectangleTileShape,
           leading: const Icon(Icons.area_chart_sharp),
-          trailing: const Column(
+          trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '\$124',
-                style: TextStyle(
+                '$totalProfit\$',
+                style: const TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                '9/10',
-                style: TextStyle(
+                '$profitableCount/$totalCount',
+                style: const TextStyle(
                   fontSize: 15.0,
-                  color: Colors.grey,
+                  color: Colors.black,
                 ),
               ),
             ],

@@ -26,10 +26,10 @@ class DisplaySpecificTransactionState extends TransactionState {
 }
 
 class DisplayTopStrategiesState extends TransactionState {
-  final List<Strategy> topStrategies;
+  final List<Map<String, dynamic>> topStrategiesData;
 
-  const DisplayTopStrategiesState({required this.topStrategies});
+  const DisplayTopStrategiesState({required this.topStrategiesData});
 
   @override
-  List<Object?> get props => [topStrategies];
+  List<Object?> get props => [topStrategiesData];
 }
