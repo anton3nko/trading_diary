@@ -4,6 +4,7 @@ part of 'package:trading_diary/features/transactions/presentation/transaction_ad
 //FIXME Перестали вводится отрицательные числа в Profit field
 //Copy-paste отрицательных чисел работает,
 //не вводится знак минуса с клавиатуры телефона.
+/// Ответ: у меня на эмуляторе всё норм работает. Попробуй глянуть, какие ты используешь inputFormatters и что там за символы разрешаешь
 class NumericTextField extends StatelessWidget {
   const NumericTextField({
     super.key,
@@ -37,10 +38,10 @@ class NumericTextField extends StatelessWidget {
         decimal: true,
         signed: _isSigned,
       ),
-      decoration: kTextFieldDecoration.copyWith(
+      decoration: Styles.kTextFieldDecoration.copyWith(
         hintText: _hintText,
         label: Text('$requiredSymbol$_label'),
-        labelStyle: kTextFieldLabelStyle,
+        labelStyle: Styles.kTextFieldLabelStyle,
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onChanged: (value) {
@@ -139,10 +140,10 @@ class MultilineCommentTextField extends StatelessWidget {
     return TextField(
       controller: _commentFieldController,
       keyboardType: TextInputType.multiline,
-      decoration: kTextFieldDecoration.copyWith(
+      decoration: Styles.kTextFieldDecoration.copyWith(
         hintText: 'Comment',
         label: const Text('Comment'),
-        labelStyle: kTextFieldLabelStyle,
+        labelStyle: Styles.kTextFieldLabelStyle,
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
     );

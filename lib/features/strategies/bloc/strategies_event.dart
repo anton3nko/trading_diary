@@ -4,6 +4,14 @@ sealed class StrategyEvent extends Equatable {
   const StrategyEvent();
 }
 
+// TODO: Вариант 2
+class InitialStrategyEvent extends StrategyEvent {
+  const InitialStrategyEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class AddStrategyEvent extends StrategyEvent {
   final String title;
   final Color color;

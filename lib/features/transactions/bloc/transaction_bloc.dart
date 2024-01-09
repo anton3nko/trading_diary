@@ -11,7 +11,10 @@ part 'transaction_state.dart';
 //TODO Вопрос. Не могу придумать в какие моменты отправлять ивенты
 //FetchTransactionsEvent и CalculateTopStrategiesData
 //для обновления данных на Dashboard, Transactions Page.
-//
+// Ответ: как правило ты подтягиваешь обновленные данные после создания или удаления какой-то сущности (транзакции, стратегии и т.д.)
+// Ну в принципе же всё норм работает, я чекнул. После создания транзакции, она отображается на TransactionsPage, а после удаления - исчезает
+// CalculateTopStrategies не чекал, но там тоже принцип схожий
+
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc() : super(TransactionInitialState()) {
     List<TradingTransaction> transactions = [];

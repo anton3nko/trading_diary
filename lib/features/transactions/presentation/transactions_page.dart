@@ -25,11 +25,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
       backgroundColor: Colors.grey.shade200,
       floatingActionButton: FloatingActionButton(
         heroTag: 'addTransaction',
-        backgroundColor: kYellowColor,
+        backgroundColor: Styles.kYellowColor,
         child: const Icon(
           Icons.add,
           size: 30,
-          color: kBlackColor,
+          color: Styles.kBlackColor,
         ),
         onPressed: () {
           Navigator.pushNamed(context, TransactionAddPage.id);
@@ -98,7 +98,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                     margin: const EdgeInsets.all(3.0),
                                     child: GestureDetector(
                                       child: ListTile(
-                                        shape: kRoundedRectangleTileShape,
+                                        shape:
+                                            Styles.kRoundedRectangleTileShape,
                                         leading: Column(
                                           children: [
                                             Text(state

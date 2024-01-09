@@ -9,6 +9,7 @@ import 'package:trading_diary/domain/model/trading_transaction.dart';
 import 'package:trading_diary/domain/model/new_transaction.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
+import 'package:trading_diary/features/transactions/presentation/view_model.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/widgets/date_time_picker.dart';
 import 'package:trading_diary/features/transactions/widgets/strategy_drop_down_menu.dart';
@@ -16,54 +17,33 @@ import 'package:trading_diary/features/transactions/widgets/strategy_drop_down_m
 part 'package:trading_diary/features/transactions/widgets/transaction_add_page_widgets.dart';
 
 class TransactionAddPage extends StatefulWidget {
-  static const String id = 'transaction_add_page';
-
   const TransactionAddPage({super.key});
+
+  static const String id = 'transaction_add_page';
 
   @override
   State<TransactionAddPage> createState() => _TransactionAddPageState();
 }
 
 class _TransactionAddPageState extends State<TransactionAddPage> {
-  late TextEditingController _typeFieldController;
-  late TextEditingController _volumeFieldController;
-  late TextEditingController _currencyFieldController;
-  late TextEditingController _mainStrategyController;
-  late TextEditingController _secStrategyController;
-  late TextEditingController _timeFrameController;
-  late TextEditingController _profitFieldController;
-  late TextEditingController _commentFieldController;
-
   List<CurrencyPair> currencies = [
     CurrencyPair(currencyPairTitle: 'USDCHF'),
     CurrencyPair(currencyPairTitle: 'GBPUSD'),
     CurrencyPair(currencyPairTitle: 'USDJPY'),
   ];
 
-  @override
-  void initState() {
-    _typeFieldController = TextEditingController();
-    _volumeFieldController = TextEditingController();
-    _currencyFieldController = TextEditingController();
-    _mainStrategyController = TextEditingController();
-    _secStrategyController = TextEditingController();
-    _timeFrameController = TextEditingController();
-    _profitFieldController = TextEditingController();
-    _commentFieldController = TextEditingController();
-    super.initState();
-  }
+  final vm = TransactionAddViewModel();
 
   @override
   void dispose() {
-    _typeFieldController.dispose();
-    _volumeFieldController.dispose();
-    _currencyFieldController.dispose();
-    _mainStrategyController.dispose();
-    _secStrategyController.dispose();
-    _timeFrameController.dispose();
-    _profitFieldController.dispose();
-    _commentFieldController.dispose();
+    vm.disposeControllers();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    vm.initControllers();
+    super.initState();
   }
 
   @override
@@ -86,11 +66,11 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TrTypeDropdownMenu(
-                      typeFieldController: _typeFieldController,
+                      typeFieldController: vm.typeFieldController,
                     ),
                     TrCurrencyDropdownMenu(
                       currencies: currencies,
-                      currencyFieldController: _currencyFieldController,
+                      currencyFieldController: vm.currencyFieldController,
                     ),
                   ],
                 ),
@@ -98,14 +78,14 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   height: 10.0,
                 ),
                 TrTimeFrameDropdownMenu(
-                  timeFrameController: _timeFrameController,
+                  timeFrameController: vm.timeFrameController,
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
                 NumericTextField(
-                  numericFieldController: _volumeFieldController,
-                  inputFormatters: kDoubleUnsignedFormat,
+                  numericFieldController: vm.volumeFieldController,
+                  inputFormatters: Styles.kDoubleUnsignedFormat,
                   isSigned: false,
                   hintText: 'Number of lots',
                   label: 'Volume',
@@ -130,7 +110,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 StrategyDropDownMenu(
                   labelText: 'Main Strategy',
                   isRequired: true,
-                  controller: _mainStrategyController,
+                  controller: vm.mainStrategyController,
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -138,14 +118,14 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 StrategyDropDownMenu(
                   labelText: 'Secondary Strategy',
                   isRequired: false,
-                  controller: _secStrategyController,
+                  controller: vm.secStrategyController,
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
                 NumericTextField(
-                  numericFieldController: _profitFieldController,
-                  inputFormatters: kDoubleSignedFormat,
+                  numericFieldController: vm.profitFieldController,
+                  inputFormatters: Styles.kDoubleSignedFormat,
                   isSigned: true,
                   hintText: 'Profit',
                   label: 'Profit',
@@ -155,7 +135,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   height: 10.0,
                 ),
                 MultilineCommentTextField(
-                  commentFieldController: _commentFieldController,
+                  commentFieldController: vm.commentFieldController,
                 ),
                 //Вопрос - так можно?
                 // Ответ: да, можно, вложенные BlocBuilder'ы это ок
@@ -168,16 +148,16 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                         onPressed: () {
                           final newTransactionCubit =
                               BlocProvider.of<NewTransactionCubit>(context);
-                          if (_volumeFieldController.text.isNotEmpty &&
+                          if (vm.volumeFieldController.text.isNotEmpty &&
                               newTransactionCubit.newTransaction.openDate !=
                                   null) {
                             final buyOrSell = TransactionType.fromJson(
-                                _typeFieldController.text.toLowerCase());
+                                vm.typeFieldController.text.toLowerCase());
                             final currency = CurrencyPair(
                                 currencyPairTitle:
-                                    _currencyFieldController.text);
+                                    vm.currencyFieldController.text);
                             final volume =
-                                double.parse(_volumeFieldController.text);
+                                double.parse(vm.volumeFieldController.text);
                             final mainStrat = newTransactionCubit
                                     .newTransaction.mainStrategy ??
                                 Strategy(id: 1, title: 'None');
@@ -185,10 +165,10 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     .newTransaction.secondaryStrategy ??
                                 Strategy(id: 1, title: 'None');
                             final timeFrame = TimeFrame.values
-                                .byName(_timeFrameController.text);
+                                .byName(vm.timeFrameController.text);
                             final profit =
-                                double.tryParse(_profitFieldController.text);
-                            final comment = _commentFieldController.text;
+                                double.tryParse(vm.profitFieldController.text);
+                            final comment = vm.commentFieldController.text;
 
                             /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
                             context.read<TransactionBloc>().add(

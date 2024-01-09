@@ -42,8 +42,8 @@ class _StrategyAddPageState extends State<StrategyAddPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _strategyTitleFieldController,
-                decoration: kTextFieldDecoration.copyWith(
-                    label: const Text('Strategy Name')),
+                decoration: Styles.kTextFieldDecoration
+                    .copyWith(label: const Text('Strategy Name')),
               ),
             ),
             BlocBuilder<StrategyBloc, StrategyState>(
