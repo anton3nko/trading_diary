@@ -7,12 +7,14 @@ import 'package:trading_diary/features/home_screen.dart';
 import 'package:trading_diary/features/transactions/presentation/transactions_page.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:provider/provider.dart';
+
 import 'package:trading_diary/styles/theme_provider.dart';
 import 'package:trading_diary/features/strategies/presentation/strategy_add_page.dart';
 import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
+import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
@@ -26,6 +28,7 @@ class Application extends StatelessWidget {
         BlocProvider(create: (context) => StrategyBloc()),
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
+        BlocProvider(create: (context) => DashboardBloc()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, provider, child) {

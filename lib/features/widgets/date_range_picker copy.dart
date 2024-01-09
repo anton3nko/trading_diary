@@ -5,21 +5,21 @@ import 'package:intl/intl.dart';
 //на Dashboard и Transactions. Выбранный диапозон дат будет свой для
 //каждой страницы. Поэтому нужно его хранить в разных bloc(DashboardBloc, TransactionBloc).
 //Как в этом виджете использовать разный bloc в завимисимости от ситуации??
-class DateRangePicker extends StatelessWidget {
-  final DateTime startDate;
-  final DateTime endDate;
-  final Function onSelect;
-  const DateRangePicker(
-      {super.key,
-      required this.startDate,
-      required this.endDate,
-      required this.onSelect});
+class DateRangePicker extends StatefulWidget {
+  const DateRangePicker({super.key});
+
+  @override
+  State<DateRangePicker> createState() => _DateRangePickerState();
+}
+
+class _DateRangePickerState extends State<DateRangePicker> {
+  String startDate = DateFormat.yMMMd()
+      .format(DateTime(DateTime.now().year, DateTime.now().month, 1));
+  String endDate = DateFormat.yMMMd().format(DateTime.now());
+  String currentDate = DateFormat("yMMMM").format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
-    String formattedStartDate = DateFormat.yMMMd().format(startDate);
-    String formattedEndDate = DateFormat.yMMMd().format(endDate);
-    String dateRange = '$formattedStartDate-$formattedEndDate';
     return TextButton(
       onPressed: () async {
         var testDates = await showDateRangePicker(
@@ -29,19 +29,14 @@ class DateRangePicker extends StatelessWidget {
           lastDate: DateTime(2100),
         );
         if (testDates != null) {
-          // var format = DateFormat.yMMMd();
-          // setState(() {
-          //   startDate = format.format(testDates.start);
-          //   endDate = format.format(testDates.end);
-          // });
-          //setState(() {
-          onSelect(testDates);
-          //dateRange = '${formattedStartDate}2-$formattedEndDate';
-          //widget.startDate = testDates.start;
-          //});
+          var format = DateFormat.yMMMd();
+          setState(() {
+            startDate = format.format(testDates.start);
+            endDate = format.format(testDates.end);
+          });
         }
       },
-      child: Text(dateRange),
+      child: Text(currentDate),
     );
   }
 }

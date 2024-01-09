@@ -71,7 +71,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                const DateRangePicker(),
+                //const DateRangePicker(),
                 const SizedBox(
                   height: 20.0,
                 ),

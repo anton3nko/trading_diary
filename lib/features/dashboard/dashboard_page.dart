@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
 import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
-import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
+import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
+class DashboardPage extends StatefulWidget {
+  final DashboardBloc dashboardBloc;
+  const DashboardPage({super.key, required this.dashboardBloc});
 
   @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  @override
   Widget build(BuildContext context) {
+    if (widget.dashboardBloc.state is DashboardInitialState) {
+      widget.dashboardBloc.add(const FetchDashboardDataEvent());
+    }
     return DefaultTabController(
       length: 2,
       child: SingleChildScrollView(
@@ -49,14 +59,14 @@ class DashboardPage extends StatelessWidget {
                 height: 5.0,
               ),
               //For test purposes
-              BlocBuilder<TransactionBloc, TransactionState>(
+              BlocBuilder<DashboardBloc, DashboardState>(
                   builder: (context, state) {
                 return IconButton(
                   onPressed: () async {
                     //await TransactionsRepo.instance.calculateTopStrategies();
                     context
-                        .read<TransactionBloc>()
-                        .add(const CalculateTopStrategiesEvent());
+                        .read<DashboardBloc>()
+                        .add(const FetchDashboardDataEvent());
                   },
                   icon: const Icon(
                     Icons.refresh,
@@ -66,19 +76,35 @@ class DashboardPage extends StatelessWidget {
               const SizedBox(
                 height: 32.0,
               ),
-              const SizedBox(
+              SizedBox(
                 width: 250,
                 height: 250,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    AppPieChart(),
+                    const AppPieChart(),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Profit'),
-                        DateRangePicker(),
-                        Text('Transactions'),
+                        const Text('Profit'),
+                        BlocBuilder<DashboardBloc, DashboardState>(
+                            builder: (context, state) {
+                          final dashboardBloc = context.read<DashboardBloc>();
+                          return DateRangePicker(
+                            startDate: dashboardBloc.startDate,
+                            endDate: dashboardBloc.endDate,
+                            onSelect: (DateTimeRange dateTimeRange) {
+                              //var format = DateFormat.yMMMd();
+                              setState(() {
+                                dashboardBloc.startDate = dateTimeRange.start;
+                                dashboardBloc.endDate = dateTimeRange.end;
+                              });
+                              dashboardBloc
+                                  .add(const FetchDashboardDataEvent());
+                            },
+                          );
+                        }),
+                        const Text('Transactions'),
                       ],
                     ),
                   ],
@@ -89,9 +115,9 @@ class DashboardPage extends StatelessWidget {
               ),
               NestedTabBar(
                 tabs: [
-                  BlocBuilder<TransactionBloc, TransactionState>(
+                  BlocBuilder<DashboardBloc, DashboardState>(
                       builder: (context, state) {
-                    if (state is DisplayTopStrategiesState) {
+                    if (state is DisplayDashboardDataState) {
                       final topStrategiesData = state.topStrategiesData;
                       return ListView.builder(
                         itemCount: topStrategiesData.length,

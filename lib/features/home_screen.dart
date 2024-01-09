@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:trading_diary/features/dashboard/dashboard_page.dart';
 import 'package:trading_diary/features/settings_page.dart';
 import 'package:trading_diary/features/strategies/presentation/strategies_page.dart';
@@ -21,11 +22,17 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.grey.shade200,
         body: IndexedStack(
           index: context.watch<NavBarCubit>().pageIndex,
-          children: const [
-            DashboardPage(),
-            TransactionsPage(),
-            StrategiesPage(),
-            SettingsPage(),
+          children: [
+            BlocBuilder<DashboardBloc, DashboardState>(
+                builder: (context, state) {
+              final dashboardBloc = context.read<DashboardBloc>();
+              return DashboardPage(
+                dashboardBloc: dashboardBloc,
+              );
+            }),
+            const TransactionsPage(),
+            const StrategiesPage(),
+            const SettingsPage(),
           ],
         ),
         bottomNavigationBar: const AppNavBar(),

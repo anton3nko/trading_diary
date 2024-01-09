@@ -74,7 +74,8 @@ class TransactionsRepo {
 ''');
     log(totalTransactions.toString(), name: 'totalTransactions');
     final totalProfitTrans = await db.rawQuery('''
-       SELECT s.title, sum(CASE WHEN profit>0 THEN 1 ELSE 0 END) as count from $strategyTable as s LEFT OUTER JOIN
+       SELECT s.title, sum(CASE WHEN profit>0 THEN 1 ELSE 0 END) as count from 
+       $strategyTable as s LEFT OUTER JOIN
        $transactionTable as t ON s._id = t.${TransactionFields.mainStrategyId} 
        GROUP BY s._id;
  ''');

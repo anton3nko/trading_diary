@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar_item.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
+import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 
 class AppNavBar extends StatelessWidget {
   const AppNavBar({
@@ -45,7 +46,7 @@ class AppNavBar extends StatelessWidget {
                 //Transactions и Top Strategies(на Dashboard)
                 //Для этого решил посылать ивенты(CalculateTopStrategiesEvent
                 //и FetchTransactionsEvent)
-                BlocBuilder<TransactionBloc, TransactionState>(
+                BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
                   return AppNavBarItem(
                     isActive: vm.pageIndex == 0,
@@ -54,8 +55,8 @@ class AppNavBar extends StatelessWidget {
                     onTap: () {
                       vm.setPageIndex(0);
                       context
-                          .read<TransactionBloc>()
-                          .add(const CalculateTopStrategiesEvent());
+                          .read<DashboardBloc>()
+                          .add(const FetchDashboardDataEvent());
                     },
                   );
                 }),
