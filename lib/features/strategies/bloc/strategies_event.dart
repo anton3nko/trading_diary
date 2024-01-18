@@ -1,7 +1,15 @@
-part of 'package:trading_diary/features/strategies/data/bloc/strategies_bloc.dart';
+part of 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 
 sealed class StrategyEvent extends Equatable {
   const StrategyEvent();
+}
+
+// Вариант 2
+class InitialStrategyEvent extends StrategyEvent {
+  const InitialStrategyEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class AddStrategyEvent extends StrategyEvent {

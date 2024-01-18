@@ -1,10 +1,11 @@
-part of 'trading_transaction_bloc.dart';
+part of 'transaction_bloc.dart';
 
-sealed class TradingTransactionEvent extends Equatable {
-  const TradingTransactionEvent();
+sealed class TransactionEvent extends Equatable {
+  const TransactionEvent();
 }
 
-class AddTradingTransactionEvent extends TradingTransactionEvent {
+class AddTransactionEvent extends TransactionEvent {
+  final TransactionType transactionType;
   final double volume;
   final CurrencyPair currencyPair;
   final DateTime openDate;
@@ -15,7 +16,8 @@ class AddTradingTransactionEvent extends TradingTransactionEvent {
   final double? profit;
   final String? comment;
 
-  const AddTradingTransactionEvent({
+  const AddTransactionEvent({
+    required this.transactionType,
     required this.volume,
     required this.currencyPair,
     required this.openDate,
@@ -29,6 +31,7 @@ class AddTradingTransactionEvent extends TradingTransactionEvent {
 
   @override
   List<Object?> get props => [
+        transactionType,
         volume,
         currencyPair,
         openDate,
@@ -41,33 +44,40 @@ class AddTradingTransactionEvent extends TradingTransactionEvent {
       ];
 }
 
-class UpdateTradingTransactionEvent extends TradingTransactionEvent {
+class UpdateTransactionEvent extends TransactionEvent {
   final TradingTransaction transaction;
-  const UpdateTradingTransactionEvent({required this.transaction});
+  const UpdateTransactionEvent({required this.transaction});
 
   @override
   List<Object?> get props => [transaction];
 }
 
-class FetchTradingTransactionsEvent extends TradingTransactionEvent {
-  const FetchTradingTransactionsEvent();
+class FetchTransactionsEvent extends TransactionEvent {
+  const FetchTransactionsEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class FetchSpecificTradingTransactionEvent extends TradingTransactionEvent {
+class FetchSpecificTransactionEvent extends TransactionEvent {
   final int id;
-  const FetchSpecificTradingTransactionEvent({required this.id});
+  const FetchSpecificTransactionEvent({required this.id});
 
   @override
   List<Object?> get props => [id];
 }
 
-class DeleteTradingTransactionEvent extends TradingTransactionEvent {
+class DeleteTransactionEvent extends TransactionEvent {
   final int id;
-  const DeleteTradingTransactionEvent({required this.id});
+  const DeleteTransactionEvent({required this.id});
 
   @override
   List<Object?> get props => [id];
+}
+
+class CalculateTopStrategiesEvent extends TransactionEvent {
+  const CalculateTopStrategiesEvent();
+
+  @override
+  List<Object?> get props => [];
 }

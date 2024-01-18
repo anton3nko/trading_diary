@@ -1,11 +1,15 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
 
-//Класс для взаимодействия с БД
-//TODO Найти более лаконичное решение(не все методы взаимодействия с БД в этом классе)
+//Базовый класс взаимодействия с БД
+//Перенёс CRUD-методы Transactions->transactions_repo.dart
+//Strategy->strategies_repo.dart
 class DatabaseService {
   static const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static const textType = 'TEXT NOT NULL';
@@ -17,19 +21,21 @@ class DatabaseService {
         title TEXT NOT NULL,
         color INTEGER NOT NULL
       )''';
-//TODO подумать не сохранять ли mainStrategy и secondaryStrategy в виде id из таблицы Strategies?
-  static const _createTradingTransactionsTable = '''
+  static const _createTransactionsTable = '''
     CREATE TABLE $transactionTable (
         _id INTEGER PRIMARY KEY AUTOINCREMENT,
-        volume double NOT NULL,
+        ${TransactionFields.transactionType} TEXT NOT NULL,
+        volume REAL NOT NULL,
         currencyPair TEXT NOT NULL,
         openDate TEXT NOT NULL,
         closeDate TEXT,
         mainStrategy TEXT NOT NULL,
+        mainStrategyId INTEGER NOT NULL,
         secondaryStrategy TEXT NOT NULL,
+        secondaryStrategyId INTEGER NOT NULL,
         timeFrame TEXT NOT NULL,
-        profit double,
-        comment TEXT,
+        profit REAL,
+        comment TEXT
     )
 ''';
 
@@ -45,6 +51,7 @@ class DatabaseService {
   }
 
   Future<Database> _initDB(String filePath) async {
+    log('_initDB');
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
@@ -53,120 +60,23 @@ class DatabaseService {
 
   Future _createDB(Database db, int version) async {
     await db.execute(_createStrategiesTable);
-    await db.execute(_createTradingTransactionsTable);
+    await db.execute(_createTransactionsTable);
+    await db.insert(
+        strategyTable,
+        Strategy(
+          title: 'None',
+          strategyColor: Colors.lightGreen,
+        ).toJson());
+    //await createStrategy(Strategy(title: 'none', strategyColor: Colors.amber));
+    // log('DB tables created; _createdDB');
+    // (await db.query('sqlite_master', columns: ['type', 'name'])).forEach((row) {
+    //   log(row.values.toString());
+    // });
   }
 
   Future close() async {
     final db = await instance.database;
 
     db.close();
-  }
-
-//Strategy CRUD - методы (create, read, update, delete)
-  Future<Strategy> createStrategy(Strategy strategy) async {
-    final db = await instance.database;
-    final id = await db.insert(strategyTable, strategy.toJson());
-    return strategy.copy(id: id);
-  }
-
-  Future<Strategy> readStrategy({required int id}) async {
-    final db = await instance.database;
-
-    final maps = await db.query(
-      strategyTable,
-      columns: StrategyFields.values,
-      where: '${StrategyFields.id} = ?',
-      whereArgs: [id],
-    );
-
-    if (maps.isNotEmpty) {
-      return Strategy.fromJson(maps.first);
-    } else {
-      throw Exception('ID $id was not found');
-    }
-  }
-
-  Future<List<Strategy>> readAllStrategies() async {
-    final db = await instance.database;
-    const orderBy = '${StrategyFields.id} ASC';
-    final result = await db.query(strategyTable, orderBy: orderBy);
-
-    return result.map((json) => Strategy.fromJson(json)).toList();
-  }
-
-  Future<int> updateStrategy({required Strategy strategy}) async {
-    final db = await instance.database;
-
-    return db.update(
-      strategyTable,
-      strategy.toJson(),
-      where: '${StrategyFields.id} = ?',
-      whereArgs: [strategy.id],
-    );
-  }
-
-  Future<int> deleteStrategy({required int id}) async {
-    final db = await instance.database;
-
-    return await db.delete(
-      strategyTable,
-      where: '${StrategyFields.id} = ?',
-      whereArgs: [id],
-    );
-  }
-
-  //Transaction CRUD - методы (create, read, update, delete)
-  Future<TradingTransaction> createTradingTransaction(
-      TradingTransaction transaction) async {
-    final db = await instance.database;
-    final id = await db.insert(transactionTable, transaction.toJson());
-    return transaction.copy(id: id);
-  }
-
-  Future<TradingTransaction> readTradingTransaction({required int id}) async {
-    final db = await instance.database;
-
-    final maps = await db.query(
-      transactionTable,
-      columns: TransactionFields.values,
-      where: '${TransactionFields.id} = ?',
-      whereArgs: [id],
-    );
-
-    if (maps.isNotEmpty) {
-      return TradingTransaction.fromJson(maps.first);
-    } else {
-      throw Exception('ID $id was not found');
-    }
-  }
-
-  Future<List<TradingTransaction>> readAllTradingTransactions() async {
-    final db = await instance.database;
-    const orderBy = '${TransactionFields.id} ASC';
-    final result = await db.query(strategyTable, orderBy: orderBy);
-
-    return result.map((json) => TradingTransaction.fromJson(json)).toList();
-  }
-
-  Future<int> updateTradingTransaction(
-      {required TradingTransaction transaction}) async {
-    final db = await instance.database;
-
-    return db.update(
-      transactionTable,
-      transaction.toJson(),
-      where: '${TransactionFields.id} = ?',
-      whereArgs: [transaction.id],
-    );
-  }
-
-  Future<int> deleteTradingTransaction({required int id}) async {
-    final db = await instance.database;
-
-    return await db.delete(
-      transactionTable,
-      where: '${TransactionFields.id} = ?',
-      whereArgs: [id],
-    );
   }
 }

@@ -49,7 +49,7 @@ class _NestedTabBarState extends State<NestedTabBar>
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
-                color: Colors.white,
+                color: Colors.transparent,
               ),
               controller: _nestedTabController,
               labelColor: Colors.black,

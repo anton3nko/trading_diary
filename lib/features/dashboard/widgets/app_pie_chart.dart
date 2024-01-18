@@ -54,7 +54,7 @@ class _AppPieChartState extends State<AppPieChart> {
   }
 }
 
-/// TODO: Обрати внимание на реализацию PieChartSectionData через наследование
+//Реализация PieChartSectionData через наследование
 class PieChartSection extends PieChartSectionData {
   final String? strategyName;
   final bool selected;

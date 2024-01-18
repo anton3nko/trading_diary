@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:trading_diary/features/widgets/date_range_picker.dart';
-import 'package:trading_diary/features/transactions/data/bloc/trading_transaction_bloc.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/styles/styles.dart';
-import 'package:trading_diary/features/transactions/presentation/trading_transaction_add_page.dart';
+import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+//import 'package:trading_diary/data/repo/transactions_repo.dart';
 
 class TransactionsPage extends StatefulWidget {
   static const String id = 'transactions_page';
@@ -17,22 +20,18 @@ class _TransactionsPageState extends State<TransactionsPage> {
   // void addFakeTransaction(String? currencyPairTitle) {
   @override
   Widget build(BuildContext context) {
-    //TODO Добавление здесь FloatingActionButton ломает Add-button на Strategies page
-    //Как лучше это пофиксить?
-    // Гугли лучше, лопата корейская:
-    // https://stackoverflow.com/questions/63492211/flutter-floatingactionbutton-is-not-working
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       floatingActionButton: FloatingActionButton(
         heroTag: 'addTransaction',
-        backgroundColor: kYellowColor,
+        backgroundColor: Styles.kYellowColor,
         child: const Icon(
           Icons.add,
           size: 30,
-          color: kBlackColor,
+          color: Styles.kBlackColor,
         ),
         onPressed: () {
-          //addFakeTransaction('USDCAD');
-          Navigator.pushNamed(context, TradingTransactionAddPage.id);
+          Navigator.pushNamed(context, TransactionAddPage.id);
         },
       ),
       body: Center(
@@ -71,18 +70,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                const DateRangePicker(),
+                //const DateRangePicker(),
                 const SizedBox(
                   height: 20.0,
                 ),
-                BlocBuilder<TradingTransactionBloc, TradingTransactionState>(
+                BlocBuilder<TransactionBloc, TransactionState>(
                   builder: (context, state) {
-                    if (state is TradingTransactionInitialState) {
+                    if (state is TransactionInitialState) {
+                      //log('state is TransactionInitialState');
                       context
-                          .read<TradingTransactionBloc>()
-                          .add(const FetchTradingTransactionsEvent());
+                          .read<TransactionBloc>()
+                          .add(const FetchTransactionsEvent());
                     }
-                    if (state is DisplayTradingTransactionsState) {
+                    if (state is DisplayTransactionsState) {
                       return SafeArea(
                           child: Container(
                         padding: const EdgeInsets.all(8.0),
@@ -91,38 +91,70 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ? ListView.builder(
                                 itemCount: state.transactions.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    shape: kRoundedRectangleTileShape,
-                                    leading: Text(state.transactions[index]
-                                        .currencyPair.currencyPairTitle),
-                                    trailing: Row(
-                                      children: [
-                                        Text(
-                                            '${state.transactions[index].profit.toString()}\$'),
-                                        IconButton(
-                                            onPressed: () {
-                                              context
-                                                  .read<
-                                                      TradingTransactionBloc>()
-                                                  .add(
-                                                    DeleteTradingTransactionEvent(
-                                                        id: state
-                                                            .transactions[index]
-                                                            .id!),
-                                                  );
-                                            },
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
-                                            ))
-                                      ],
+                                  final transactionBloc =
+                                      BlocProvider.of<TransactionBloc>(context);
+                                  return Container(
+                                    margin: const EdgeInsets.all(3.0),
+                                    child: GestureDetector(
+                                      child: ListTile(
+                                        shape:
+                                            Styles.kRoundedRectangleTileShape,
+                                        leading: Column(
+                                          children: [
+                                            Text(state
+                                                .transactions[index]
+                                                .currencyPair
+                                                .currencyPairTitle),
+                                            Text(state.transactions[index]
+                                                .mainStrategy.title),
+                                          ],
+                                        ),
+                                        trailing: Text(state.transactions[index]
+                                                    .profit !=
+                                                null
+                                            ? '${state.transactions[index].profit.toString()}\$'
+                                            : ''),
+                                      ),
+                                      onLongPress: () {
+                                        log('onLongPress');
+                                        transactionBloc.add(
+                                            DeleteTransactionEvent(
+                                                id: state
+                                                    .transactions[index].id!));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            content:
+                                                Text('Deleted Transaction'),
+                                          ),
+                                        );
+                                      },
+                                      onDoubleTap: () {
+                                        log(state.transactions.length
+                                            .toString());
+                                        for (var transaction
+                                            in state.transactions) {
+                                          log('id = ${transaction.id.toString()} currency = ${transaction.currencyPair.currencyPairTitle}');
+                                        }
+                                      },
                                     ),
                                   );
                                 })
                             : const Text(''),
                       ));
                     }
-                    return const SizedBox.shrink();
+                    return const Center(
+                      child: SizedBox(
+                        height: 250,
+                        width: 250,
+                        child: Text(
+                          'Loading Data From The Database...',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
                   },
                 )
               ],
