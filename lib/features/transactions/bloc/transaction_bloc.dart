@@ -8,13 +8,13 @@ import 'package:trading_diary/data/repo/transactions_repo.dart';
 part 'transaction_event.dart';
 part 'transaction_state.dart';
 
-//TODO Вопрос. В правильные ли моменты отправляю ивенты
+//Вопрос. В правильные ли моменты отправляю ивенты
 //FetchTransactionsEvent и CalculateTopStrategiesData
-//для обновления данных на Dashboard, Transactions Pages?
-//Пока что обновляю данные в следующих моментах:
-//- в DashboardPage()->build, если state = DashboardInitialState
-//- в AppNavBar() при смене табов.
-//- FetchTransactionEvent отправляю после добавления новой транзакции
+//для обновления данных на Dashboard, Transactions Page.
+// Ответ: как правило ты подтягиваешь обновленные данные после создания или удаления какой-то сущности (транзакции, стратегии и т.д.)
+// Ну в принципе же всё норм работает, я чекнул. После создания транзакции, она отображается на TransactionsPage, а после удаления - исчезает
+// CalculateTopStrategies не чекал, но там тоже принцип схожий
+
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   List<TradingTransaction> transactions = [];
   //List<Map<String, dynamic>> topStrategiesData = [];

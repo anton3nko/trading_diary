@@ -25,12 +25,17 @@ class Application extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LoginBloc()),
         BlocProvider(create: (context) => NavBarCubit()),
-        BlocProvider(create: (context) => StrategyBloc()),
+        // BlocProvider(create: (context) => StrategyBloc()),
+        ///Вариант 2
+        BlocProvider(
+            create: (context) =>
+                StrategyBloc()..add(const InitialStrategyEvent())),
+
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
         BlocProvider(create: (context) => DashboardBloc()),
       ],
-      child: Consumer<ThemeProvider>(
+      child: Consumer<SettingsProvider>(
         builder: (context, provider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

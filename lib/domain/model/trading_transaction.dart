@@ -110,6 +110,22 @@ class TradingTransaction {
         comment: comment ?? this.comment,
       );
 
+  Map<String, Object?> toJson() => {
+        TransactionFields.id: id,
+        TransactionFields.transactionType: transactionType.toJson(),
+        TransactionFields.volume: volume,
+        TransactionFields.currencyPair: currencyPair.currencyPairTitle,
+        TransactionFields.openDate: openDate.toString(),
+        TransactionFields.closeDate: closeDate?.toString(),
+        TransactionFields.mainStrategy: mainStrategy.title,
+        TransactionFields.mainStrategyId: mainStrategy.id,
+        TransactionFields.secondaryStrategy: secondaryStrategy.title,
+        TransactionFields.secondaryStrategyId: secondaryStrategy.id,
+        TransactionFields.timeFrame: timeFrame.toJson(),
+        TransactionFields.profit: profit,
+        TransactionFields.comment: comment,
+      };
+
   static TradingTransaction fromJson(Map<String, dynamic> json) {
     TradingTransaction result;
     result = TradingTransaction(
@@ -137,20 +153,4 @@ class TradingTransaction {
 
     return result;
   }
-
-  Map<String, Object?> toJson() => {
-        TransactionFields.id: id,
-        TransactionFields.transactionType: transactionType.toJson(),
-        TransactionFields.volume: volume,
-        TransactionFields.currencyPair: currencyPair.currencyPairTitle,
-        TransactionFields.openDate: openDate.toString(),
-        TransactionFields.closeDate: closeDate?.toString(),
-        TransactionFields.mainStrategy: mainStrategy.title,
-        TransactionFields.mainStrategyId: mainStrategy.id,
-        TransactionFields.secondaryStrategy: secondaryStrategy.title,
-        TransactionFields.secondaryStrategyId: secondaryStrategy.id,
-        TransactionFields.timeFrame: timeFrame.toJson(),
-        TransactionFields.profit: profit,
-        TransactionFields.comment: comment,
-      };
 }

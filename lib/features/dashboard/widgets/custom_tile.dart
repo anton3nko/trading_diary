@@ -33,7 +33,7 @@ class CustomTile extends StatelessWidget {
               fontSize: 15.0,
             ),
           ),
-          shape: kRoundedRectangleTileShape,
+          shape: Styles.kRoundedRectangleTileShape,
           leading: const Icon(Icons.area_chart_sharp),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,

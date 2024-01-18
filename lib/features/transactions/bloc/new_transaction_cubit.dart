@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/new_transaction.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 
@@ -27,6 +28,11 @@ class NewTransactionCubit extends Cubit<NewTransaction> {
 
   void setSecStrategy(Strategy strategy) {
     _newTransaction.secondaryStrategy = strategy;
+    emit(_newTransaction);
+  }
+
+  void setCurrencyPair(CurrencyPair currencyPair) {
+    _newTransaction.currencyPair = currencyPair;
     emit(_newTransaction);
   }
 

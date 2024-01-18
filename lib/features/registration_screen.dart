@@ -18,7 +18,7 @@ class RegistrationScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextField(
-                  decoration: kTextFieldDecoration.copyWith(
+                  decoration: Styles.kTextFieldDecoration.copyWith(
                     hintText: 'Email',
                   ),
                 ),
@@ -27,7 +27,7 @@ class RegistrationScreen extends StatelessWidget {
                 ),
                 TextField(
                   obscureText: true,
-                  decoration: kTextFieldDecoration.copyWith(
+                  decoration: Styles.kTextFieldDecoration.copyWith(
                     hintText: 'Password',
                   ),
                 ),
@@ -38,8 +38,8 @@ class RegistrationScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     RoundedButton(
-                      buttonColor: kBlackColor,
-                      textColor: kYellowColor,
+                      buttonColor: Styles.kBlackColor,
+                      textColor: Styles.kYellowColor,
                       buttonName: 'Register',
                       onPressed: () {},
                     ),
@@ -47,8 +47,8 @@ class RegistrationScreen extends StatelessWidget {
                       height: 10.0,
                     ),
                     RoundedButton(
-                      buttonColor: kYellowColor,
-                      textColor: kBlackColor,
+                      buttonColor: Styles.kYellowColor,
+                      textColor: Styles.kBlackColor,
                       buttonName: 'Back',
                       onPressed: () {
                         Navigator.pop(context);

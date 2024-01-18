@@ -10,7 +10,24 @@ part 'package:trading_diary/features/strategies/bloc/strategies_state.dart';
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   List<Strategy> strategies = [];
 
-  StrategyBloc() : super(StrategyInitialState()) {
+  StrategyBloc()
+      : super(
+          const StrategyInitialState(
+              // //Вариант 1: Вот тут ты можешь сделать так, чтобы в InitialState была какая-то дефолтная стратегия (вариант 1)
+              // strategies: [
+              //   Strategy(
+              //     title: 'None',
+              //     id: 0,
+              //   )
+              // ],
+              ),
+        ) {
+    // Вариант 2
+    on<InitialStrategyEvent>((event, emit) async {
+      // Fetch all necessary data from DB
+      strategies = await StrategiesRepo.instance.readAllStrategies();
+      emit(DisplayStrategiesState(strategies: strategies));
+    });
     on<AddStrategyEvent>(
       (event, emit) async {
         await StrategiesRepo.instance.createStrategy(

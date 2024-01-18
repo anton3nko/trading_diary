@@ -19,8 +19,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     on<FetchDashboardDataEvent>((event, emit) async {
       log('Dates:$startDate, $endDate', name: 'on<FetchDashboardDataEvent>');
-      topStrategiesData =
-          await TransactionsRepo.instance.calculateTopStrategies();
+      topStrategiesData = await TransactionsRepo.instance
+          .calculateTopStrategies(startDate, endDate);
       emit(DisplayDashboardDataState(
         topStrategiesData: topStrategiesData,
         beginDate: startDate,

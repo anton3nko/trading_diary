@@ -1,12 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
 import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:trading_diary/styles/theme_provider.dart';
 
 class DashboardPage extends StatefulWidget {
   final DashboardBloc dashboardBloc;
@@ -61,17 +64,21 @@ class _DashboardPageState extends State<DashboardPage> {
               //For test purposes
               BlocBuilder<DashboardBloc, DashboardState>(
                   builder: (context, state) {
-                return IconButton(
-                  onPressed: () async {
-                    //await TransactionsRepo.instance.calculateTopStrategies();
-                    context
-                        .read<DashboardBloc>()
-                        .add(const FetchDashboardDataEvent());
-                  },
-                  icon: const Icon(
-                    Icons.refresh,
-                  ),
-                );
+                return Consumer<SettingsProvider>(
+                    builder: (context, provider, child) {
+                  return IconButton(
+                    onPressed: () async {
+                      log(provider.balance.toString());
+                      //await TransactionsRepo.instance.calculateTopStrategies();
+                      context
+                          .read<DashboardBloc>()
+                          .add(const FetchDashboardDataEvent());
+                    },
+                    icon: const Icon(
+                      Icons.refresh,
+                    ),
+                  );
+                });
               }),
               const SizedBox(
                 height: 32.0,
@@ -94,7 +101,6 @@ class _DashboardPageState extends State<DashboardPage> {
                             startDate: dashboardBloc.startDate,
                             endDate: dashboardBloc.endDate,
                             onSelect: (DateTimeRange dateTimeRange) {
-                              //var format = DateFormat.yMMMd();
                               setState(() {
                                 dashboardBloc.startDate = dateTimeRange.start;
                                 dashboardBloc.endDate = dateTimeRange.end;

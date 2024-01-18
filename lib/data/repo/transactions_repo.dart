@@ -65,26 +65,43 @@ class TransactionsRepo {
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> calculateTopStrategies() async {
+  Future<List<Map<String, dynamic>>> calculateTopStrategies(
+      DateTime startDate, DateTime endDate) async {
     final db = await dbContext.database;
-    //Собираю количество сделок по каждой из стратегий
+    final totalStrategies = await db.rawQuery('''
+      SELECT ${StrategyFields.id},${StrategyFields.title} from $strategyTable;
+''');
+    log(totalStrategies.toString(), name: 'totalStrategies');
+    //Общее количество сделок по каждой из стратегий
     final totalTransactions = await db.rawQuery('''
-      SELECT s.title, count(mainStrategy) as count, s.color from $strategyTable as s,$transactionTable as t
-      where s._id = t.${TransactionFields.mainStrategyId} GROUP BY s._id;
+      SELECT s.title, sum(CASE WHEN s.${StrategyFields.id} = t.${TransactionFields.mainStrategyId} 
+      AND (t.${TransactionFields.openDate} BETWEEN '$startDate' AND '$endDate') THEN 1 ELSE 0 END) as count, s.color from $strategyTable as s LEFT OUTER JOIN
+      $transactionTable as t ON s._id = t.${TransactionFields.mainStrategyId}
+      GROUP BY s._id;
 ''');
     log(totalTransactions.toString(), name: 'totalTransactions');
+    //Общее количество прибыльных сделок по каждой из стратегий
     final totalProfitTrans = await db.rawQuery('''
-       SELECT s.title, sum(CASE WHEN profit>0 THEN 1 ELSE 0 END) as count from 
+       SELECT s.title, sum(CASE WHEN profit>0 AND (t.${TransactionFields.openDate}
+      BETWEEN '$startDate' AND '$endDate') THEN 1 ELSE 0 END) as count from 
        $strategyTable as s LEFT OUTER JOIN
        $transactionTable as t ON s._id = t.${TransactionFields.mainStrategyId} 
        GROUP BY s._id;
  ''');
     log(totalProfitTrans.toString(), name: 'totalProfitTrans');
+    //Прибыль по каждой их стратегий
     final totalProfit = await db.rawQuery('''
-      SELECT s.title, sum(profit) as profit from $strategyTable as s,$transactionTable as t
-      where (s._id = t.${TransactionFields.mainStrategyId}) GROUP BY s._id;
+      SELECT s.title, sum(CASE WHEN s.${StrategyFields.id} = t.${TransactionFields.mainStrategyId} 
+      AND (t.${TransactionFields.openDate}
+      BETWEEN '$startDate' AND '$endDate')
+      THEN t.${TransactionFields.profit} ELSE 0.0 END) as profit, s.color from $strategyTable as s LEFT OUTER JOIN
+      $transactionTable as t ON s._id = t.${TransactionFields.mainStrategyId}
+      GROUP BY s._id;
 ''');
     log(totalProfit.toString(), name: 'totalProfit');
+    //Формирую List<Map<String, dynamic>>, где элемент списка - каждая из стратегий
+    // [{'title':'Стратегия 1', 'total_count':'3',
+    // 'profitable':'2','profit':'57.43', 'color':'4287349578'}]
     List<Map<String, dynamic>> result = [];
     if (totalProfit.isNotEmpty) {
       for (var i = 0; i < totalTransactions.length; i++) {

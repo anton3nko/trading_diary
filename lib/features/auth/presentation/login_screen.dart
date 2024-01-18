@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextField(
-                      decoration: kTextFieldDecoration.copyWith(
+                      decoration: Styles.kTextFieldDecoration.copyWith(
                         hintText: 'Email',
                       ),
                       controller: emailFieldController,
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextField(
                       obscureText: true,
-                      decoration: kTextFieldDecoration.copyWith(
+                      decoration: Styles.kTextFieldDecoration.copyWith(
                         hintText: 'Password',
                       ),
                       controller: passwordFieldController,
@@ -72,8 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         RoundedButton(
-                          buttonColor: kBlackColor,
-                          textColor: kYellowColor,
+                          buttonColor: Styles.kBlackColor,
+                          textColor: Styles.kYellowColor,
                           buttonName: 'Log in',
                           onPressed: () {
                             BlocProvider.of<LoginBloc>(context).add(
@@ -88,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 10.0,
                         ),
                         RoundedButton(
-                          buttonColor: kYellowColor,
-                          textColor: kBlackColor,
+                          buttonColor: Styles.kYellowColor,
+                          textColor: Styles.kBlackColor,
                           buttonName: 'Sign up',
                           onPressed: () {
                             Navigator.pushNamed(context, RegistrationScreen.id);
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: const Text(
                         'Forgot password?',
                         style: TextStyle(
-                          color: kBlackColor,
+                          color: Styles.kBlackColor,
                         ),
                       ),
                     ),
