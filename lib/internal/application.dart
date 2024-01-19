@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_diary/data/api/currency_api.dart';
 import 'package:trading_diary/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:trading_diary/features/auth/presentation/login_screen.dart';
+import 'package:trading_diary/features/currencies_list/bloc/currency_bloc.dart';
 import 'package:trading_diary/features/registration_screen.dart';
 import 'package:trading_diary/features/home_screen.dart';
 import 'package:trading_diary/features/transactions/presentation/transactions_page.dart';
@@ -25,15 +27,17 @@ class Application extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LoginBloc()),
         BlocProvider(create: (context) => NavBarCubit()),
-        // BlocProvider(create: (context) => StrategyBloc()),
-        ///Вариант 2
         BlocProvider(
             create: (context) =>
                 StrategyBloc()..add(const InitialStrategyEvent())),
-
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
         BlocProvider(create: (context) => DashboardBloc()),
+        BlocProvider(
+          create: (context) => CurrencyBloc(
+            CurrencyApi(token: 'f5c04ab3188fabd49034b54421ae3182'),
+          ),
+        )
       ],
       child: Consumer<SettingsProvider>(
         builder: (context, provider, child) {
@@ -58,28 +62,3 @@ class Application extends StatelessWidget {
     );
   }
 }
-
-// return Consumer<ThemeProvider>(
-//       builder: (context, provider, child) {
-//         return MaterialApp(
-//           debugShowCheckedModeBanner: false,
-//           title: 'Trading Diary',
-//           theme: ThemeData.light(),
-//           darkTheme: ThemeData.dark(),
-//           themeMode: provider.themeMode,
-//           initialRoute: HomeScreen.id,
-//           routes: {
-//             LoginScreen.id: (context) => BlocProvider(
-//                   create: (context) => LoginBloc(),
-//                   child: const LoginScreen(),
-//                 ),
-//             RegistrationScreen.id: (context) => const RegistrationScreen(),
-//             HomeScreen.id: (context) => BlocProvider<NavBarCubit>(
-//                   create: (context) => NavBarCubit(),
-//                   child: const HomeScreen(),
-//                 ),
-//             StrategyAddPage.id: (context) => const StrategyAddPage(),
-//           },
-//         );
-//       },
-//     );
