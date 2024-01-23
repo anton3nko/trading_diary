@@ -82,6 +82,8 @@ class SettingsPage extends StatelessWidget {
                     //3. Перезапустил приложение.
                     //4. На Dashboard отображается измененный стартовый баланс,
                     //на Settings Page - старый/дефолтный = 1000.
+                    //FIXME При запуске приложения
+                    //здесь отображается дефолтное значение = 1000
                     initialValue: provider.startingBalance.toString(),
                     textAlign: TextAlign.right,
                     inputFormatters: Styles.kDoubleSignedFormat,

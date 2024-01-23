@@ -128,7 +128,7 @@ class TransactionsRepo {
     }
   }
 
-  //TODO Расчет текущей прибыли
+  //Расчет текущей прибыли
   Future<double> calculateProfit() async {
     final db = await dbContext.database;
     final List<Map<String, dynamic>> result = await db.rawQuery('''
