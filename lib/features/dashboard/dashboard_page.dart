@@ -53,7 +53,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Consumer<SettingsProvider>(
                     builder: (context, provider, child) {
                   return Text(
-                    '\$${provider.startingBalance}',
+                    '\$${provider.startingBalance + provider.currentProfit}',
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w400,
