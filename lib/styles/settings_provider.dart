@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trading_diary/data/repo/transactions_repo.dart';
 
 class SettingsProvider extends ChangeNotifier {
   String currentTheme = 'system';
-  double startingBalance = 1000;
+  int startingBalance = 1000;
+  double currentProfit = 0;
 
   ThemeMode get themeMode {
     if (currentTheme == 'light') {
@@ -15,7 +19,7 @@ class SettingsProvider extends ChangeNotifier {
     }
   }
 
-  double get balance => startingBalance;
+  //int get initialBalance => startingBalance;
 // Добавил сохранение параметров темы в Shared Preferences
   changeTheme(String theme) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,12 +30,20 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //
-  changeBalance(double newBalance) async {
+  //Сохранение стартового баланса в SharedPreferences
+  changeBalance(int newBalance) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    await prefs.setDouble('balance', newBalance);
+    await prefs.setInt('starting_balance', newBalance);
+
     startingBalance = newBalance;
+    notifyListeners();
+  }
+
+  calculateProfit() async {
+    double result = await TransactionsRepo.instance.calculateProfit();
+    log(result.toString(), name: 'balance_profit');
+    currentProfit = result;
     notifyListeners();
   }
 
@@ -40,8 +52,8 @@ class SettingsProvider extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     currentTheme = prefs.getString('theme') ?? 'system';
-    startingBalance = prefs.getDouble('balance') ?? 1000;
-
+    startingBalance = prefs.getInt('starting_balance') ?? 1000;
+    log(startingBalance.toString(), name: 'balance_init');
     notifyListeners();
   }
 }

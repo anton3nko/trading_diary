@@ -8,7 +8,7 @@ import 'package:trading_diary/features/transactions/presentation/transactions_pa
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:provider/provider.dart';
 
-import 'package:trading_diary/styles/theme_provider.dart';
+import 'package:trading_diary/styles/settings_provider.dart';
 import 'package:trading_diary/features/strategies/presentation/strategy_add_page.dart';
 import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';

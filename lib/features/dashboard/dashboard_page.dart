@@ -9,7 +9,7 @@ import 'package:trading_diary/features/widgets/date_range_picker.dart';
 import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
-import 'package:trading_diary/styles/theme_provider.dart';
+import 'package:trading_diary/styles/settings_provider.dart';
 
 class DashboardPage extends StatefulWidget {
   final DashboardBloc dashboardBloc;
@@ -48,15 +48,18 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(),
-                child: Text(
-                  '\$2200.89',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.only(),
+                child: Consumer<SettingsProvider>(
+                    builder: (context, provider, child) {
+                  return Text(
+                    '\$${provider.startingBalance}',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  );
+                }),
               ),
               const SizedBox(
                 height: 5.0,
@@ -68,7 +71,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     builder: (context, provider, child) {
                   return IconButton(
                     onPressed: () async {
-                      log(provider.balance.toString());
+                      log(provider.startingBalance.toString());
+                      provider.calculateProfit();
                       //await TransactionsRepo.instance.calculateTopStrategies();
                       context
                           .read<DashboardBloc>()

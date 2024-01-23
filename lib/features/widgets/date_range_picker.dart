@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 //на Dashboard и Transactions. Выбранный диапозон дат будет свой для
 //каждой страницы. Поэтому нужно его хранить в разных bloc(DashboardBloc, TransactionBloc).
 //Как в этом виджете использовать разный bloc в завимисимости от ситуации??
+//Текущее решение - передаю CallBack в конструктор
 class DateRangePicker extends StatelessWidget {
   final DateTime startDate;
   final DateTime endDate;

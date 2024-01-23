@@ -127,4 +127,19 @@ class TransactionsRepo {
       return [];
     }
   }
+
+  //TODO Расчет текущей прибыли
+  Future<double> calculateProfit() async {
+    final db = await dbContext.database;
+    final List<Map<String, dynamic>> result = await db.rawQuery('''
+      SELECT sum(profit)as total_profit from $transactionTable;
+''');
+    log(result.toString(), name: 'balance');
+    log(result[0]['total_profit'].toString(), name: 'balance');
+    if (result[0]['total_profit'].runtimeType != Null) {
+      return result[0]['total_profit'];
+    } else {
+      return 0;
+    }
+  }
 }
