@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class CurrenciesRateResponse {
   final bool success;
   final int timestamp;
@@ -25,6 +26,11 @@ class CurrenciesRateResponse {
       date: json['date'],
       rates: rates,
     );
+  }
+
+  @override
+  String toString() {
+    return 'CurrenciesRateResponse(success: $success, timestamp: $timestamp, base: $base, date: $date, rates: $rates)';
   }
 }
 

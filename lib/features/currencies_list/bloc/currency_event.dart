@@ -9,4 +9,11 @@ sealed class CurrencyEvent extends Equatable {
 
 class GetCurrenciesSymbolsEvent extends CurrencyEvent {}
 
-class GetGurrencyRatesEvent extends CurrencyEvent {}
+class GetGurrencyRatesEvent extends CurrencyEvent {
+  final String selectedCurrency;
+
+  const GetGurrencyRatesEvent(this.selectedCurrency);
+
+  @override
+  List<Object> get props => [selectedCurrency];
+}

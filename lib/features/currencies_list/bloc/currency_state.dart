@@ -9,7 +9,9 @@ sealed class CurrencyState extends Equatable {
 
 class CurrencyInitialState extends CurrencyState {}
 
-class CurrencyLoadingState extends CurrencyState {}
+class CurrencySymbolsLoading extends CurrencyState {}
+
+class CurrencyRateLoading extends CurrencyState {}
 
 class CurrencyRateData extends CurrencyState {
   final CurrenciesRateResponse data;

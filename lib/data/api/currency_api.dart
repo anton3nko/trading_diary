@@ -28,11 +28,13 @@ class CurrencyApi extends BaseCurrencyRepo {
 
   // Запрос курса валют по выбранной паре. Базовая валюта - евро
   @override
-  Future<CurrenciesRateResponse>? getCurrenciesRate() async {
+  Future<CurrenciesRateResponse>? getCurrenciesRate(
+    String selectedCurrency,
+  ) async {
     try {
       final response = await http.get(
         Uri.parse(
-          'http://data.fixer.io/api/latest?access_key=$token',
+          'http://data.fixer.io/api/latest?access_key=$token&symbols=$selectedCurrency',
         ),
       );
       final decodedResponse = json.decode(response.body);

@@ -29,7 +29,7 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     GetCurrenciesSymbolsEvent event,
     Emitter<CurrencyState> emit,
   ) async {
-    emit(CurrencyLoadingState());
+    emit(CurrencySymbolsLoading());
     // Это важно! Оформление блока try/catch позволяет тебе отлавливать ЛЮБЫЕ ошибки и эмитить их в ErrorState
     try {
       final response = await _api.getCurrencySymbols();
@@ -60,9 +60,9 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     GetGurrencyRatesEvent event,
     Emitter<CurrencyState> emit,
   ) async {
-    emit(CurrencyLoadingState());
+    emit(CurrencyRateLoading());
     try {
-      final response = await _api.getCurrenciesRate();
+      final response = await _api.getCurrenciesRate(event.selectedCurrency);
       if (response != null && response.success == true) {
         emit(
           CurrencyRateData(
