@@ -41,8 +41,8 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
         );
       } else {
         emit(
-          const CurrencyErrorState(
-            'Something went wrong',
+          CurrencyErrorState(
+            response?.error?.info ?? 'Something went wrong',
           ),
         );
       }

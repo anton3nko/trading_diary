@@ -16,104 +16,93 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Key? currentExpandedKey;
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        isExtended: true,
         onPressed: () {
           context.read<CurrencyBloc>().add(GetCurrenciesSymbolsEvent());
         },
+        child: const Icon(
+          Icons.currency_exchange_sharp,
+        ),
       ),
       appBar: AppBar(
         title: const Text('Currency Bloc Demo'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              BlocConsumer<CurrencyBloc, CurrencyState>(
-                buildWhen: (previous, current) {
-                  /// С помощью этого параметра ты можешь ограничить перерисовку виджета. Он будет ребилдится только при заданных условиях
-                  if (current is CurrencySymbolsData ||
-                      current is CurrencySymbolsLoading) {
-                    return true;
-                  }
-                  return false;
-                },
-                listener: (context, state) {
-                  if (state is CurrencyErrorState) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message),
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is CurrencySymbolsLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (state is CurrencySymbolsData) {
-                    log(state.data.symbols.length.toString());
-
-                    return Column(
-                      children: [
-                        const Text('Base Currency - EURO'),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 7,
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            final currency = state.data.symbols[index];
-                            return CurrencyRateTile(
-                              key: currentExpandedKey,
-                              currency: currency,
-                              onTap: () {
-                                context.read<CurrencyBloc>().add(
-                                      GetGurrencyRatesEvent(
-                                        currency.code,
-                                      ),
-                                    );
-                              },
-                            );
-                          },
-                          itemCount: state.data.symbols.length,
-                        )
-                      ],
-                    );
-                  }
-                  return const Center(
-                    child: Text(
-                      'Currency List Demo',
-                    ),
-                  );
-                  // ListTile(
-                  //   leading: Text(
-                  //       CountryPickerUtils.getCountryByCurrencyCode('AED').name!),
-                  //   title: Text('AED'),
-                  //   trailing: Text('United Arab Emirates Dirham'),
-                  // );
-                },
+      body: BlocConsumer<CurrencyBloc, CurrencyState>(
+        buildWhen: (previous, current) {
+          /// С помощью этого параметра ты можешь ограничить перерисовку виджета. Он будет ребилдится только при заданных условиях
+          if (current is CurrencySymbolsData ||
+              current is CurrencySymbolsLoading ||
+              current is CurrencyErrorState) {
+            return true;
+          }
+          return false;
+        },
+        listener: (context, state) {
+          if (state is CurrencyErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
               ),
-            ],
-          ),
-        ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is CurrencySymbolsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is CurrencySymbolsData &&
+              state.data.symbols != null) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Column(
+                  children: [
+                    const Text('Base Currency - EURO'),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListView.separated(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 7,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        final currency = state.data.symbols![index];
+                        return CurrencyRateTile(
+                          currency: currency,
+                          onTap: () {
+                            context.read<CurrencyBloc>().add(
+                                  GetGurrencyRatesEvent(
+                                    currency.code,
+                                  ),
+                                );
+                          },
+                        );
+                      },
+                      itemCount: state.data.symbols!.length,
+                    )
+                  ],
+                ),
+              ),
+            );
+          }
+          return const Center(
+            child: Text('Tap the FAB to load currency symbols'),
+          );
+        },
       ),
     );
 
     //TODO: Uncomment this if you need it
+
     // Column(
     //   children: [
     //     const Align(
