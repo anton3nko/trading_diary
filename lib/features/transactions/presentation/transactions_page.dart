@@ -116,7 +116,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                             : ''),
                                       ),
                                       onLongPress: () {
-                                        log('onLongPress');
                                         transactionBloc.add(
                                             DeleteTransactionEvent(
                                                 id: state

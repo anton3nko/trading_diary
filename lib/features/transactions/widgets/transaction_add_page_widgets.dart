@@ -21,12 +21,12 @@ class NumericTextField extends StatelessWidget {
         _label = label,
         _isRequired = isRequired;
 
-  final TextEditingController _numericFieldController;
-  final List<TextInputFormatter> _inputFormatters;
-  final bool _isSigned;
   final String _hintText;
-  final String _label;
+  final List<TextInputFormatter> _inputFormatters;
   final bool _isRequired;
+  final bool _isSigned;
+  final String _label;
+  final TextEditingController _numericFieldController;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +86,7 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
   }) : _currencyFieldController = currencyFieldController;
 
   final List<CurrencyPair> currencies;
+
   final TextEditingController _currencyFieldController;
 
   @override

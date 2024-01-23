@@ -1,5 +1,10 @@
-import 'package:trading_diary/domain/model/currencies_list_dto.dart';
+import 'package:trading_diary/domain/model/currencies_rate_response.dart';
+import 'package:trading_diary/domain/model/currency_symbols.dart';
 
 abstract class BaseCurrencyRepo {
-  Future<CurrenciesListDto> getCurrenciesList();
+  Future<CurrenciesRateResponse>? getCurrenciesRate(
+    String selectedCurrency,
+  );
+
+  Future<CurrencySymbolsResponse>? getCurrencySymbols();
 }
