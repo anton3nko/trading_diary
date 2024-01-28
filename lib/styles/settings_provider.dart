@@ -6,7 +6,7 @@ import 'package:trading_diary/data/repo/transactions_repo.dart';
 
 class SettingsProvider extends ChangeNotifier {
   String currentTheme = 'system';
-  int startingBalance = 1000;
+  late int startingBalance;
   double currentProfit = 0;
 
   ThemeMode get themeMode {
@@ -49,6 +49,7 @@ class SettingsProvider extends ChangeNotifier {
 
 //Инициализация темы из Shared Preferences ?? system
   initialize() async {
+    log('initialize()', time: DateTime.now());
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     currentTheme = prefs.getString('theme') ?? 'system';

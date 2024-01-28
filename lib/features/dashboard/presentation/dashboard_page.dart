@@ -52,6 +52,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 padding: const EdgeInsets.only(),
                 child: Consumer<SettingsProvider>(
                     builder: (context, provider, child) {
+                  //FIXME При запуске приложения
+                  //здесь отображается значение из SharedPreferences
                   return Text(
                     '\$${provider.startingBalance + provider.currentProfit}',
                     style: const TextStyle(

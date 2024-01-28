@@ -35,9 +35,7 @@ class Application extends StatelessWidget {
         BlocProvider(create: (context) => DashboardBloc()),
         BlocProvider(
           create: (context) => CurrencyBloc(
-            // TODO: Вставь сюда обновленный токен после того как зарегаешься
-
-            CurrencyApi(token: 'f5c04ab3188fabd49034b54421ae3182'),
+            CurrencyApi(token: 'c264dae976f36d57d5720324482f1487'),
           ),
         )
       ],
