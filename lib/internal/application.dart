@@ -17,6 +17,7 @@ import 'package:trading_diary/features/transactions/presentation/transaction_add
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});
@@ -30,6 +31,8 @@ class Application extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 StrategyBloc()..add(const InitialStrategyEvent())),
+        BlocProvider(
+            create: (context) => BalanceBloc()..add(const InitBalanceEvent())),
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
         BlocProvider(create: (context) => DashboardBloc()),
