@@ -31,8 +31,8 @@ class Application extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 StrategyBloc()..add(const InitialStrategyEvent())),
-        BlocProvider(
-            create: (context) => BalanceBloc()..add(const InitBalanceEvent())),
+        // BlocProvider(
+        //     create: (context) => BalanceBloc()..add(const InitBalanceEvent())),
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
         BlocProvider(create: (context) => DashboardBloc()),

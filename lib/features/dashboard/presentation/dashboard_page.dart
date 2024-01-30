@@ -10,10 +10,13 @@ import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:trading_diary/styles/settings_provider.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 
 class DashboardPage extends StatefulWidget {
   final DashboardBloc dashboardBloc;
-  const DashboardPage({super.key, required this.dashboardBloc});
+  DashboardPage({super.key, required this.dashboardBloc}) {
+    log('DashboardPage()');
+  }
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -25,6 +28,7 @@ class _DashboardPageState extends State<DashboardPage> {
     if (widget.dashboardBloc.state is DashboardInitialState) {
       widget.dashboardBloc.add(const FetchDashboardDataEvent());
     }
+    log('DashboardPageState build()');
     return DefaultTabController(
       length: 2,
       child: SingleChildScrollView(
@@ -50,12 +54,17 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(),
-                child: Consumer<SettingsProvider>(
-                    builder: (context, provider, child) {
+                child: BlocBuilder<BalanceBloc, BalanceState>(
+                    builder: (context, state) {
+                  log('In BlocBuilder Text with balance');
+                  log('${state.toString()}');
                   //FIXME При запуске приложения
                   //здесь отображается значение из SharedPreferences
+                  var balanceBloc = context.read<BalanceBloc>();
+                  balanceBloc.add(const InitBalanceEvent());
+                  log('${balanceBloc.state}');
                   return Text(
-                    '\$${provider.startingBalance + provider.currentProfit}',
+                    '\$${context.read<BalanceBloc>().startingBalance}',
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w400,
@@ -73,8 +82,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     builder: (context, provider, child) {
                   return IconButton(
                     onPressed: () async {
-                      log(provider.startingBalance.toString());
-                      provider.calculateProfit();
+                      //log(provider.startingBalance.toString());
+                      //provider.calculateProfit();
                       //await TransactionsRepo.instance.calculateTopStrategies();
                       context
                           .read<DashboardBloc>()

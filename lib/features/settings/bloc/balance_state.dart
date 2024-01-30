@@ -11,6 +11,7 @@ class InitialBalanceState extends BalanceState {
   List<Object> get props => [];
 }
 
+//Состояние отображения стартового баланса(Settings Page)
 class DisplayStBalanceState extends BalanceState {
   final double startingBalance;
   const DisplayStBalanceState({required this.startingBalance});
@@ -19,6 +20,7 @@ class DisplayStBalanceState extends BalanceState {
   List<Object> get props => [startingBalance];
 }
 
+//Состояние отображения текущего баланса(Dashboard и Transactions page)
 class DisplayCurBalanceState extends BalanceState {
   final double currentBalance;
   const DisplayCurBalanceState({required this.currentBalance});

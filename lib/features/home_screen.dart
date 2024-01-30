@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
             }),
             const TransactionsPage(),
             const StrategiesPage(),
-            const SettingsPage(),
+            SettingsPage(),
           ],
         ),
         bottomNavigationBar: const AppNavBar(),

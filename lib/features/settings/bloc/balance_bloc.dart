@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:trading_diary/data/repo/transactions_repo.dart';
@@ -10,9 +12,12 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
   late double startingBalance;
   late double currentBalance;
   BalanceBloc() : super(const InitialBalanceState()) {
+    startingBalance = 1000;
+    currentBalance = 1000;
     on<InitBalanceEvent>((event, emit) {
-      startingBalance = 1000;
-      currentBalance = 1000;
+      log('InitBalanceEvent');
+
+      emit(DisplayStBalanceState(startingBalance: startingBalance));
     });
     on<DisplayStBalanceEvent>((event, emit) {
       emit(DisplayStBalanceState(startingBalance: startingBalance));
