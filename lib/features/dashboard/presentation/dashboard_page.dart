@@ -56,15 +56,11 @@ class _DashboardPageState extends State<DashboardPage> {
                 padding: const EdgeInsets.only(),
                 child: BlocBuilder<BalanceBloc, BalanceState>(
                     builder: (context, state) {
-                  log('In BlocBuilder Text with balance');
-                  log('${state.toString()}');
-                  //FIXME При запуске приложения
-                  //здесь отображается значение из SharedPreferences
                   var balanceBloc = context.read<BalanceBloc>();
                   balanceBloc.add(const InitBalanceEvent());
                   log('${balanceBloc.state}');
                   return Text(
-                    '\$${context.read<BalanceBloc>().startingBalance}',
+                    '\$${balanceBloc.startingBalance}',
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w400,

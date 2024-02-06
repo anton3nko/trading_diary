@@ -177,17 +177,21 @@ class SettingsPage extends StatelessWidget {
                 width: 10,
               ),
               BlocBuilder<BalanceBloc, BalanceState>(builder: (context, state) {
-                final balanceBloc = context.read<BalanceBloc>();
-                final double startingBalance;
-                if (state is DisplayStBalanceState) {
-                  startingBalance = state.startingBalance;
-                } else {
-                  startingBalance = 1000;
-                }
+                var balanceBloc = context.read<BalanceBloc>();
+                balanceBloc.add(const InitBalanceEvent());
+                log('${balanceBloc.state}');
+                // final double startingBalance;
+                // if (state is DisplayStBalanceState) {
+                //   startingBalance = state.startingBalance;
+                // } else {
+                //   startingBalance = 1100;
+                // }
+                log('${balanceBloc.startingBalance}');
                 return SizedBox(
                   width: 100,
                   child: TextFormField(
-                    initialValue: startingBalance.toString(),
+                    //TODO поставить ограничение на значения от 1 до +inf
+                    initialValue: balanceBloc.startingBalance.toString(),
                     textAlign: TextAlign.right,
                     inputFormatters: Styles.kDoubleSignedFormat,
                     keyboardType: const TextInputType.numberWithOptions(
@@ -198,7 +202,7 @@ class SettingsPage extends StatelessWidget {
                       // double newBalance = double.tryParse(value!) ?? 1000;
                       // log(newBalance.toString(), name: 'changingBalance');
                       balanceBloc.add(ChangeStBalanceEvent(
-                          newStBalance: double.parse(value ?? '1000')));
+                          newStBalance: double.parse(value!)));
                     },
                   ),
                 );

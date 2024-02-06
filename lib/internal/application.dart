@@ -31,8 +31,12 @@ class Application extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 StrategyBloc()..add(const InitialStrategyEvent())),
-        // BlocProvider(
-        //     create: (context) => BalanceBloc()..add(const InitBalanceEvent())),
+        BlocProvider(
+            //TODO ..add(const InitBalanceEvent())) вот так проинициализировать не получается
+            //Если я правильно понял, обработчик ивентов в блоке находится в теле конструктора,
+            //а если использовать поля с модификатором late, то требуется, чтобы они были инициализированы
+            //до выполнения тела конструктора BalanceBloc()
+            create: (context) => BalanceBloc()),
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
         BlocProvider(create: (context) => DashboardBloc()),
