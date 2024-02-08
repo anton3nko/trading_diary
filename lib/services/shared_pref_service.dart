@@ -1,4 +1,3 @@
-//TODO Сервис доступа к SharedPreferences
 import 'dart:convert';
 import 'dart:developer';
 
@@ -7,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trading_diary/domain/model/settings_model.dart';
 import 'package:trading_diary/domain/model/color_model.dart';
 
+//Сервис доступа к SharedPreferences(SP)
 class PreferencesService {
   static const String _settingsKey = 'settingsString';
   SharedPreferences sharedPreferences;
@@ -33,6 +33,7 @@ class PreferencesService {
     return initialSettings;
   }
 
+  //Сохраняет заданные настройки в SP
   Future<void> saveSettings(SettingsModel newSettings) async {
     await sharedPreferences.setString(_settingsKey, jsonEncode(newSettings));
   }

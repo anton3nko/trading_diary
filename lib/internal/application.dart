@@ -52,9 +52,15 @@ class Application extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Trading Diary',
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
-            themeMode: provider.themeMode,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.deepPurple,
+                brightness: Brightness.light,
+              ),
+              useMaterial3: true,
+            ),
+            // darkTheme: ThemeData.dark(),
+            // themeMode: provider.themeMode,
             initialRoute: HomeScreen.id,
             routes: {
               LoginScreen.id: (context) => const LoginScreen(),
