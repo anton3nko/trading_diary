@@ -36,7 +36,8 @@ class Application extends StatelessWidget {
             //Если я правильно понял, обработчик ивентов в блоке находится в теле конструктора,
             //а если использовать поля с модификатором late, то требуется, чтобы они были инициализированы
             //до выполнения тела конструктора BalanceBloc()
-            create: (context) => BalanceBloc()),
+            //p.s. Сейчас ошибки late initialize нет, я как-то починил, но забыл как :)
+            create: (context) => BalanceBloc()..add(const InitBalanceEvent())),
         BlocProvider(create: (context) => TransactionBloc()),
         BlocProvider(create: (context) => NewTransactionCubit()),
         BlocProvider(create: (context) => DashboardBloc()),
