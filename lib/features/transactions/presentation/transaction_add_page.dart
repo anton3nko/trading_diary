@@ -63,7 +63,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TrTypeDropdownMenu(
                       typeFieldController: vm.typeFieldController,
@@ -95,7 +95,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   height: 10.0,
                 ),
                 const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     DateTimePickerWidget(
                       initialButtonText: 'Open Date',
@@ -116,7 +116,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   height: 10.0,
                 ),
                 StrategyDropDownMenu(
-                  labelText: 'Secondary Strategy',
+                  labelText: 'Sec. Strategy',
                   isRequired: false,
                   controller: vm.secStrategyController,
                 ),
@@ -136,6 +136,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 ),
                 MultilineCommentTextField(
                   commentFieldController: vm.commentFieldController,
+                ),
+                const SizedBox(
+                  height: 10.0,
                 ),
                 //Вопрос - так можно?
                 // Ответ: да, можно, вложенные BlocBuilder'ы это ок

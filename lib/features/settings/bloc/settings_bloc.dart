@@ -13,13 +13,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final PreferencesService preferenceService;
   final _colors = const [
     ColorModel(index: 0.0, color: Colors.deepPurple, name: 'Deep Purple'),
-    ColorModel(index: 1.0, color: Colors.green, name: 'Green'),
-    ColorModel(index: 2.0, color: Colors.red, name: 'Red'),
+    ColorModel(index: 1.0, color: Colors.lightGreenAccent, name: 'Green'),
+    ColorModel(index: 2.0, color: Colors.yellowAccent, name: 'Yellow'),
     ColorModel(index: 3.0, color: Colors.white, name: 'White'),
   ];
   SettingsBloc(
-      {required SettingsModel settingsToInit, required this.preferenceService})
-      : super(SettingsInitialState(settingsToInit)) {
+      {required SettingsModel initialSettings, required this.preferenceService})
+      : super(SettingsInitialState(initialSettings)) {
     on<InitialSettingEvent>((event, emit) async {
       emit(SettingsAppliedState(settingsToApply: state.settingsModel));
     });

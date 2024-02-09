@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-//import 'package:trading_diary/data/api/currency_api.dart';
-import 'package:trading_diary/styles/settings_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trading_diary/domain/model/settings_model.dart';
+import 'package:trading_diary/features/settings/bloc/settings_bloc.dart';
+import 'package:trading_diary/services/shared_pref_service.dart';
 import 'internal/application.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final PreferencesService preferencesService =
+      PreferencesService(sharedPreferences: prefs);
+  SettingsModel initialSettings = preferencesService.readSettings();
   runApp(
-    ChangeNotifierProvider<SettingsProvider>(
-      create: (_) => SettingsProvider()..initialize(),
+    BlocProvider(
+      create: (context) => SettingsBloc(
+          preferenceService: preferencesService,
+          initialSettings: initialSettings)
+        ..add(const InitialSettingEvent()),
       child: const Application(),
     ),
   );

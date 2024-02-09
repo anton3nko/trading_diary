@@ -10,8 +10,8 @@ sealed class SettingsState extends Equatable {
 }
 
 class SettingsInitialState extends SettingsState {
-  const SettingsInitialState(SettingsModel settingsToInit)
-      : super(settingsModel: settingsToInit);
+  const SettingsInitialState(SettingsModel initialSettings)
+      : super(settingsModel: initialSettings);
 }
 
 class SettingsAppliedState extends SettingsState {
