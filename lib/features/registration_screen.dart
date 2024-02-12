@@ -10,6 +10,7 @@ class RegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(18.0),
@@ -38,8 +39,6 @@ class RegistrationScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     RoundedButton(
-                      buttonColor: Styles.kBlackColor,
-                      textColor: Styles.kYellowColor,
                       buttonName: 'Register',
                       onPressed: () {},
                     ),
@@ -47,8 +46,6 @@ class RegistrationScreen extends StatelessWidget {
                       height: 10.0,
                     ),
                     RoundedButton(
-                      buttonColor: Styles.kYellowColor,
-                      textColor: Styles.kBlackColor,
                       buttonName: 'Back',
                       onPressed: () {
                         Navigator.pop(context);

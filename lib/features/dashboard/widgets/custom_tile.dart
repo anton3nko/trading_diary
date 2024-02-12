@@ -49,7 +49,6 @@ class CustomTile extends StatelessWidget {
                 '$profitableCount/$totalCount',
                 style: const TextStyle(
                   fontSize: 15.0,
-                  color: Colors.black,
                 ),
               ),
             ],

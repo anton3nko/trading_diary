@@ -72,8 +72,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         RoundedButton(
-                          buttonColor: Styles.kBlackColor,
-                          textColor: Styles.kYellowColor,
                           buttonName: 'Log in',
                           onPressed: () {
                             BlocProvider.of<LoginBloc>(context).add(
@@ -88,8 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 10.0,
                         ),
                         RoundedButton(
-                          buttonColor: Styles.kYellowColor,
-                          textColor: Styles.kBlackColor,
                           buttonName: 'Sign up',
                           onPressed: () {
                             Navigator.pushNamed(context, RegistrationScreen.id);
@@ -101,9 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {},
                       child: const Text(
                         'Forgot password?',
-                        style: TextStyle(
-                          color: Styles.kBlackColor,
-                        ),
+                        style: TextStyle(),
                       ),
                     ),
                     SizedBox(

@@ -22,13 +22,20 @@ class AppNavBarItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(iconSrc,
-                color: isActive ? Colors.black : Colors.grey, size: 24),
+            Icon(
+              iconSrc,
+              color: isActive
+                  ? ThemeData().colorScheme.primary
+                  : Theme.of(context).unselectedWidgetColor,
+              size: 24,
+            ),
             const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
-                color: isActive ? Colors.black : Colors.grey,
+                color: isActive
+                    ? ThemeData().colorScheme.primary
+                    : Theme.of(context).unselectedWidgetColor,
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
               ),

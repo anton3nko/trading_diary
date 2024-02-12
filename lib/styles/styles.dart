@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Styles {
-  static const kYellowColor = Color(0xFFffed18);
-  static const kBlackColor = Color(0xFF000000);
-  static const kGreyColor = Color(0xFFF6F6F6);
-  static const kDartkGreyColor = Color(0xFFbdbdbd);
-
   static const kTextFieldDecoration = InputDecoration(
-    hintStyle: TextStyle(color: Color(0xFFbdbdbd)),
-    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+    contentPadding: EdgeInsets.only(left: 6),
     filled: true,
     hintText: 'Hint Text',
-    fillColor: Color(0xFFF6F6F6),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
@@ -22,7 +15,9 @@ class Styles {
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
-      borderSide: BorderSide(color: kYellowColor, width: 2),
+      borderSide: BorderSide(
+        width: 2,
+      ),
     ),
   );
 

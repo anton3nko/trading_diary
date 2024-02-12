@@ -18,13 +18,11 @@ class _StrategiesPageState extends State<StrategiesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Styles.kYellowColor,
         child: const Icon(
           Icons.add,
           size: 30,
-          color: Styles.kBlackColor,
         ),
         onPressed: () {
           Navigator.pushNamed(context, StrategyAddPage.id);
@@ -54,7 +52,8 @@ class _StrategiesPageState extends State<StrategiesPage> {
                             title: Text(
                               state.strategies[index].title,
                               style: const TextStyle(
-                                  color: Styles.kBlackColor, fontSize: 15.0),
+                                fontSize: 15.0,
+                              ),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

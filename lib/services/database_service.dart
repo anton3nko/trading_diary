@@ -11,9 +11,12 @@ import 'package:trading_diary/domain/model/trading_transaction.dart';
 //Перенёс CRUD-методы Transactions->transactions_repo.dart
 //Strategy->strategies_repo.dart
 class DatabaseService {
+  DatabaseService._init();
+
   static const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-  static const textType = 'TEXT NOT NULL';
+  static final DatabaseService instance = DatabaseService._init();
   static const integerType = 'INTEGER NOT NULL';
+  static const textType = 'TEXT NOT NULL';
 
   static const _createStrategiesTable = '''
     CREATE TABLE $strategyTable (
@@ -21,6 +24,7 @@ class DatabaseService {
         title TEXT NOT NULL,
         color INTEGER NOT NULL
       )''';
+
   static const _createTransactionsTable = '''
     CREATE TABLE $transactionTable (
         _id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,15 +43,19 @@ class DatabaseService {
     )
 ''';
 
-  static final DatabaseService instance = DatabaseService._init();
   static Database? _database;
-  DatabaseService._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
 
     _database = await _initDB('trading_diary_db');
     return _database!;
+  }
+
+  Future close() async {
+    final db = await instance.database;
+
+    db.close();
   }
 
   Future<Database> _initDB(String filePath) async {
@@ -67,16 +75,5 @@ class DatabaseService {
           title: 'None',
           strategyColor: Colors.lightGreen,
         ).toJson());
-    //await createStrategy(Strategy(title: 'none', strategyColor: Colors.amber));
-    // log('DB tables created; _createdDB');
-    // (await db.query('sqlite_master', columns: ['type', 'name'])).forEach((row) {
-    //   log(row.values.toString());
-    // });
-  }
-
-  Future close() async {
-    final db = await instance.database;
-
-    db.close();
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NestedTabBar extends StatefulWidget {
-  final List<Widget> tabs;
   const NestedTabBar({super.key, required this.tabs});
+
+  final List<Widget> tabs;
 
   @override
   State<NestedTabBar> createState() => _NestedTabBarState();
@@ -13,15 +14,18 @@ class _NestedTabBarState extends State<NestedTabBar>
   late TabController _nestedTabController;
 
   @override
-  void initState() {
-    super.initState();
-    _nestedTabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
   void dispose() {
     super.dispose();
     _nestedTabController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nestedTabController = TabController(
+      length: 2,
+      vsync: this,
+    );
   }
 
   @override
@@ -32,16 +36,9 @@ class _NestedTabBarState extends State<NestedTabBar>
         Container(
           height: 35,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color(
-                0xFFE8E8E8,
-              ),
-            ),
+            border: Border.all(),
             borderRadius: BorderRadius.circular(
               12,
-            ),
-            color: const Color(
-              0xFFF6F6F6,
             ),
           ),
           child: TabBar(
@@ -49,10 +46,8 @@ class _NestedTabBarState extends State<NestedTabBar>
                 borderRadius: BorderRadius.circular(
                   12,
                 ),
-                color: Colors.transparent,
               ),
               controller: _nestedTabController,
-              labelColor: Colors.black,
               tabs: const [
                 Tab(
                   text: "Strategy",

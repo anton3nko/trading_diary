@@ -18,17 +18,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
-        backgroundColor: Colors.grey.shade200,
         body: IndexedStack(
           index: context.watch<NavBarCubit>().pageIndex,
           children: [
             BlocBuilder<DashboardBloc, DashboardState>(
                 builder: (context, state) {
-              final dashboardBloc = context.read<DashboardBloc>();
-              return DashboardPage(
-                dashboardBloc: dashboardBloc,
-              );
+              return const DashboardPage();
             }),
             const TransactionsPage(),
             const StrategiesPage(),

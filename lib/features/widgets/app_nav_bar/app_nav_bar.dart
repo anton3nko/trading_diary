@@ -20,19 +20,17 @@ class AppNavBar extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          BlocBuilder<SettingsBloc, SettingsState>(
+          BlocBuilder<BalanceBloc, SettingsState>(
             builder: (context, state) {
-              final currentSettings =
-                  BlocProvider.of<SettingsBloc>(context).state.settingsModel;
               return Container(
                 height: 61,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(20),
                     topLeft: Radius.circular(20),
                   ),
-                  color: currentSettings.primaryColor.color,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
@@ -47,10 +45,6 @@ class AppNavBar extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    //При смене табов не актуализируются данные по
-                    //Transactions и Top Strategies(на Dashboard)
-                    //Для этого решил посылать ивенты(CalculateTopStrategiesEvent
-                    //и FetchTransactionsEvent)
                     BlocBuilder<DashboardBloc, DashboardState>(
                         builder: (context, state) {
                       return AppNavBarItem(

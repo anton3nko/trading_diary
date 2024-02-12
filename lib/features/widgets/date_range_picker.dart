@@ -9,14 +9,16 @@ import 'package:intl/intl.dart';
 //  Ответ: не думаю, что тут это необходимо. UI-элементы должны быть независимыми от бизнес-логики. В крайнем случае не грех использовать два разных пикера, просто создай отдельный класс.
 //Текущее решение - передаю CallBack в конструктор
 class DateRangePicker extends StatelessWidget {
-  final DateTime startDate;
+  const DateRangePicker({
+    super.key,
+    required this.startDate,
+    required this.endDate,
+    required this.onSelect,
+  });
+
   final DateTime endDate;
   final Function onSelect;
-  const DateRangePicker(
-      {super.key,
-      required this.startDate,
-      required this.endDate,
-      required this.onSelect});
+  final DateTime startDate;
 
   @override
   Widget build(BuildContext context) {
