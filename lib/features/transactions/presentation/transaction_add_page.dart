@@ -27,9 +27,15 @@ class TransactionAddPage extends StatefulWidget {
 
 class _TransactionAddPageState extends State<TransactionAddPage> {
   List<CurrencyPair> currencies = [
-    CurrencyPair(currencyPairTitle: 'USDCHF'),
-    CurrencyPair(currencyPairTitle: 'GBPUSD'),
-    CurrencyPair(currencyPairTitle: 'USDJPY'),
+    CurrencyPair(
+      currencyPairTitle: 'USDCHF',
+    ),
+    CurrencyPair(
+      currencyPairTitle: 'GBPUSD',
+    ),
+    CurrencyPair(
+      currencyPairTitle: 'USDJPY',
+    ),
   ];
 
   final vm = TransactionAddViewModel();
