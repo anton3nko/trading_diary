@@ -4,19 +4,19 @@ import 'package:equatable/equatable.dart';
 import 'package:trading_diary/domain/model/settings_model.dart';
 import 'package:trading_diary/services/shared_pref_service.dart';
 
-part 'settings_event.dart';
-part 'settings_state.dart';
+part 'balance_event.dart';
+part 'balance_state.dart';
 
-class BalanceBloc extends Bloc<SettingsEvent, SettingsState> {
+class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
   final PreferencesService preferenceService;
 
   BalanceBloc(
       {required SettingsModel initialSettings, required this.preferenceService})
-      : super(SettingsInitialState(initialSettings)) {
-    on<InitialSettingEvent>(
+      : super(BalanceInitialState(initialSettings)) {
+    on<InitialBalanceEvent>(
       (event, emit) async {
         emit(
-          SettingsAppliedState(
+          BalanceAppliedState(
             settingsToApply: state.settingsModel,
           ),
         );
@@ -29,7 +29,7 @@ class BalanceBloc extends Bloc<SettingsEvent, SettingsState> {
         SettingsModel newSettings =
             state.settingsModel.copyWith(startingBalance: newStartingBalance);
         await preferenceService.saveSettings(newSettings);
-        emit(SettingsAppliedState(settingsToApply: newSettings));
+        emit(BalanceAppliedState(settingsToApply: newSettings));
       },
     );
     on<SavePreferencesEvent>(

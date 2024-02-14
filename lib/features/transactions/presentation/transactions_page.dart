@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
@@ -23,6 +24,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Scaffold(
       appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'add_transaction',
         child: const Icon(
           Icons.add,
           size: 30,
@@ -46,16 +48,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(),
-                child: Text(
-                  '\$2200.89',
-                  style: TextStyle(
+              BlocBuilder<BalanceBloc, BalanceState>(builder: (context, state) {
+                return Text(
+                  '${state.settingsModel.startingBalance}',
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w400,
                   ),
-                ),
-              ),
+                );
+              }),
               const SizedBox(
                 height: 30.0,
               ),

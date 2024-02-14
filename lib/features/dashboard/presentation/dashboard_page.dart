@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
-import 'package:trading_diary/features/settings/bloc/settings_bloc.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/widgets/date_range_picker.dart';
 import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
@@ -38,7 +38,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                BlocBuilder<BalanceBloc, SettingsState>(
+                BlocBuilder<BalanceBloc, BalanceState>(
                     builder: (context, state) {
                   return Padding(
                       padding: const EdgeInsets.only(),

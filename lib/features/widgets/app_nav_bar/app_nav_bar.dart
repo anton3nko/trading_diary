@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trading_diary/features/settings/bloc/settings_bloc.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/app_nav_bar_item.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
@@ -20,7 +20,7 @@ class AppNavBar extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          BlocBuilder<BalanceBloc, SettingsState>(
+          BlocBuilder<BalanceBloc, BalanceState>(
             builder: (context, state) {
               return Container(
                 height: 61,

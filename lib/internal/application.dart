@@ -7,7 +7,7 @@ import 'package:trading_diary/features/auth/presentation/login_screen.dart';
 import 'package:trading_diary/features/currencies_list/bloc/currency_bloc.dart';
 import 'package:trading_diary/features/registration_screen.dart';
 import 'package:trading_diary/features/home_screen.dart';
-import 'package:trading_diary/features/settings/bloc/settings_bloc.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/presentation/transactions_page.dart';
 import 'package:trading_diary/features/widgets/app_nav_bar/nav_bar_cubit.dart';
 
@@ -54,7 +54,7 @@ class Application extends StatelessWidget {
             ),
           )
         ],
-        child: BlocBuilder<BalanceBloc, SettingsState>(
+        child: BlocBuilder<BalanceBloc, BalanceState>(
           builder: (context, state) {
             return Consumer<ThemeProvider>(
               builder: (context, themeProvider, child) {

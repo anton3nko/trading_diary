@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_diary/domain/model/currency_symbols.dart';
 import 'package:trading_diary/features/currencies_list/bloc/currency_bloc.dart';
-import 'package:trading_diary/features/settings/bloc/settings_bloc.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/services/shared_pref_service.dart';
 import 'package:trading_diary/styles/styles.dart';
 
@@ -25,7 +25,7 @@ class SettingsPage extends StatelessWidget {
 
     /// Uncomment the line below to see the CurrencyBlocExample
     // return CurrencyBlocExample();
-    return BlocBuilder<BalanceBloc, SettingsState>(
+    return BlocBuilder<BalanceBloc, BalanceState>(
       builder: (context, state) {
         final settingsBloc = BlocProvider.of<BalanceBloc>(context);
         final stateStartingBalance =
@@ -88,9 +88,10 @@ class SettingsPage extends StatelessWidget {
                             onChanged: (String value) {
                               settingsBloc.add(
                                 ChangeStartingBalanceEvent(
-                                  newStartingBalance: double.parse(
-                                    value,
-                                  ),
+                                  newStartingBalance: double.tryParse(
+                                        value,
+                                      ) ??
+                                      0.0,
                                 ),
                               );
                             },
