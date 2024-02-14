@@ -43,7 +43,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   return Padding(
                       padding: const EdgeInsets.only(),
                       child: Text(
-                        '${state.settingsModel.startingBalance}',
+                        '${state.startingBalance}',
                         style: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w400,

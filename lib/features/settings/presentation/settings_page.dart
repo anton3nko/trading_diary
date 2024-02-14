@@ -28,8 +28,7 @@ class SettingsPage extends StatelessWidget {
     return BlocBuilder<BalanceBloc, BalanceState>(
       builder: (context, state) {
         final settingsBloc = BlocProvider.of<BalanceBloc>(context);
-        final stateStartingBalance =
-            settingsBloc.state.settingsModel.startingBalance;
+        final stateStartingBalance = settingsBloc.state.startingBalance;
         return Scaffold(
           appBar: AppBar(
             title: const Text('Settings'),

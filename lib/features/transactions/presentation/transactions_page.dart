@@ -50,7 +50,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               ),
               BlocBuilder<BalanceBloc, BalanceState>(builder: (context, state) {
                 return Text(
-                  '${state.settingsModel.startingBalance}',
+                  '${state.startingBalance}',
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w400,
