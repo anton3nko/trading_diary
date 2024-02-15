@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Styles {
+  static const kDropdownMenuTheme = InputDecorationTheme(
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
+      constraints: BoxConstraints(
+        maxHeight: 50.0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 7.0,
+        vertical: 10.0,
+      ));
+
   static const kTextFieldDecoration = InputDecoration(
     contentPadding: EdgeInsets.only(left: 6),
     filled: true,
@@ -11,7 +26,9 @@ class Styles {
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
-      borderSide: BorderSide(color: Color(0xFFbdbdbd), width: 1),
+      borderSide: BorderSide(
+        width: 1,
+      ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),

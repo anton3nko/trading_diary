@@ -1,5 +1,11 @@
 part of 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 
+extension StringExtension on String {
+  // Преобразует строку 'word'.capitalize => 'Word';
+  String capitalize() =>
+      "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+}
+
 //Customizable Numeric TextField for Transaction Add Page
 //FIXME Перестали вводится отрицательные числа в Profit field
 //Copy-paste отрицательных чисел работает,
@@ -51,6 +57,49 @@ class NumericTextField extends StatelessWidget {
   }
 }
 
+//Transaction Type Choice Chips
+class TrTypeChoiceChips extends StatefulWidget {
+  const TrTypeChoiceChips({super.key});
+
+  @override
+  State<TrTypeChoiceChips> createState() => _TrTypeChoiceChipsState();
+}
+
+class _TrTypeChoiceChipsState extends State<TrTypeChoiceChips> {
+  int? _selectedIndex;
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: List<Widget>.generate(
+        TransactionType.values.length,
+        (index) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              right: 5.0,
+            ),
+            child: ChoiceChip(
+              label: Text(
+                TransactionType.values[index].name.capitalize(),
+              ),
+              selectedColor: Theme.of(context).colorScheme.primary,
+              selected: _selectedIndex == index,
+              onSelected: (value) {
+                setState(() {
+                  _selectedIndex = value ? index : null;
+                });
+                if (_selectedIndex != null) {
+                  context.read<NewTransactionCubit>().setTransactionType(
+                      TransactionType.values[_selectedIndex!]);
+                }
+              },
+            ),
+          );
+        },
+      ).toList(),
+    );
+  }
+}
+
 //Transaction Types List Dropdown Menu
 class TrTypeDropdownMenu extends StatelessWidget {
   const TrTypeDropdownMenu({
@@ -91,23 +140,22 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewTransactionCubit, NewTransaction>(
-        builder: (context, state) {
-      return DropdownMenu<CurrencyPair>(
-        initialSelection: currencies.first,
-        controller: _currencyFieldController,
-        label: const Text('*Currency'),
-        dropdownMenuEntries: currencies
-            .map<DropdownMenuEntry<CurrencyPair>>((CurrencyPair currency) =>
-                DropdownMenuEntry<CurrencyPair>(
-                    value: currency, label: currency.currencyPairTitle))
-            .toList(),
-        onSelected: (CurrencyPair? selectedPair) {
-          log(selectedPair.toString(), name: 'selectedCurrencyS');
-          context.read<NewTransactionCubit>().setCurrencyPair(selectedPair!);
-        },
-      );
-    });
+    return DropdownMenu<CurrencyPair>(
+      hintText: 'Currency Pair',
+      //initialSelection: currencies.first,
+      controller: _currencyFieldController,
+      inputDecorationTheme: Styles.kDropdownMenuTheme,
+      //label: const Text('*Currency'),
+      dropdownMenuEntries: currencies
+          .map<DropdownMenuEntry<CurrencyPair>>((CurrencyPair currency) =>
+              DropdownMenuEntry<CurrencyPair>(
+                  value: currency, label: currency.currencyPairTitle))
+          .toList(),
+      onSelected: (CurrencyPair? selectedPair) {
+        log(selectedPair.toString(), name: 'selectedCurrencyS');
+        context.read<NewTransactionCubit>().setCurrencyPair(selectedPair!);
+      },
+    );
   }
 }
 

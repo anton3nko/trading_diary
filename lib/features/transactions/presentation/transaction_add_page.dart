@@ -50,29 +50,25 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Add Transaction'),
-        ),
+        appBar: AppBar(),
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Container(
-            padding: const EdgeInsets.all(10.0),
-            height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24.0,
+              vertical: 16.0,
+            ),
+            //height: MediaQuery.of(context).size.height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TrTypeDropdownMenu(
-                      typeFieldController: vm.typeFieldController,
-                    ),
-                    TrCurrencyDropdownMenu(
-                      currencies: currencies,
-                      currencyFieldController: vm.currencyFieldController,
-                    ),
-                  ],
+                const TrTypeChoiceChips(),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                TrCurrencyDropdownMenu(
+                  currencies: currencies,
+                  currencyFieldController: vm.currencyFieldController,
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -144,45 +140,40 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 // Ответ: да, можно, вложенные BlocBuilder'ы это ок
                 //надо только обращать внимание на то, когда изменяются стейты у каждого из соответствующих блоков и ребилдятся твои виджеты
                 BlocBuilder<NewTransactionCubit, NewTransaction>(
-                    builder: (context, state) {
+                    builder: (context, cubitState) {
                   return BlocBuilder<TransactionBloc, TransactionState>(
                       builder: (context, state) {
                     return ElevatedButton(
                         onPressed: () {
-                          final newTransactionCubit =
-                              BlocProvider.of<NewTransactionCubit>(context);
+                          final newTransaction = cubitState;
                           if (vm.volumeFieldController.text.isNotEmpty &&
-                              newTransactionCubit.newTransaction.openDate !=
-                                  null) {
-                            final buyOrSell = TransactionType.fromJson(
-                                vm.typeFieldController.text.toLowerCase());
+                              newTransaction.openDate != null &&
+                              newTransaction.transactionType != null) {
+                            final buyOrSell = newTransaction.transactionType;
                             final currency = CurrencyPair(
                                 currencyPairTitle:
                                     vm.currencyFieldController.text);
                             final volume =
                                 double.parse(vm.volumeFieldController.text);
-                            final mainStrat = newTransactionCubit
-                                    .newTransaction.mainStrategy ??
+                            final mainStrat = newTransaction.mainStrategy ??
                                 Strategy(id: 1, title: 'None');
-                            final secStrat = newTransactionCubit
-                                    .newTransaction.secondaryStrategy ??
+                            final secStrat = newTransaction.secondaryStrategy ??
                                 Strategy(id: 1, title: 'None');
                             final timeFrame = TimeFrame.values
                                 .byName(vm.timeFrameController.text);
                             final profit =
                                 double.tryParse(vm.profitFieldController.text);
                             final comment = vm.commentFieldController.text;
+                            log('newTransaction type is ${newTransaction.transactionType}');
 
                             /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
                             context.read<TransactionBloc>().add(
                                   AddTransactionEvent(
-                                    transactionType: buyOrSell,
+                                    transactionType: buyOrSell!,
                                     volume: volume,
                                     currencyPair: currency,
-                                    openDate: newTransactionCubit
-                                        .newTransaction.openDate!,
-                                    closeDate: newTransactionCubit
-                                        .newTransaction.closeDate,
+                                    openDate: newTransaction.openDate!,
+                                    closeDate: newTransaction.closeDate,
                                     mainStrategy: mainStrat,
                                     secondaryStrategy: secStrat,
                                     timeFrame: timeFrame,
@@ -190,7 +181,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     comment: comment,
                                   ),
                                 );
-                            newTransactionCubit.resetNewTransaction();
+                            context
+                                .read<NewTransactionCubit>()
+                                .resetNewTransaction();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(seconds: 1),
