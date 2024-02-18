@@ -30,6 +30,15 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
     CurrencyPair(currencyPairTitle: 'USDCHF'),
     CurrencyPair(currencyPairTitle: 'GBPUSD'),
     CurrencyPair(currencyPairTitle: 'USDJPY'),
+    CurrencyPair(currencyPairTitle: 'EURUSD'),
+    CurrencyPair(currencyPairTitle: 'EURJPY'),
+    CurrencyPair(currencyPairTitle: 'EURGBP'),
+    CurrencyPair(currencyPairTitle: 'GBPJPY'),
+    CurrencyPair(currencyPairTitle: 'USDCAD'),
+    CurrencyPair(currencyPairTitle: 'EURCHF'),
+    CurrencyPair(currencyPairTitle: 'GBPCHF'),
+    CurrencyPair(currencyPairTitle: 'GBPCAD'),
+    CurrencyPair(currencyPairTitle: 'CADCHF'),
   ];
 
   final vm = TransactionAddViewModel();
@@ -68,7 +77,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 ),
                 TrCurrencyDropdownMenu(
                   currencies: currencies,
-                  currencyFieldController: vm.currencyFieldController,
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -83,8 +91,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   numericFieldController: vm.volumeFieldController,
                   inputFormatters: Styles.kDoubleUnsignedFormat,
                   isSigned: false,
-                  hintText: 'Number of lots',
-                  label: 'Volume',
+                  hintText: '*Number of lots',
                   isRequired: true,
                 ),
                 const SizedBox(
@@ -124,7 +131,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   inputFormatters: Styles.kDoubleSignedFormat,
                   isSigned: true,
                   hintText: 'Profit',
-                  label: 'Profit',
                   isRequired: false,
                 ),
                 const SizedBox(
@@ -148,11 +154,14 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                           final newTransaction = cubitState;
                           if (vm.volumeFieldController.text.isNotEmpty &&
                               newTransaction.openDate != null &&
-                              newTransaction.transactionType != null) {
+                              newTransaction.transactionType != null &&
+                              newTransaction.currencyPair != null) {
                             final buyOrSell = newTransaction.transactionType;
-                            final currency = CurrencyPair(
-                                currencyPairTitle:
-                                    vm.currencyFieldController.text);
+                            final selectedCurrency =
+                                newTransaction.currencyPair;
+                            // CurrencyPair(
+                            //     currencyPairTitle:
+                            //         vm.currencyFieldController.text);
                             final volume =
                                 double.parse(vm.volumeFieldController.text);
                             final mainStrat = newTransaction.mainStrategy ??
@@ -164,14 +173,13 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                             final profit =
                                 double.tryParse(vm.profitFieldController.text);
                             final comment = vm.commentFieldController.text;
-                            log('newTransaction type is ${newTransaction.transactionType}');
 
                             /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
                             context.read<TransactionBloc>().add(
                                   AddTransactionEvent(
                                     transactionType: buyOrSell!,
                                     volume: volume,
-                                    currencyPair: currency,
+                                    currencyPair: selectedCurrency!,
                                     openDate: newTransaction.openDate!,
                                     closeDate: newTransaction.closeDate,
                                     mainStrategy: mainStrat,

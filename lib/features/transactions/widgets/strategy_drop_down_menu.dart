@@ -7,6 +7,7 @@ import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/new_transaction.dart';
 import 'package:trading_diary/features/strategies/bloc/strategies_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
+import 'package:trading_diary/styles/styles.dart';
 
 class StrategyDropDownMenu extends StatelessWidget {
   final String labelText;
@@ -31,13 +32,8 @@ class StrategyDropDownMenu extends StatelessWidget {
           var newTransactionCubit = context.read<NewTransactionCubit>();
           return DropdownMenu<Strategy>(
             controller: controller,
-            label: Text(
-              '$isRequiredSymbol$labelText',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            initialSelection: strategiesList.isEmpty
-                ? Strategy(id: 1, title: 'None')
-                : strategiesList.first,
+            hintText: '$isRequiredSymbol$labelText',
+            inputDecorationTheme: Styles.kDropdownMenuTheme,
             dropdownMenuEntries: strategiesList
                 .map<DropdownMenuEntry<Strategy>>((Strategy strategy) =>
                     DropdownMenuEntry(value: strategy, label: strategy.title))

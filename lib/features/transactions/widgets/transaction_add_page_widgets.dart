@@ -18,25 +18,19 @@ class NumericTextField extends StatelessWidget {
     required List<TextInputFormatter> inputFormatters,
     required bool isSigned,
     required String hintText,
-    required String label,
     required bool isRequired,
   })  : _numericFieldController = numericFieldController,
         _inputFormatters = inputFormatters,
         _isSigned = isSigned,
-        _hintText = hintText,
-        _label = label,
-        _isRequired = isRequired;
+        _hintText = hintText;
 
   final String _hintText;
   final List<TextInputFormatter> _inputFormatters;
-  final bool _isRequired;
   final bool _isSigned;
-  final String _label;
   final TextEditingController _numericFieldController;
 
   @override
   Widget build(BuildContext context) {
-    String requiredSymbol = _isRequired ? '*' : '';
     return TextField(
       inputFormatters: _inputFormatters,
       controller: _numericFieldController,
@@ -46,7 +40,6 @@ class NumericTextField extends StatelessWidget {
       ),
       decoration: Styles.kTextFieldDecoration.copyWith(
         hintText: _hintText,
-        label: Text('$requiredSymbol$_label'),
         labelStyle: Styles.kTextFieldLabelStyle,
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
@@ -127,29 +120,29 @@ class TrTypeDropdownMenu extends StatelessWidget {
 }
 
 //Transaction Currencies List Dropdown Menu
+//TODO
+//Отредактировать стиль всех DropdownMenu
 class TrCurrencyDropdownMenu extends StatelessWidget {
   const TrCurrencyDropdownMenu({
     super.key,
     required this.currencies,
-    required TextEditingController currencyFieldController,
-  }) : _currencyFieldController = currencyFieldController;
+  });
 
   final List<CurrencyPair> currencies;
-
-  final TextEditingController _currencyFieldController;
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<CurrencyPair>(
-      hintText: 'Currency Pair',
-      //initialSelection: currencies.first,
-      controller: _currencyFieldController,
+      //width: double.infinity,
+      hintText: '*Currency Pair',
       inputDecorationTheme: Styles.kDropdownMenuTheme,
       //label: const Text('*Currency'),
       dropdownMenuEntries: currencies
-          .map<DropdownMenuEntry<CurrencyPair>>((CurrencyPair currency) =>
-              DropdownMenuEntry<CurrencyPair>(
-                  value: currency, label: currency.currencyPairTitle))
+          .map<DropdownMenuEntry<CurrencyPair>>(
+              (CurrencyPair currency) => DropdownMenuEntry<CurrencyPair>(
+                    value: currency,
+                    label: currency.currencyPairTitle,
+                  ))
           .toList(),
       onSelected: (CurrencyPair? selectedPair) {
         log(selectedPair.toString(), name: 'selectedCurrencyS');
@@ -171,9 +164,9 @@ class TrTimeFrameDropdownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<TimeFrame>(
-      initialSelection: TimeFrame.m1,
       controller: _timeFrameController,
-      label: const Text('*TimeFrame'),
+      hintText: '*TimeFrame',
+      inputDecorationTheme: Styles.kDropdownMenuTheme,
       dropdownMenuEntries: TimeFrame.values
           .map((TimeFrame timeFrame) => DropdownMenuEntry<TimeFrame>(
               value: timeFrame, label: timeFrame.name))
