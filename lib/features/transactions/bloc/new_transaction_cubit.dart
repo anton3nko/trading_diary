@@ -12,6 +12,11 @@ class NewTransactionCubit extends Cubit<NewTransaction> {
 
   NewTransactionCubit() : super(NewTransaction());
 
+  void setTimeFrame(TimeFrame? timeFrame) {
+    _newTransaction.timeFrame = timeFrame;
+    emit(_newTransaction);
+  }
+
   void setTransactionType(TransactionType type) {
     _newTransaction.transactionType = type;
     emit(_newTransaction);
@@ -27,12 +32,12 @@ class NewTransactionCubit extends Cubit<NewTransaction> {
     emit(_newTransaction);
   }
 
-  void setMainStrategy(Strategy strategy) {
+  void setMainStrategy(Strategy? strategy) {
     _newTransaction.mainStrategy = strategy;
     emit(_newTransaction);
   }
 
-  void setSecStrategy(Strategy strategy) {
+  void setSecStrategy(Strategy? strategy) {
     _newTransaction.secondaryStrategy = strategy;
     emit(_newTransaction);
   }

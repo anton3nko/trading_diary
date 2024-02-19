@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:trading_diary/data/repo/transactions_repo.dart';
@@ -18,7 +16,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
     startDate = DateTime(endDate.year, endDate.month, 1);
 
     on<FetchDashboardDataEvent>((event, emit) async {
-      log('Dates:$startDate, $endDate', name: 'on<FetchDashboardDataEvent>');
+      //log('Dates:$startDate, $endDate', name: 'on<FetchDashboardDataEvent>');
       topStrategiesData = await TransactionsRepo.instance
           .calculateTopStrategies(startDate, endDate);
       emit(DisplayDashboardDataState(

@@ -81,9 +81,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                TrTimeFrameDropdownMenu(
-                  timeFrameController: vm.timeFrameController,
-                ),
+                const TrTimeFrameDropdownMenu(),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -110,18 +108,16 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                     ),
                   ],
                 ),
-                StrategyDropDownMenu(
+                const StrategyDropDownMenu(
                   labelText: 'Main Strategy',
                   isRequired: true,
-                  controller: vm.mainStrategyController,
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                StrategyDropDownMenu(
+                const StrategyDropDownMenu(
                   labelText: 'Sec. Strategy',
                   isRequired: false,
-                  controller: vm.secStrategyController,
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -150,12 +146,17 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   return BlocBuilder<TransactionBloc, TransactionState>(
                       builder: (context, state) {
                     return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0))),
                         onPressed: () {
                           final newTransaction = cubitState;
                           if (vm.volumeFieldController.text.isNotEmpty &&
                               newTransaction.openDate != null &&
                               newTransaction.transactionType != null &&
-                              newTransaction.currencyPair != null) {
+                              newTransaction.currencyPair != null &&
+                              newTransaction.timeFrame != null &&
+                              newTransaction.mainStrategy != null) {
                             final buyOrSell = newTransaction.transactionType;
                             final selectedCurrency =
                                 newTransaction.currencyPair;
@@ -168,8 +169,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                 Strategy(id: 1, title: 'None');
                             final secStrat = newTransaction.secondaryStrategy ??
                                 Strategy(id: 1, title: 'None');
-                            final timeFrame = TimeFrame.values
-                                .byName(vm.timeFrameController.text);
+                            final timeFrame = newTransaction.timeFrame;
                             final profit =
                                 double.tryParse(vm.profitFieldController.text);
                             final comment = vm.commentFieldController.text;
@@ -184,7 +184,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                                     closeDate: newTransaction.closeDate,
                                     mainStrategy: mainStrat,
                                     secondaryStrategy: secStrat,
-                                    timeFrame: timeFrame,
+                                    timeFrame: timeFrame!,
                                     profit: profit,
                                     comment: comment,
                                   ),

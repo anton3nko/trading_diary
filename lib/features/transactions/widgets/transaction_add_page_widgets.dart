@@ -73,6 +73,7 @@ class _TrTypeChoiceChipsState extends State<TrTypeChoiceChips> {
             child: ChoiceChip(
               label: Text(
                 TransactionType.values[index].name.capitalize(),
+                style: Styles.kTextFieldLabelStyle,
               ),
               selectedColor: Theme.of(context).colorScheme.primary,
               selected: _selectedIndex == index,
@@ -94,34 +95,32 @@ class _TrTypeChoiceChipsState extends State<TrTypeChoiceChips> {
 }
 
 //Transaction Types List Dropdown Menu
-class TrTypeDropdownMenu extends StatelessWidget {
-  const TrTypeDropdownMenu({
-    super.key,
-    required TextEditingController typeFieldController,
-  }) : _typeFieldController = typeFieldController;
+// class TrTypeDropdownMenu extends StatelessWidget {
+//   const TrTypeDropdownMenu({
+//     super.key,
+//     required TextEditingController typeFieldController,
+//   }) : _typeFieldController = typeFieldController;
 
-  final TextEditingController _typeFieldController;
+//   final TextEditingController _typeFieldController;
 
-  @override
-  Widget build(BuildContext context) {
-    return DropdownMenu<TransactionType>(
-      hintText: '*Buy/Sell',
-      label: const Text('*Buy/Sell'),
-      controller: _typeFieldController,
-      initialSelection: TransactionType.buy,
-      dropdownMenuEntries: const [
-        DropdownMenuEntry<TransactionType>(
-            value: TransactionType.buy, label: 'Buy'),
-        DropdownMenuEntry<TransactionType>(
-            value: TransactionType.sell, label: 'Sell'),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return DropdownMenu<TransactionType>(
+//       hintText: '*Buy/Sell',
+//       label: const Text('*Buy/Sell'),
+//       controller: _typeFieldController,
+//       initialSelection: TransactionType.buy,
+//       dropdownMenuEntries: const [
+//         DropdownMenuEntry<TransactionType>(
+//             value: TransactionType.buy, label: 'Buy'),
+//         DropdownMenuEntry<TransactionType>(
+//             value: TransactionType.sell, label: 'Sell'),
+//       ],
+//     );
+//   }
+// }
 
 //Transaction Currencies List Dropdown Menu
-//TODO
-//Отредактировать стиль всех DropdownMenu
 class TrCurrencyDropdownMenu extends StatelessWidget {
   const TrCurrencyDropdownMenu({
     super.key,
@@ -133,10 +132,9 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<CurrencyPair>(
-      //width: double.infinity,
       hintText: '*Currency Pair',
+      textStyle: Styles.kTextFieldLabelStyle,
       inputDecorationTheme: Styles.kDropdownMenuTheme,
-      //label: const Text('*Currency'),
       dropdownMenuEntries: currencies
           .map<DropdownMenuEntry<CurrencyPair>>(
               (CurrencyPair currency) => DropdownMenuEntry<CurrencyPair>(
@@ -145,7 +143,6 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
                   ))
           .toList(),
       onSelected: (CurrencyPair? selectedPair) {
-        log(selectedPair.toString(), name: 'selectedCurrencyS');
         context.read<NewTransactionCubit>().setCurrencyPair(selectedPair!);
       },
     );
@@ -154,28 +151,27 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
 
 //Transaction TimeFrame Dropdown Menu
 class TrTimeFrameDropdownMenu extends StatelessWidget {
-  const TrTimeFrameDropdownMenu({
-    super.key,
-    required TextEditingController timeFrameController,
-  }) : _timeFrameController = timeFrameController;
-
-  final TextEditingController _timeFrameController;
+  const TrTimeFrameDropdownMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<TimeFrame>(
-      controller: _timeFrameController,
       hintText: '*TimeFrame',
+      textStyle: Styles.kTextFieldLabelStyle,
       inputDecorationTheme: Styles.kDropdownMenuTheme,
       dropdownMenuEntries: TimeFrame.values
           .map((TimeFrame timeFrame) => DropdownMenuEntry<TimeFrame>(
               value: timeFrame, label: timeFrame.name))
           .toList(),
+      onSelected: (TimeFrame? value) =>
+          context.read<NewTransactionCubit>().setTimeFrame(value),
     );
   }
 }
 
 //Transaction Multiline Comment TextField
+//TODO Увеличить размер текстового поля,
+//настроить многострочный ввод
 class MultilineCommentTextField extends StatelessWidget {
   const MultilineCommentTextField({
     super.key,
@@ -191,7 +187,6 @@ class MultilineCommentTextField extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       decoration: Styles.kTextFieldDecoration.copyWith(
         hintText: 'Comment',
-        label: const Text('Comment'),
         labelStyle: Styles.kTextFieldLabelStyle,
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),

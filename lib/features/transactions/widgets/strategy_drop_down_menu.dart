@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,13 +10,11 @@ import 'package:trading_diary/styles/styles.dart';
 class StrategyDropDownMenu extends StatelessWidget {
   final String labelText;
   final bool isRequired;
-  final TextEditingController controller;
 
   const StrategyDropDownMenu({
     super.key,
     required this.labelText,
     required this.isRequired,
-    required this.controller,
   });
 
   @override
@@ -31,7 +27,7 @@ class StrategyDropDownMenu extends StatelessWidget {
             builder: (context, state) {
           var newTransactionCubit = context.read<NewTransactionCubit>();
           return DropdownMenu<Strategy>(
-            controller: controller,
+            textStyle: Styles.kTextFieldLabelStyle,
             hintText: '$isRequiredSymbol$labelText',
             inputDecorationTheme: Styles.kDropdownMenuTheme,
             dropdownMenuEntries: strategiesList
@@ -39,7 +35,6 @@ class StrategyDropDownMenu extends StatelessWidget {
                     DropdownMenuEntry(value: strategy, label: strategy.title))
                 .toList(),
             onSelected: (Strategy? selected) {
-              log(selected!.id.toString(), name: 'stratId');
               isRequired
                   ? newTransactionCubit.setMainStrategy(selected)
                   : newTransactionCubit.setSecStrategy(selected);

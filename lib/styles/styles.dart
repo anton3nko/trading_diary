@@ -44,8 +44,8 @@ class Styles {
   );
 
   static const kTextFieldLabelStyle = TextStyle(
-    fontSize: 14.0,
-    fontWeight: FontWeight.bold,
+    fontSize: 16.0,
+    fontWeight: FontWeight.w500,
   );
 
   static final List<TextInputFormatter> kDoubleUnsignedFormat =
