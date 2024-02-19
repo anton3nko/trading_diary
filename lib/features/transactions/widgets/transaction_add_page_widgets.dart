@@ -170,8 +170,6 @@ class TrTimeFrameDropdownMenu extends StatelessWidget {
 }
 
 //Transaction Multiline Comment TextField
-//TODO Увеличить размер текстового поля,
-//настроить многострочный ввод
 class MultilineCommentTextField extends StatelessWidget {
   const MultilineCommentTextField({
     super.key,
@@ -182,13 +180,18 @@ class MultilineCommentTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _commentFieldController,
-      keyboardType: TextInputType.multiline,
-      decoration: Styles.kTextFieldDecoration.copyWith(
-        hintText: 'Comment',
-        labelStyle: Styles.kTextFieldLabelStyle,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
+    return SizedBox(
+      height: 150.0,
+      child: TextField(
+        expands: true,
+        maxLines: null,
+        textAlignVertical: TextAlignVertical.top,
+        controller: _commentFieldController,
+        keyboardType: TextInputType.multiline,
+        decoration: Styles.kTextFieldDecoration.copyWith(
+          hintText: 'Write a comment',
+          labelStyle: Styles.kTextFieldLabelStyle,
+        ),
       ),
     );
   }

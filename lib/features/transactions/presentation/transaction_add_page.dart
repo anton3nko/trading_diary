@@ -95,18 +95,16 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    DateTimePickerWidget(
-                      initialButtonText: 'Open Date',
-                      isRequired: true,
-                    ),
-                    DateTimePickerWidget(
-                      initialButtonText: 'Close Date',
-                      isRequired: false,
-                    ),
-                  ],
+                const DateTimePickerWidget(
+                  initialButtonText: 'Open Date',
+                  isRequired: true,
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                const DateTimePickerWidget(
+                  initialButtonText: 'Close Date',
+                  isRequired: false,
                 ),
                 const StrategyDropDownMenu(
                   labelText: 'Main Strategy',

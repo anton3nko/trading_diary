@@ -46,7 +46,10 @@ class Application extends StatelessWidget {
             create: (context) => NewTransactionCubit(),
           ),
           BlocProvider(
-            create: (context) => DashboardBloc(),
+            create: (context) => DashboardBloc()
+              ..add(
+                const FetchDashboardDataEvent(),
+              ),
           ),
           BlocProvider(
             create: (context) => CurrencyBloc(
