@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +15,9 @@ import 'package:trading_diary/features/transactions/widgets/strategy_drop_down_m
 part 'package:trading_diary/features/transactions/widgets/transaction_add_page_widgets.dart';
 
 class TransactionAddPage extends StatefulWidget {
-  const TransactionAddPage({super.key});
+  const TransactionAddPage({
+    super.key,
+  });
 
   static const String id = 'transaction_add_page';
 
@@ -58,11 +58,12 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
       child: Scaffold(
         appBar: AppBar(
           leading: GestureDetector(
               child: const Icon(
-                Icons.arrow_back,
+                Icons.chevron_left_outlined,
               ),
               onTap: () {
                 context.read<NewTransactionCubit>().resetNewTransaction();
@@ -159,69 +160,77 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   return BlocBuilder<TransactionBloc, TransactionState>(
                       builder: (context, state) {
                     return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0))),
-                        onPressed: () {
-                          final newTransaction = cubitState;
-                          if (vm.volumeFieldController.text.isNotEmpty &&
-                              newTransaction.openDate != null &&
-                              newTransaction.transactionType != null &&
-                              newTransaction.currencyPair != null &&
-                              newTransaction.timeFrame != null &&
-                              newTransaction.mainStrategy != null) {
-                            final buyOrSell = newTransaction.transactionType;
-                            final selectedCurrency =
-                                newTransaction.currencyPair;
-                            // CurrencyPair(
-                            //     currencyPairTitle:
-                            //         vm.currencyFieldController.text);
-                            final volume =
-                                double.parse(vm.volumeFieldController.text);
-                            final mainStrat = newTransaction.mainStrategy ??
-                                Strategy(id: 1, title: 'None');
-                            final secStrat = newTransaction.secondaryStrategy ??
-                                Strategy(id: 1, title: 'None');
-                            final timeFrame = newTransaction.timeFrame;
-                            final profit =
-                                double.tryParse(vm.profitFieldController.text);
-                            final comment = vm.commentFieldController.text;
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            8.0,
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        final newTransaction = cubitState;
+                        if (vm.volumeFieldController.text.isNotEmpty &&
+                            newTransaction.openDate != null &&
+                            newTransaction.transactionType != null &&
+                            newTransaction.currencyPair != null &&
+                            newTransaction.timeFrame != null &&
+                            newTransaction.mainStrategy != null) {
+                          final buyOrSell = newTransaction.transactionType;
+                          final selectedCurrency = newTransaction.currencyPair;
+                          // CurrencyPair(
+                          //     currencyPairTitle:
+                          //         vm.currencyFieldController.text);
+                          final volume =
+                              double.parse(vm.volumeFieldController.text);
+                          final mainStrat = newTransaction.mainStrategy ??
+                              Strategy(id: 1, title: 'None');
+                          final secStrat = newTransaction.secondaryStrategy ??
+                              Strategy(id: 1, title: 'None');
+                          final timeFrame = newTransaction.timeFrame;
+                          final profit =
+                              double.tryParse(vm.profitFieldController.text);
+                          final comment = vm.commentFieldController.text;
 
-                            /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
-                            context.read<TransactionBloc>().add(
-                                  AddTransactionEvent(
-                                    transactionType: buyOrSell!,
-                                    volume: volume,
-                                    currencyPair: selectedCurrency!,
-                                    openDate: newTransaction.openDate!,
-                                    closeDate: newTransaction.closeDate,
-                                    mainStrategy: mainStrat,
-                                    secondaryStrategy: secStrat,
-                                    timeFrame: timeFrame!,
-                                    profit: profit,
-                                    comment: comment,
-                                  ),
-                                );
-                            context
-                                .read<NewTransactionCubit>()
-                                .resetNewTransaction();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(seconds: 1),
-                                content: Text('Transaction added successfully'),
+                          /// Вот тут как раз мне кажется уместно будет context.read использовать для лучшей читаемости
+                          context.read<TransactionBloc>().add(
+                                AddTransactionEvent(
+                                  transactionType: buyOrSell!,
+                                  volume: volume,
+                                  currencyPair: selectedCurrency!,
+                                  openDate: newTransaction.openDate!,
+                                  closeDate: newTransaction.closeDate,
+                                  mainStrategy: mainStrat,
+                                  secondaryStrategy: secStrat,
+                                  timeFrame: timeFrame!,
+                                  profit: profit,
+                                  comment: comment,
+                                ),
+                              );
+                          context
+                              .read<NewTransactionCubit>()
+                              .resetNewTransaction();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Duration(seconds: 1),
+                              content: Text('Transaction added successfully'),
+                            ),
+                          );
+                          context.read<TransactionBloc>().add(
+                                const FetchTransactionsEvent(),
+                              );
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '*Please fill required fields'.toUpperCase(),
                               ),
-                            );
-                            context
-                                .read<TransactionBloc>()
-                                .add(const FetchTransactionsEvent());
-                            Navigator.pop(context);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('*Please fill required fields'
-                                    .toUpperCase())));
-                          }
-                        },
-                        child: const Text('Add Transaction'));
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Add Transaction'),
+                    );
                   });
                 }),
               ],

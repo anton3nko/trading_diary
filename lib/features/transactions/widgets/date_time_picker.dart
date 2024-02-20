@@ -38,13 +38,19 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
       //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          child: MaterialButton(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.all(12.0),
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
             //TODO ВОПРОС. Хочу залить эту кнопку тем же цветом,
             //что и кнопка "Add transaction" внизу формы.
             //Как выдернуть этот цвет из темы?
-            //color: Theme.of(context).colorScheme.,
-            padding: const EdgeInsets.all(5.0),
-            height: 48.0,
             onPressed: () async {
               await _selectDateTime(vm);
               if (dateTime != null) {
@@ -53,14 +59,8 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
                 });
               }
             },
-            shape: RoundedRectangleBorder(
-                side: const BorderSide(
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0)),
             child: const Icon(
               Icons.calendar_month_outlined,
-              color: Colors.deepPurple,
             ),
           ),
         ),

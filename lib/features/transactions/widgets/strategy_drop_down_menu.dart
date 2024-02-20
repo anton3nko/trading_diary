@@ -27,6 +27,7 @@ class StrategyDropDownMenu extends StatelessWidget {
             builder: (context, state) {
           var newTransactionCubit = context.read<NewTransactionCubit>();
           return DropdownMenu<Strategy>(
+            expandedInsets: EdgeInsets.zero,
             textStyle: Styles.kTextFieldLabelStyle,
             hintText: '$isRequiredSymbol$labelText',
             inputDecorationTheme: Styles.kDropdownMenuTheme,

@@ -131,6 +131,7 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<CurrencyPair>(
+      expandedInsets: EdgeInsets.zero,
       hintText: '*Currency Pair',
       textStyle: Styles.kTextFieldLabelStyle,
       inputDecorationTheme: Styles.kDropdownMenuTheme,
@@ -155,6 +156,7 @@ class TrTimeFrameDropdownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<TimeFrame>(
+      expandedInsets: EdgeInsets.zero,
       hintText: '*TimeFrame',
       textStyle: Styles.kTextFieldLabelStyle,
       inputDecorationTheme: Styles.kDropdownMenuTheme,
