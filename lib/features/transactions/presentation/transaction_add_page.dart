@@ -59,7 +59,16 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: GestureDetector(
+              child: const Icon(
+                Icons.arrow_back,
+              ),
+              onTap: () {
+                context.read<NewTransactionCubit>().resetNewTransaction();
+                Navigator.of(context).pop();
+              }),
+        ),
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
@@ -72,6 +81,22 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const TrTypeChoiceChips(),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                DateTimePickerWidget(
+                  initialButtonText: 'Open Date',
+                  isRequired: true,
+                  controller: vm.openDateController,
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                DateTimePickerWidget(
+                  initialButtonText: 'Close Date',
+                  isRequired: false,
+                  controller: vm.closeDateController,
+                ),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -95,17 +120,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                const DateTimePickerWidget(
-                  initialButtonText: 'Open Date',
-                  isRequired: true,
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                const DateTimePickerWidget(
-                  initialButtonText: 'Close Date',
-                  isRequired: false,
-                ),
+
                 const StrategyDropDownMenu(
                   labelText: 'Main Strategy',
                   isRequired: true,

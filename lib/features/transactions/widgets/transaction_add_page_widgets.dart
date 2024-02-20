@@ -7,10 +7,6 @@ extension StringExtension on String {
 }
 
 //Customizable Numeric TextField for Transaction Add Page
-//FIXME Перестали вводится отрицательные числа в Profit field
-//Copy-paste отрицательных чисел работает,
-//не вводится знак минуса с клавиатуры телефона.
-/// Ответ: у меня на эмуляторе всё норм работает. Попробуй глянуть, какие ты используешь inputFormatters и что там за символы разрешаешь
 class NumericTextField extends StatelessWidget {
   const NumericTextField({
     super.key,
@@ -21,12 +17,10 @@ class NumericTextField extends StatelessWidget {
     required bool isRequired,
   })  : _numericFieldController = numericFieldController,
         _inputFormatters = inputFormatters,
-        _isSigned = isSigned,
         _hintText = hintText;
 
   final String _hintText;
   final List<TextInputFormatter> _inputFormatters;
-  final bool _isSigned;
   final TextEditingController _numericFieldController;
 
   @override
@@ -34,17 +28,18 @@ class NumericTextField extends StatelessWidget {
     return TextField(
       inputFormatters: _inputFormatters,
       controller: _numericFieldController,
-      keyboardType: TextInputType.numberWithOptions(
-        decimal: true,
-        signed: _isSigned,
-      ),
+      keyboardType: TextInputType.phone,
+      // TextInputType.numberWithOptions(
+      //   decimal: true,
+      //   signed: _isSigned,
+      // ),
       decoration: Styles.kTextFieldDecoration.copyWith(
         hintText: _hintText,
         labelStyle: Styles.kTextFieldLabelStyle,
         floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
       onChanged: (value) {
-        log(value);
+        //log(value);
       },
     );
   }
@@ -63,6 +58,7 @@ class _TrTypeChoiceChipsState extends State<TrTypeChoiceChips> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      alignment: WrapAlignment.center,
       children: List<Widget>.generate(
         TransactionType.values.length,
         (index) {
@@ -120,6 +116,9 @@ class _TrTypeChoiceChipsState extends State<TrTypeChoiceChips> {
 //   }
 // }
 
+//TODO Вопрос. Не получается расстянуть на весь экран все DropdownMenu's по горизонтали
+//DropdownMenu меняют свою ширину в соответствии с самым длинным
+//элементом своего списка значений.
 //Transaction Currencies List Dropdown Menu
 class TrCurrencyDropdownMenu extends StatelessWidget {
   const TrCurrencyDropdownMenu({

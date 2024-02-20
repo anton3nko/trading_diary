@@ -100,12 +100,13 @@ class SettingsPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 6),
                         child: InkWell(
-                          onTap: () => focusNode.requestFocus(),
-                          child: Icon(
-                            Icons.edit_outlined,
-                            color: ThemeData().colorScheme.primary,
-                          ),
-                        ),
+                            onTap: () => focusNode.requestFocus(),
+                            child: Icon(
+                              Icons.edit_outlined,
+                              color: ThemeData().colorScheme.primary,
+                            )
+                            //color: Theme.of(context).primaryColor),
+                            ),
                       ),
                     ],
                   ),

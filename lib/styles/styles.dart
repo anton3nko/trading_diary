@@ -10,7 +10,7 @@ class Styles {
         ),
       ),
       constraints: BoxConstraints(
-        maxHeight: 50.0,
+        maxHeight: 48.0,
       ),
       contentPadding: EdgeInsets.symmetric(
         horizontal: 7.0,

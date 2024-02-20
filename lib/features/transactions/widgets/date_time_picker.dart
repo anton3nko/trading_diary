@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
-import 'package:trading_diary/domain/model/new_transaction.dart';
+import 'package:trading_diary/styles/styles.dart';
 
 class DateTimePickerWidget extends StatefulWidget {
   final String initialButtonText;
   final bool isRequired;
+  final TextEditingController controller;
 
   const DateTimePickerWidget(
-      {super.key, required this.initialButtonText, required this.isRequired});
+      {super.key,
+      required this.initialButtonText,
+      required this.isRequired,
+      required this.controller});
 
   @override
   State<DateTimePickerWidget> createState() => _DateTimePickerWidgetState();
@@ -30,32 +34,79 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
   Widget build(BuildContext context) {
     String isRequiredSymbol = widget.isRequired ? '*' : '';
     final vm = BlocProvider.of<NewTransactionCubit>(context);
-    return BlocBuilder<NewTransactionCubit, NewTransaction>(
-        builder: (context, state) {
-      return Column(
-        children: [
-          Text(
-            '$isRequiredSymbol${widget.initialButtonText}',
-            style: const TextStyle(
-              fontSize: 13.0,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.left,
-          ),
-          TextButton(
+    return Row(
+      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: MaterialButton(
+            //TODO ВОПРОС. Хочу залить эту кнопку тем же цветом,
+            //что и кнопка "Add transaction" внизу формы.
+            //Как выдернуть этот цвет из темы?
+            //color: Theme.of(context).colorScheme.,
+            padding: const EdgeInsets.all(5.0),
+            height: 48.0,
             onPressed: () async {
               await _selectDateTime(vm);
               if (dateTime != null) {
                 setState(() {
-                  dateButtonText = getDateTime();
+                  widget.controller.text = getDateTime();
                 });
               }
             },
-            child: Text(dateButtonText ?? widget.initialButtonText),
+            shape: RoundedRectangleBorder(
+                side: const BorderSide(
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(8.0)),
+            child: const Icon(
+              Icons.calendar_month_outlined,
+              color: Colors.deepPurple,
+            ),
           ),
-        ],
-      );
-    });
+        ),
+        const SizedBox(
+          width: 5.0,
+        ),
+        Expanded(
+          flex: 5,
+          child: TextField(
+            controller: widget.controller,
+            enabled: false,
+            decoration: Styles.kTextFieldDecoration.copyWith(
+              hintText: '$isRequiredSymbol${widget.initialButtonText}',
+            ),
+          ),
+        ),
+      ],
+    );
+    // String isRequiredSymbol = widget.isRequired ? '*' : '';
+    // final vm = BlocProvider.of<NewTransactionCubit>(context);
+    // return BlocBuilder<NewTransactionCubit, NewTransaction>(
+    //     builder: (context, state) {
+    //   return Column(
+    //     children: [
+    //       Text(
+    //         '$isRequiredSymbol${widget.initialButtonText}',
+    //         style: const TextStyle(
+    //           fontSize: 13.0,
+    //           fontWeight: FontWeight.bold,
+    //         ),
+    //         textAlign: TextAlign.left,
+    //       ),
+    //       TextButton(
+    //         onPressed: () async {
+    //           await _selectDateTime(vm);
+    //           if (dateTime != null) {
+    //             setState(() {
+    //               dateButtonText = getDateTime();
+    //             });
+    //           }
+    //         },
+    //         child: Text(dateButtonText ?? widget.initialButtonText),
+    //       ),
+    //     ],
+    //   );
+    // });
   }
 
   Future<DateTime?> _selectDate() async {
