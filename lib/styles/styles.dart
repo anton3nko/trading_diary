@@ -18,6 +18,9 @@ class Styles {
       ));
 
   static const kTextFieldDecoration = InputDecoration(
+    constraints: BoxConstraints(
+      maxHeight: 48.0,
+    ),
     contentPadding: EdgeInsets.only(left: 6),
     filled: true,
     hintText: 'Hint Text',

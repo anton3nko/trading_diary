@@ -33,59 +33,69 @@ class _StrategyAddPageState extends State<StrategyAddPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add A Strategy'),
-          centerTitle: true,
+          leading: GestureDetector(
+            child: const Icon(
+              Icons.chevron_left_outlined,
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 24.0,
+            vertical: 16.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
                 controller: _strategyTitleFieldController,
-                decoration: Styles.kTextFieldDecoration
-                    .copyWith(label: const Text('Strategy Name')),
+                decoration: Styles.kTextFieldDecoration.copyWith(
+                  hintText: '*Strategy Title',
+                ),
               ),
-            ),
-            BlocBuilder<StrategyBloc, StrategyState>(
-              builder: (context, state) {
-                return ElevatedButton(
-                  onPressed: () {
-                    if (_strategyTitleFieldController.text.isNotEmpty) {
-                      context.read<StrategyBloc>().add(
-                            AddStrategyEvent(
-                              title: _strategyTitleFieldController.text,
-                              color: Color.fromARGB(
-                                255,
-                                Random().nextInt(255),
-                                Random().nextInt(255),
-                                Random().nextInt(255),
-                              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_strategyTitleFieldController.text.isNotEmpty) {
+                    context.read<StrategyBloc>().add(
+                          AddStrategyEvent(
+                            title: _strategyTitleFieldController.text,
+                            color: Color.fromARGB(
+                              255,
+                              Random().nextInt(255),
+                              Random().nextInt(255),
+                              Random().nextInt(255),
                             ),
-                          );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          duration: Duration(seconds: 1),
-                          content: Text('Strategy added successfully'),
-                        ),
-                      );
-                      context
-                          .read<StrategyBloc>()
-                          .add(const FetchStrategiesEvent());
-                      Navigator.pop(context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text('Title field must not be blank'.toUpperCase()),
-                      ));
-                    }
-                  },
-                  child: const Text(
-                    'Add Strategy',
-                  ),
-                );
-              },
-            ),
-          ],
+                          ),
+                        );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(seconds: 1),
+                        content: Text('Strategy added successfully'),
+                      ),
+                    );
+                    context
+                        .read<StrategyBloc>()
+                        .add(const FetchStrategiesEvent());
+                    Navigator.pop(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text('Title field must not be blank'.toUpperCase()),
+                    ));
+                  }
+                },
+                child: const Text(
+                  'Add Strategy',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
