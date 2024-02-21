@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
-import 'package:trading_diary/features/widgets/date_range_picker.dart';
+import 'package:trading_diary/features/dashboard/widgets/dashboard_date_picker.dart';
 import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
@@ -84,7 +84,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           BlocBuilder<DashboardBloc, DashboardState>(
                               builder: (context, state) {
                             final dashboardBloc = context.read<DashboardBloc>();
-                            return DateRangePicker(
+                            return DashboardDatePicker(
                               startDate: dashboardBloc.startDate,
                               endDate: dashboardBloc.endDate,
                               onSelect: (DateTimeRange dateTimeRange) {

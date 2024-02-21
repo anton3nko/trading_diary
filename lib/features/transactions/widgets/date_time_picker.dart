@@ -48,7 +48,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
                 borderRadius: BorderRadius.circular(8.0),
               ),
             ),
-            //TODO ВОПРОС. Хочу залить эту кнопку тем же цветом,
+            //ВОПРОС. Хочу залить эту кнопку тем же цветом,
             //что и кнопка "Add transaction" внизу формы.
             //Как выдернуть этот цвет из темы?
             onPressed: () async {

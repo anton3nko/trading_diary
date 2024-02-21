@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 //Как в этом виджете использовать разный bloc в завимисимости от ситуации??
 //  Ответ: не думаю, что тут это необходимо. UI-элементы должны быть независимыми от бизнес-логики. В крайнем случае не грех использовать два разных пикера, просто создай отдельный класс.
 //Текущее решение - передаю CallBack в конструктор
-class DateRangePicker extends StatelessWidget {
-  const DateRangePicker({
+class DashboardDatePicker extends StatelessWidget {
+  const DashboardDatePicker({
     super.key,
     required this.startDate,
     required this.endDate,

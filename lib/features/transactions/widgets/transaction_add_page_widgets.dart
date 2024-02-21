@@ -116,9 +116,6 @@ class _TrTypeChoiceChipsState extends State<TrTypeChoiceChips> {
 //   }
 // }
 
-//TODO Вопрос. Не получается расстянуть на весь экран все DropdownMenu's по горизонтали
-//DropdownMenu меняют свою ширину в соответствии с самым длинным
-//элементом своего списка значений.
 //Transaction Currencies List Dropdown Menu
 class TrCurrencyDropdownMenu extends StatelessWidget {
   const TrCurrencyDropdownMenu({
