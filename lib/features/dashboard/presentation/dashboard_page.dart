@@ -70,34 +70,19 @@ class _DashboardPageState extends State<DashboardPage> {
                 const SizedBox(
                   height: 32.0,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 250,
                   height: 250,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      const AppPieChart(),
+                      AppPieChart(),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text('Profit'),
-                          BlocBuilder<DashboardBloc, DashboardState>(
-                              builder: (context, state) {
-                            final dashboardBloc = context.read<DashboardBloc>();
-                            return DashboardDatePicker(
-                              startDate: dashboardBloc.startDate,
-                              endDate: dashboardBloc.endDate,
-                              onSelect: (DateTimeRange dateTimeRange) {
-                                setState(() {
-                                  dashboardBloc.startDate = dateTimeRange.start;
-                                  dashboardBloc.endDate = dateTimeRange.end;
-                                });
-                                dashboardBloc
-                                    .add(const FetchDashboardDataEvent());
-                              },
-                            );
-                          }),
-                          const Text('Transactions'),
+                          Text('Profit'),
+                          DashboardDatePicker(),
+                          Text('Transactions'),
                         ],
                       ),
                     ],
@@ -111,7 +96,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     BlocBuilder<DashboardBloc, DashboardState>(
                         builder: (context, state) {
                       if (state is DisplayDashboardDataState) {
-                        final topStrategiesData = state.topStrategiesData;
+                        final topStrategiesData =
+                            state.dashboardData.topStrategiesData;
                         return ListView.builder(
                           itemCount: topStrategiesData.length,
                           itemBuilder: (context, index) {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -59,7 +57,6 @@ class DatabaseService {
   }
 
   Future<Database> _initDB(String filePath) async {
-    log('_initDB');
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 

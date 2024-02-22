@@ -13,13 +13,11 @@ class FetchDashboardDataEvent extends DashboardEvent {
 }
 
 //Изменение значений фильтра по дате DateRangePicker()
-class SetDateDashboardEvent extends DashboardEvent {
-  final DateTime newBeginDate;
-  final DateTime newEndDate;
+class SetDashboardDateEvent extends DashboardEvent {
+  final DateTimeRange newDateRange;
 
-  const SetDateDashboardEvent(
-      {required this.newBeginDate, required this.newEndDate});
+  const SetDashboardDateEvent({required this.newDateRange});
 
   @override
-  List<Object> get props => [newBeginDate, newEndDate];
+  List<Object> get props => [newDateRange];
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:trading_diary/data/api/currency_api.dart';
+import 'package:trading_diary/domain/model/dashboard_data_model.dart';
 import 'package:trading_diary/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:trading_diary/features/auth/presentation/login_screen.dart';
 import 'package:trading_diary/features/currencies_list/bloc/currency_bloc.dart';
@@ -25,6 +26,11 @@ class Application extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final DateTimeRange defaultRange = DateTimeRange(
+        start: DateTime(now.year, now.month, 1),
+        end: DateTime(now.year, now.month, now.day, 23, 59, 59));
+    final initialDashboardData = DashboardDataModel(dateRange: defaultRange);
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -46,8 +52,9 @@ class Application extends StatelessWidget {
             create: (context) => NewTransactionCubit(),
           ),
           BlocProvider(
-            create: (context) => DashboardBloc()
-              ..add(
+            create: (context) => DashboardBloc(
+              initialDashboardData: initialDashboardData,
+            )..add(
                 const FetchDashboardDataEvent(),
               ),
           ),

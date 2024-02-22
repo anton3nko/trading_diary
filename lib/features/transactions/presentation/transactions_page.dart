@@ -8,7 +8,8 @@ import 'package:trading_diary/features/transactions/presentation/transaction_add
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 //import 'package:trading_diary/data/repo/transactions_repo.dart';
-
+//TODO Создать отдельный пикер для экрана Transactions по аналогии
+//с DashboardDatePicker()
 class TransactionsPage extends StatefulWidget {
   static const String id = 'transactions_page';
   const TransactionsPage({super.key});
