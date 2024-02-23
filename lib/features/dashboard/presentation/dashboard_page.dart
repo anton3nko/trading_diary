@@ -54,19 +54,16 @@ class _DashboardPageState extends State<DashboardPage> {
                   height: 5.0,
                 ),
                 //For test purposes
-                BlocBuilder<DashboardBloc, DashboardState>(
-                    builder: (context, state) {
-                  return IconButton(
-                    onPressed: () async {
-                      context
-                          .read<DashboardBloc>()
-                          .add(const FetchDashboardDataEvent());
-                    },
-                    icon: const Icon(
-                      Icons.refresh,
-                    ),
-                  );
-                }),
+                IconButton(
+                  onPressed: () async {
+                    context
+                        .read<DashboardBloc>()
+                        .add(const FetchDashboardDataEvent());
+                  },
+                  icon: const Icon(
+                    Icons.refresh,
+                  ),
+                ),
                 const SizedBox(
                   height: 32.0,
                 ),

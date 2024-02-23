@@ -1,5 +1,8 @@
 //import 'dart:developer';
 
+import 'dart:developer';
+
+import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/services/database_service.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
@@ -14,7 +17,7 @@ class TransactionsRepo {
       TradingTransaction transaction) async {
     final db = await dbContext.database;
     final id = await db.insert(transactionTable, transaction.toJson());
-    return transaction.copy(id: id);
+    return transaction.copyWith(id: id);
   }
 
   Future<TradingTransaction> readTransaction({required int id}) async {
@@ -119,6 +122,49 @@ class TransactionsRepo {
     } else {
       return [];
     }
+  }
+
+  Future<List<Map<String, dynamic>>> calculateTopCurrencies(
+      DateTime startDate, DateTime endDate) async {
+    final db = await dbContext.database;
+    final currenciesList = CurrencyPair.currenciesList;
+//     final totalStrategies = await db.rawQuery('''
+//       SELECT ${StrategyFields.id},${StrategyFields.title} from $strategyTable;
+// ''');
+    //Общее количество сделок по каждой из валют
+    final List<Map<String, dynamic>> topCurrenciesData = [];
+    for (int i = 0; i < currenciesList.length; i++) {
+      //Общее количество сделок по каждой из валютных пар
+      final result = await db.rawQuery(
+          '''SELECT sum(CASE WHEN ${TransactionFields.currencyPair} = "${currenciesList[i].currencyPairTitle}"
+        AND (${TransactionFields.openDate} BETWEEN '$startDate' AND '$endDate') THEN 1 ELSE 0 END) as count from $transactionTable;
+        ''');
+      //Количество прибыльных сделок по каждой из валютных пар
+      final result2 = await db.rawQuery('''
+      SELECT sum(CASE WHEN ${TransactionFields.currencyPair} = "${currenciesList[i].currencyPairTitle}"
+        AND (${TransactionFields.openDate} BETWEEN '$startDate' AND '$endDate') 
+        AND (profit>0) THEN 1 ELSE 0 END) as count from $transactionTable;
+''');
+
+      //Прибыль по каждой из валютных пар
+      final result3 = await db.rawQuery('''
+      SELECT sum(CASE WHEN ${TransactionFields.currencyPair} = "${currenciesList[i].currencyPairTitle}"
+        AND (${TransactionFields.openDate} BETWEEN '$startDate' AND '$endDate')
+      THEN ${TransactionFields.profit} ELSE 0.0 END) as profit from $transactionTable;
+''');
+      Map<String, dynamic> currencyMap = {
+        'currencyTitle': currenciesList[i].currencyPairTitle,
+        'total_count': result[0]['count'] ?? 0,
+        'profitable': result2[0]['count'] ?? 0,
+        'profit': result3[0]['profit'] ?? 0.0,
+        'color': currenciesList[i].currencyPairColor?.value,
+      };
+      topCurrenciesData.add(currencyMap);
+    }
+
+    topCurrenciesData.sort((a, b) => (a['profit'].compareTo(b['profit'])));
+    log('$topCurrenciesData');
+    return topCurrenciesData.reversed.toList();
   }
 
   //Расчет текущей прибыли

@@ -83,7 +83,7 @@ class TradingTransaction {
     this.comment,
   });
 
-  TradingTransaction copy({
+  TradingTransaction copyWith({
     int? id,
     TransactionType? transactionType,
     double? volume,

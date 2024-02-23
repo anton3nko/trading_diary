@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Styles {
+  static const List<Color> kChartColors = [
+    Color(0xFFc9ffb4),
+    Color(0xFFffb6b7),
+    Color(0xFFfffdb3),
+    Color(0xFFb1ff6d),
+    Color(0xFFffc490),
+    Color(0xFFe0a0c3),
+    Color(0xFF9191ff),
+    Color(0xFF6efffc),
+    Color(0xFFfeb6ff),
+    Color(0xFF92ceff),
+    Color(0xFF4affa0),
+    Color(0xFF9dff48),
+  ];
   static const kDropdownMenuTheme = InputDecorationTheme(
       filled: true,
       border: OutlineInputBorder(

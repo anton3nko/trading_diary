@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
+import 'package:trading_diary/styles/styles.dart';
 
 //Базовый класс взаимодействия с БД
 //Перенёс CRUD-методы Transactions->transactions_repo.dart
@@ -70,7 +70,7 @@ class DatabaseService {
         strategyTable,
         Strategy(
           title: 'None',
-          strategyColor: Colors.lightGreen,
+          strategyColor: Styles.kChartColors[0],
         ).toJson());
   }
 }

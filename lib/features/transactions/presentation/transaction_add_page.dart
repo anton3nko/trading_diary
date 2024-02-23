@@ -26,21 +26,6 @@ class TransactionAddPage extends StatefulWidget {
 }
 
 class _TransactionAddPageState extends State<TransactionAddPage> {
-  List<CurrencyPair> currencies = [
-    CurrencyPair(currencyPairTitle: 'USDCHF'),
-    CurrencyPair(currencyPairTitle: 'GBPUSD'),
-    CurrencyPair(currencyPairTitle: 'USDJPY'),
-    CurrencyPair(currencyPairTitle: 'EURUSD'),
-    CurrencyPair(currencyPairTitle: 'EURJPY'),
-    CurrencyPair(currencyPairTitle: 'EURGBP'),
-    CurrencyPair(currencyPairTitle: 'GBPJPY'),
-    CurrencyPair(currencyPairTitle: 'USDCAD'),
-    CurrencyPair(currencyPairTitle: 'EURCHF'),
-    CurrencyPair(currencyPairTitle: 'GBPCHF'),
-    CurrencyPair(currencyPairTitle: 'GBPCAD'),
-    CurrencyPair(currencyPairTitle: 'CADCHF'),
-  ];
-
   final vm = TransactionAddViewModel();
 
   @override
@@ -102,7 +87,7 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                   height: 10.0,
                 ),
                 TrCurrencyDropdownMenu(
-                  currencies: currencies,
+                  currencies: CurrencyPair.currenciesList,
                 ),
                 const SizedBox(
                   height: 10.0,

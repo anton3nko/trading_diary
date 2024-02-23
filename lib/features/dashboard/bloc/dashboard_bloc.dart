@@ -17,6 +17,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       var topStrategiesData = await TransactionsRepo.instance
           .calculateTopStrategies(state.dashboardData.dateRange.start,
               state.dashboardData.dateRange.end);
+      await TransactionsRepo.instance.calculateTopCurrencies(
+        state.dashboardData.dateRange.start,
+        state.dashboardData.dateRange.end,
+      );
       final dataToDisplay =
           state.dashboardData.copyWith(topStrategiesData: topStrategiesData);
       emit(DisplayDashboardDataState(
