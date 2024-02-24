@@ -1,7 +1,3 @@
-//import 'dart:developer';
-
-import 'dart:developer';
-
 import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/services/database_service.dart';
@@ -163,7 +159,7 @@ class TransactionsRepo {
     }
 
     topCurrenciesData.sort((a, b) => (a['profit'].compareTo(b['profit'])));
-    log('$topCurrenciesData');
+    //log('$topCurrenciesData');
     return topCurrenciesData.reversed.toList();
   }
 
@@ -176,6 +172,7 @@ class TransactionsRepo {
     // log(result.toString(), name: 'balance');
     // log(result[0]['total_profit'].toString(), name: 'balance');
     if (result[0]['total_profit'].runtimeType != Null) {
+      //log('${result[0]['total_profit']}');
       return result[0]['total_profit'];
     } else {
       return 0;

@@ -5,6 +5,7 @@ import 'package:trading_diary/domain/model/currency_pair.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
 import 'package:trading_diary/domain/model/new_transaction.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
 import 'package:trading_diary/features/transactions/presentation/view_model.dart';
@@ -202,6 +203,9 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                           );
                           context.read<TransactionBloc>().add(
                                 const FetchTransactionsEvent(),
+                              );
+                          context.read<BalanceBloc>().add(
+                                const CalculateCurrentProfitEvent(),
                               );
                           Navigator.pop(context);
                         } else {

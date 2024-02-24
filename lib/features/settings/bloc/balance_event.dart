@@ -22,6 +22,14 @@ class ChangeStartingBalanceEvent extends BalanceEvent {
   List<Object> get props => [newStartingBalance];
 }
 
+//Ивент для подсчета текущего баланса
+class CalculateCurrentProfitEvent extends BalanceEvent {
+  const CalculateCurrentProfitEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 //Ивент для сохранения текущих настроек с Settings Page в SharedPreferences
 class SavePreferencesEvent extends BalanceEvent {
   const SavePreferencesEvent();

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
@@ -19,7 +17,6 @@ class TransactionsPage extends StatefulWidget {
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
-  // void addFakeTransaction(String? currencyPairTitle) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +50,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 BlocBuilder<BalanceBloc, BalanceState>(
                     builder: (context, state) {
                   return Text(
-                    '${state.startingBalance}',
+                    '${state.currentBalance}',
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w400,
@@ -110,13 +107,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                         ),
                                       );
                                     },
-                                    onDoubleTap: () {
-                                      log(state.transactions.length.toString());
-                                      for (var transaction
-                                          in state.transactions) {
-                                        log('id = ${transaction.id.toString()} currency = ${transaction.currencyPair.currencyPairTitle}');
-                                      }
-                                    },
+                                    // onDoubleTap: () {
+                                    //   log(state.transactions.length.toString());
+                                    //   for (var transaction
+                                    //       in state.transactions) {
+                                    //     log('id = ${transaction.id.toString()} currency = ${transaction.currencyPair.currencyPairTitle}');
+                                    //   }
+                                    // },
                                   ),
                                 );
                               })

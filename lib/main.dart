@@ -18,8 +18,12 @@ Future<void> main() async {
       create: (context) => BalanceBloc(
         preferenceService: preferencesService,
         initialBalance: initialBalance,
-      )..add(
+      )
+        ..add(
           const InitialBalanceEvent(),
+        )
+        ..add(
+          const CalculateCurrentProfitEvent(),
         ),
       child: ChangeNotifierProvider(
         create: (context) => ThemeProvider(),
