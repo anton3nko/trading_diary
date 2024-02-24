@@ -1,7 +1,8 @@
+//import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 
 final DateTime now = DateTime.now();
 final DateTimeRange defaultRange = DateTimeRange(
@@ -12,17 +13,17 @@ class DashboardDataModel extends Equatable {
   final DateTimeRange dateRange;
   final List<Map<String, dynamic>> topStrategiesData;
   final List<Map<String, dynamic>> topCurrenciesData;
-  final List<Map<String, dynamic>> transactionsData;
-  final List<PieChartSection> topStrategiesPie;
-  final List<PieChartSection> topCurrenciesPie;
+  final Map<String, dynamic> transactionsData;
+  final List<Map<String, dynamic>> topStrategiesPieData;
+  final List<Map<String, dynamic>> topCurrenciesPieData;
 
   const DashboardDataModel({
     required this.dateRange,
     this.topStrategiesData = const [],
     this.topCurrenciesData = const [],
-    this.transactionsData = const [],
-    this.topStrategiesPie = const [],
-    this.topCurrenciesPie = const [],
+    this.transactionsData = const {},
+    this.topStrategiesPieData = const [],
+    this.topCurrenciesPieData = const [],
   });
 
   @override
@@ -31,24 +32,24 @@ class DashboardDataModel extends Equatable {
         topStrategiesData,
         topCurrenciesData,
         transactionsData,
-        topStrategiesPie,
-        topCurrenciesPie
+        topStrategiesPieData,
+        topCurrenciesPieData
       ];
 
   DashboardDataModel copyWith(
           {DateTimeRange? dateRange,
           List<Map<String, dynamic>>? topStrategiesData,
           List<Map<String, dynamic>>? topCurrenciesData,
-          List<Map<String, dynamic>>? transactionsData,
-          List<PieChartSection>? topStrategiesPie,
-          List<PieChartSection>? topCurrenciesPie}) =>
+          Map<String, dynamic>? transactionsData,
+          List<Map<String, dynamic>>? topStrategiesPieData,
+          List<Map<String, dynamic>>? topCurrenciesPieData}) =>
       DashboardDataModel(
         dateRange: dateRange ?? this.dateRange,
         topStrategiesData: topStrategiesData ?? this.topStrategiesData,
         topCurrenciesData: topCurrenciesData ?? this.topCurrenciesData,
         transactionsData: transactionsData ?? this.transactionsData,
-        topStrategiesPie: topStrategiesPie ?? this.topStrategiesPie,
-        topCurrenciesPie: topCurrenciesPie ?? this.topCurrenciesPie,
+        topStrategiesPieData: topStrategiesPieData ?? this.topStrategiesPieData,
+        topCurrenciesPieData: topCurrenciesPieData ?? this.topCurrenciesPieData,
       );
 
   String dateRangeToString() {
@@ -56,5 +57,49 @@ class DashboardDataModel extends Equatable {
     final String startDate = dateFormat.format(dateRange.start);
     final String endDate = dateFormat.format(dateRange.end);
     return '$startDate-$endDate';
+  }
+
+  Map<String, dynamic> calculateTrData() {
+    Map<String, dynamic> trData = {};
+    //List<PieChartSection> topStPie, topCurPie;
+    double profit = 0.0;
+    int totalCount = 0;
+    int profitable = 0;
+    for (var strategyData in topStrategiesData) {
+      profit += double.parse(strategyData['profit']);
+      totalCount += strategyData['total_count'] as int;
+      profitable += strategyData['profitable'] as int;
+    }
+    trData['profit'] = profit;
+    trData['total_count'] = totalCount;
+    trData['profitable'] = profitable;
+    //log('calculateTrData result = $trData');
+    return trData;
+  }
+
+  List<Map<String, dynamic>> calculateTopStrategiesPie(
+      Map<String, dynamic> trData) {
+    List<Map<String, dynamic>> strategiesPieData = [];
+    int index = 0;
+    for (var strategyData in topStrategiesData) {
+      //log('${strategyData['total_count']} ${trData['total_count']}');
+      double persentage = trData['total_count'] == 0
+          ? 0
+          : strategyData['total_count'] / trData['total_count'] * 100;
+      Map<String, dynamic> result = {
+        'index': index,
+        'title': strategyData['title'],
+        'color': strategyData['color'],
+        'value': persentage,
+      };
+      strategiesPieData.add(result);
+      index++;
+    }
+    //log('$strategiesPieData');
+    return strategiesPieData;
+  }
+
+  bool isNotEmpty() {
+    return transactionsData['total_count'] != 0 ? true : false;
   }
 }

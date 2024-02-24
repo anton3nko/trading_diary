@@ -1,5 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 
 class AppPieChart extends StatefulWidget {
   const AppPieChart({
@@ -18,36 +20,52 @@ class _AppPieChartState extends State<AppPieChart> {
     return AnimatedBuilder(
       animation: _selectedSection,
       builder: (context, child) {
-        return PieChart(
-          PieChartData(
-            pieTouchData: PieTouchData(
-              touchCallback: (event, response) {
-                _selectedSection.value =
-                    response?.touchedSection?.touchedSectionIndex;
-              },
-            ),
-            centerSpaceRadius: _selectedSection.value == -1 ? 90 : 100,
-            sectionsSpace: 2,
-            sections: [
-              PieChartSection(
-                color: Colors.red.shade500,
-                value: 60,
-                selected: _selectedSection.value == 0,
-                strategyName: 'MACD-CCI',
+        return BlocBuilder<DashboardBloc, DashboardState>(
+          builder: (context, state) {
+            final dashboardData = state.dashboardData;
+            return PieChart(
+              PieChartData(
+                pieTouchData: PieTouchData(
+                  touchCallback: (event, response) {
+                    _selectedSection.value =
+                        response?.touchedSection?.touchedSectionIndex;
+                  },
+                ),
+                centerSpaceRadius: _selectedSection.value == -1 ? 90 : 100,
+                sectionsSpace: 2,
+                sections: dashboardData.isNotEmpty()
+                    ? state.dashboardData.topStrategiesPieData
+                        .map((element) => PieChartSection(
+                              color: Color(element['color']).withOpacity(1),
+                              value: element['value'],
+                              selected:
+                                  _selectedSection.value == element['index'],
+                              strategyName: element['title'],
+                            ))
+                        .toList()
+                    : [],
+                // sections: [
+                //   PieChartSection(
+                //     color: Colors.red.shade500,
+                //     value: 60,
+                //     selected: _selectedSection.value == 0,
+                //     strategyName: 'MACD-CCI',
+                //   ),
+                //   PieChartSection(
+                //       color: Colors.amber.shade300,
+                //       value: 30,
+                //       selected: _selectedSection.value == 1,
+                //       strategyName: 'Trend Channel'),
+                //   PieChartSection(
+                //     color: Colors.greenAccent,
+                //     value: 10,
+                //     selected: _selectedSection.value == 2,
+                //     strategyName: 'RSI',
+                //   ),
+                // ],
               ),
-              PieChartSection(
-                  color: Colors.amber.shade300,
-                  value: 30,
-                  selected: _selectedSection.value == 1,
-                  strategyName: 'Trend Channel'),
-              PieChartSection(
-                color: Colors.greenAccent,
-                value: 10,
-                selected: _selectedSection.value == 2,
-                strategyName: 'RSI',
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

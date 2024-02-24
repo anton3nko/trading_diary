@@ -55,36 +55,47 @@ class _DashboardPageState extends State<DashboardPage> {
                 const SizedBox(
                   height: 5.0,
                 ),
-                //For test purposes
-                IconButton(
-                  onPressed: () async {
-                    context
-                        .read<DashboardBloc>()
-                        .add(const FetchDashboardDataEvent());
-                  },
-                  icon: const Icon(
-                    Icons.refresh,
-                  ),
-                ),
+                const DashboardDatePicker(),
+                //Uncomment For test purposes
+                // IconButton(
+                //   onPressed: () async {
+                //     context
+                //         .read<DashboardBloc>()
+                //         .add(const FetchDashboardDataEvent());
+                //   },
+                //   icon: const Icon(
+                //     Icons.refresh,
+                //   ),
+                // ),
                 const SizedBox(
                   height: 32.0,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 250,
                   height: 250,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      AppPieChart(),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Profit'),
-                          DashboardDatePicker(),
-                          Text('Transactions'),
-                        ],
-                      ),
-                    ],
+                  child: BlocBuilder<DashboardBloc, DashboardState>(
+                    builder: (context, state) {
+                      return state.dashboardData.isNotEmpty()
+                          ? const Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                AppPieChart(),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Profit'),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    Text('Transactions'),
+                                  ],
+                                ),
+                              ],
+                            )
+                          : const Center(
+                              child: Text('Waiting For New Transactions...'),
+                            );
+                    },
                   ),
                 ),
                 const SizedBox(

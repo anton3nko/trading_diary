@@ -22,12 +22,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         state.dashboardData.dateRange.start,
         state.dashboardData.dateRange.end,
       );
-      final dataToDisplay = state.dashboardData.copyWith(
+      var dataToDisplay = state.dashboardData.copyWith(
         topStrategiesData: topStrategiesData,
         topCurrenciesData: topCurrenciesData,
       );
+      final trData = dataToDisplay.calculateTrData();
+      final topStrategiesPieData =
+          dataToDisplay.calculateTopStrategiesPie(trData);
       emit(DisplayDashboardDataState(
-        dataToDisplay: dataToDisplay,
+        dataToDisplay: dataToDisplay.copyWith(
+            transactionsData: trData,
+            topStrategiesPieData: topStrategiesPieData),
       ));
     });
     on<SetDashboardDateEvent>(

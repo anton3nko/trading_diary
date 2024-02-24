@@ -14,7 +14,7 @@ sealed class BalanceState extends Equatable {
 
   double get currentBalance {
     final curBal = startingBalance + currentProfit;
-    log('$startingBalance + $currentProfit =  $curBal');
+    //log('$startingBalance + $currentProfit =  $curBal');
     return curBal;
   }
 }

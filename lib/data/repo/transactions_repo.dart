@@ -86,7 +86,7 @@ class TransactionsRepo {
  ''');
     //Прибыль по каждой их стратегий
     final totalProfit = await db.rawQuery('''
-      SELECT s.title, sum(CASE WHEN s.${StrategyFields.id} = t.${TransactionFields.mainStrategyId} 
+      SELECT s.title, sum(CASE WHEN s.${StrategyFields.id} = t.${TransactionFields.mainStrategyId}
       AND (t.${TransactionFields.openDate}
       BETWEEN '$startDate' AND '$endDate')
       THEN t.${TransactionFields.profit} ELSE 0.0 END) as profit, s.color from $strategyTable as s LEFT OUTER JOIN
