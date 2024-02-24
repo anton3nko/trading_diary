@@ -153,7 +153,7 @@ class TransactionsRepo {
       THEN ${TransactionFields.profit} ELSE 0.0 END) as profit from $transactionTable;
 ''');
       Map<String, dynamic> currencyMap = {
-        'currencyTitle': currenciesList[i].currencyPairTitle,
+        'currency_title': currenciesList[i].currencyPairTitle,
         'total_count': result[0]['count'] ?? 0,
         'profitable': result2[0]['count'] ?? 0,
         'profit': result3[0]['profit'] ?? 0.0,

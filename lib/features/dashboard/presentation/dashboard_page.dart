@@ -15,6 +15,8 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
+//FIXME Вопрос - когда листаю длинный список(например табу Currency Pair),
+//то криво работает скролл. Как это исправить?
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
@@ -118,26 +120,54 @@ class _DashboardPageState extends State<DashboardPage> {
                         return const Text('Waiting For New Transactions...');
                       }
                     }),
-                    const Column(
-                      children: [
-                        CustomTile(
-                          title: 'GPBUSD',
-                          //onTap: () => 'onTap',
-                          tileColor: Colors.pink,
-                          profitableCount: '10',
-                          totalCount: '11',
-                          totalProfit: '12.3',
-                        ),
-                        CustomTile(
-                          title: 'NZDUSD',
-                          //onTap: () => 'onTap',
-                          tileColor: Colors.green,
-                          profitableCount: '10',
-                          totalCount: '11',
-                          totalProfit: '12.3',
-                        ),
-                      ],
-                    ),
+                    BlocBuilder<DashboardBloc, DashboardState>(
+                        builder: (context, state) {
+                      if (state is DisplayDashboardDataState) {
+                        final topCurrenciesData =
+                            state.dashboardData.topCurrenciesData;
+                        return ListView.builder(
+                          itemCount: topCurrenciesData.length,
+                          itemBuilder: (context, index) {
+                            return CustomTile(
+                              title: topCurrenciesData[index]['currency_title'],
+                              tileColor:
+                                  Color(topCurrenciesData[index]['color'])
+                                      .withOpacity(1),
+                              profitableCount: topCurrenciesData[index]
+                                      ['profitable']
+                                  .toString(),
+                              totalCount: topCurrenciesData[index]
+                                      ['total_count']
+                                  .toString(),
+                              totalProfit:
+                                  topCurrenciesData[index]['profit'].toString(),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Text('Waiting For New Transactions...');
+                      }
+                    }),
+                    // const Column(
+                    //   children: [
+                    //     CustomTile(
+                    //       title: 'GPBUSD',
+                    //       //onTap: () => 'onTap',
+                    //       tileColor: Colors.pink,
+                    //       profitableCount: '10',
+                    //       totalCount: '11',
+                    //       totalProfit: '12.3',
+                    //     ),
+                    //     CustomTile(
+                    //       title: 'NZDUSD',
+                    //       //onTap: () => 'onTap',
+                    //       tileColor: Colors.green,
+                    //       profitableCount: '10',
+                    //       totalCount: '11',
+                    //       totalProfit: '12.3',
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ],
