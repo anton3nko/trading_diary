@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
@@ -19,7 +21,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   List<TradingTransaction> transactions = [];
   //List<Map<String, dynamic>> topStrategiesData = [];
 
-  TransactionBloc() : super(TransactionInitialState()) {
+  TransactionBloc({required DateTimeRange initialDateRange})
+      : super(TransactionInitialState(initialDateRange: initialDateRange)) {
     on<AddTransactionEvent>(
       (event, emit) async {
         await TransactionsRepo.instance.createTransaction(
@@ -45,29 +48,41 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     );
     on<FetchTransactionsEvent>(
       (event, emit) async {
-        transactions = await TransactionsRepo.instance.readAllTransactions();
-        emit(DisplayTransactionsState(transactions: transactions));
+        transactions = await TransactionsRepo.instance.readAllTransactions(
+          startDate: state.dateRange.start,
+          endDate: state.dateRange.end,
+        );
+        emit(DisplayTransactionsState(
+          transactions: transactions,
+          dateRange: state.dateRange,
+        ));
       },
     );
-    on<FetchSpecificTransactionEvent>(
-      (event, emit) async {
-        TradingTransaction transaction =
-            await TransactionsRepo.instance.readTransaction(id: event.id);
-        emit(DisplaySpecificTransactionState(transaction: transaction));
+
+    on<SetTransactionsDateEvent>(
+      (event, emit) {
+        emit(TransactionsDateAppliedState(newDateRange: event.newDateRange));
+        add(const FetchTransactionsEvent());
       },
     );
+    // on<FetchSpecificTransactionEvent>(
+    //   (event, emit) async {
+    //     TradingTransaction transaction =
+    //         await TransactionsRepo.instance.readTransaction(id: event.id);
+    //     emit(DisplaySpecificTransactionState(transaction: transaction));
+    //   },
+    // );
     on<DeleteTransactionEvent>(
       (event, emit) async {
         await TransactionsRepo.instance.deleteTransaction(id: event.id);
         add(const FetchTransactionsEvent());
       },
     );
-    // on<CalculateTopStrategiesEvent>(
-    //   (event, emit) async {
-    //     topStrategiesData =
-    //         await TransactionsRepo.instance.calculateTopStrategies();
-    //     emit(DisplayTopStrategiesState(topStrategiesData: topStrategiesData));
-    //   },
-    // );
+  }
+  String dateRangeToString() {
+    final dateFormat = DateFormat.yMMMd();
+    final String startDate = dateFormat.format(state.dateRange.start);
+    final String endDate = dateFormat.format(state.dateRange.end);
+    return '$startDate-$endDate';
   }
 }

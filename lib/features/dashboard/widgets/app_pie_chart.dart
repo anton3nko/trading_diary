@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 
+part 'package:trading_diary/features/dashboard/widgets/currencies_pie_chart.dart';
+
 class AppPieChart extends StatefulWidget {
   const AppPieChart({
     super.key,

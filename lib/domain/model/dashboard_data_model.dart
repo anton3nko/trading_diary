@@ -4,11 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-final DateTime now = DateTime.now();
-final DateTimeRange defaultRange = DateTimeRange(
-    start: DateTime(now.year, now.month, 1),
-    end: DateTime(now.year, now.month, now.day + 1));
-
 class DashboardDataModel extends Equatable {
   final DateTimeRange dateRange;
   final List<Map<String, dynamic>> topStrategiesData;
@@ -82,7 +77,6 @@ class DashboardDataModel extends Equatable {
     List<Map<String, dynamic>> strategiesPieData = [];
     int index = 0;
     for (var strategyData in topStrategiesData) {
-      //log('${strategyData['total_count']} ${trData['total_count']}');
       double persentage = trData['total_count'] == 0
           ? 0
           : strategyData['total_count'] / trData['total_count'] * 100;

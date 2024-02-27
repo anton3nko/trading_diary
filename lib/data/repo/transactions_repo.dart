@@ -33,10 +33,18 @@ class TransactionsRepo {
     }
   }
 
-  Future<List<TradingTransaction>> readAllTransactions() async {
+  Future<List<TradingTransaction>> readAllTransactions({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
     final db = await dbContext.database;
     const orderBy = '${TransactionFields.id} ASC';
-    final result = await db.query(transactionTable, orderBy: orderBy);
+    final result = await db.query(
+      transactionTable,
+      orderBy: orderBy,
+      where:
+          '''${TransactionFields.openDate} BETWEEN '$startDate' AND '$endDate' ''',
+    );
     //log(result.toString(), name: 'readAllTransactions');
     return result.map((json) => TradingTransaction.fromJson(json)).toList();
   }

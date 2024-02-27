@@ -46,7 +46,8 @@ class Application extends StatelessWidget {
               ),
           ),
           BlocProvider(
-            create: (context) => TransactionBloc(),
+            create: (context) =>
+                TransactionBloc(initialDateRange: defaultRange),
           ),
           BlocProvider(
             create: (context) => NewTransactionCubit(),

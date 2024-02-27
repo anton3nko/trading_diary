@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
+import 'package:trading_diary/features/transactions/widgets/date_range_picker.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-//import 'package:trading_diary/data/repo/transactions_repo.dart';
-//TODO Создать отдельный пикер для экрана Transactions по аналогии
-//с DashboardDatePicker()
 class TransactionsPage extends StatefulWidget {
   static const String id = 'transactions_page';
   const TransactionsPage({super.key});
@@ -57,6 +55,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     ),
                   );
                 }),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                const DateRangePicker(),
                 const SizedBox(
                   height: 30.0,
                 ),
@@ -117,7 +119,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                   ),
                                 );
                               })
-                          : const Text('');
+                          : const Text(
+                              'No Transactions For Selected Date Period...');
                     }
                     return const Center(
                       child: SizedBox(
