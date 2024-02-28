@@ -46,9 +46,11 @@ class _StrategiesPageState extends State<StrategiesPage> {
                         return Container(
                           margin: const EdgeInsets.all(3.0),
                           child: ListTile(
-                            tileColor: state.strategies[index].strategyColor,
                             shape: Styles.kRoundedRectangleTileShape,
-                            leading: const Icon(Icons.area_chart_sharp),
+                            leading: Icon(
+                              Icons.area_chart_sharp,
+                              color: state.strategies[index].strategyColor,
+                            ),
                             title: Text(
                               state.strategies[index].title,
                               style: const TextStyle(

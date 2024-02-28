@@ -113,7 +113,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           itemBuilder: (context, index) {
                             return CustomTile(
                               title: topStrategiesData[index]['title'],
-                              tileColor:
+                              iconColor:
                                   Color(topStrategiesData[index]['color'])
                                       .withOpacity(1),
                               profitableCount: topStrategiesData[index]
@@ -141,7 +141,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           itemBuilder: (context, index) {
                             return CustomTile(
                               title: topCurrenciesData[index]['currency_title'],
-                              tileColor:
+                              iconColor:
                                   Color(topCurrenciesData[index]['color'])
                                       .withOpacity(1),
                               profitableCount: topCurrenciesData[index]

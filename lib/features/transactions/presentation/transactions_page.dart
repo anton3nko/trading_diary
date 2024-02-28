@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/widgets/date_range_picker.dart';
+import 'package:trading_diary/features/transactions/widgets/transaction_expansion_tile.dart';
 import 'package:trading_diary/styles/styles.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -133,7 +134,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       ),
                     );
                   },
-                )
+                ),
               ],
             ),
           ),

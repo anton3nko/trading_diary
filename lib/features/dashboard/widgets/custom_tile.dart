@@ -5,14 +5,14 @@ class CustomTile extends StatelessWidget {
   const CustomTile({
     super.key,
     required this.title,
-    required this.tileColor,
+    required this.iconColor,
     required this.totalProfit,
     required this.profitableCount,
     required this.totalCount,
   });
   final String title;
   //final Function onTap;
-  final Color tileColor;
+  final Color iconColor;
   final String totalProfit;
   final String totalCount;
   final String profitableCount;
@@ -26,7 +26,6 @@ class CustomTile extends StatelessWidget {
           top: 7,
         ),
         child: ListTile(
-          tileColor: tileColor,
           title: Text(
             title,
             style: const TextStyle(
@@ -34,7 +33,10 @@ class CustomTile extends StatelessWidget {
             ),
           ),
           shape: Styles.kRoundedRectangleTileShape,
-          leading: const Icon(Icons.area_chart_sharp),
+          leading: Icon(
+            Icons.area_chart_sharp,
+            color: iconColor,
+          ),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
