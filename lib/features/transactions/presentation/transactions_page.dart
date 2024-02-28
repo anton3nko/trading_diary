@@ -78,46 +78,27 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               itemBuilder: (context, index) {
                                 final transactionBloc =
                                     BlocProvider.of<TransactionBloc>(context);
-                                return Container(
-                                  margin: const EdgeInsets.all(3.0),
-                                  child: GestureDetector(
-                                    child: ListTile(
-                                      shape: Styles.kRoundedRectangleTileShape,
-                                      leading: Column(
-                                        children: [
-                                          Text(state.transactions[index]
-                                              .currencyPair.currencyPairTitle),
-                                          Text(state.transactions[index]
-                                              .mainStrategy.title),
-                                        ],
-                                      ),
-                                      trailing: Text(state
-                                                  .transactions[index].profit !=
-                                              null
-                                          ? '${state.transactions[index].profit.toString()}\$'
-                                          : ''),
-                                    ),
-                                    onLongPress: () {
-                                      transactionBloc.add(
-                                          DeleteTransactionEvent(
-                                              id: state
-                                                  .transactions[index].id!));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          duration: Duration(milliseconds: 500),
-                                          content: Text('Deleted Transaction'),
-                                        ),
-                                      );
-                                    },
-                                    // onDoubleTap: () {
-                                    //   log(state.transactions.length.toString());
-                                    //   for (var transaction
-                                    //       in state.transactions) {
-                                    //     log('id = ${transaction.id.toString()} currency = ${transaction.currencyPair.currencyPairTitle}');
-                                    //   }
-                                    // },
+                                return GestureDetector(
+                                  child: TransactionExpansionTile(
+                                    transaction: state.transactions[index],
                                   ),
+                                  onLongPress: () {
+                                    transactionBloc.add(DeleteTransactionEvent(
+                                        id: state.transactions[index].id!));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        duration: Duration(milliseconds: 500),
+                                        content: Text('Deleted Transaction'),
+                                      ),
+                                    );
+                                  },
+                                  // onDoubleTap: () {
+                                  //   log(state.transactions.length.toString());
+                                  //   for (var transaction
+                                  //       in state.transactions) {
+                                  //     log('id = ${transaction.id.toString()} currency = ${transaction.currencyPair.currencyPairTitle}');
+                                  //   }
+                                  // },
                                 );
                               })
                           : const Text(

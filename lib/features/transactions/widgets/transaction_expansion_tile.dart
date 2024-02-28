@@ -39,7 +39,7 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
               ],
             ),
             Text(
-              DateFormat.yMEd().format(widget.transaction.openDate),
+              '${DateFormat.Hm().format(widget.transaction.openDate)} ${DateFormat.yMd().format(widget.transaction.openDate)}',
               style: const TextStyle(
                 fontSize: 10.0,
               ),
@@ -47,8 +47,10 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
           ],
         ),
         trailing: widget.transaction.profit == null
-            ? const Text('Not Closed Yet...')
-            : Text('\$${widget.transaction.profit}'),
+            ? const Text('Opened')
+            : (widget.transaction.profit!.isNegative
+                ? Text('-\$${widget.transaction.profit!.abs()}')
+                : Text('\$${widget.transaction.profit}')),
         expandedAlignment: Alignment.topLeft,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,25 +63,20 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
                 'Secondary Strategy: ${widget.transaction.secondaryStrategy.title}'),
           ),
           ListTile(
-            leading: Text('Time Frame: ${widget.transaction.timeFrame}'),
+            leading: Text('Time Frame: ${widget.transaction.timeFrame.name}'),
           ),
           ListTile(
             leading: widget.transaction.closeDate == null
                 ? const Text('Closed Date: Opened')
                 : Text(
-                    DateFormat.yMEd().format(widget.transaction.closeDate!),
+                    'Closed Date: ${DateFormat.Hm().format(widget.transaction.closeDate!)} ${DateFormat.yMd().format(widget.transaction.closeDate!)}',
                   ),
           ),
           ListTile(
-            leading: widget.transaction.comment == null
+            leading: widget.transaction.comment == ''
                 ? const Text('Comment: -')
-                : Text(widget.transaction.comment!),
+                : Text('Comment: ${widget.transaction.comment!}'),
           ),
-          // Text('Main Strategy: Trend Channel'),
-          // Text('Sec. Strategy: Trend Channel'),
-          // Text('Closed Date: 13:23 25/04/2023'),
-          // Text('Time Frame: m5'),
-          // Text('It\'s a comment'),
         ],
       );
     });

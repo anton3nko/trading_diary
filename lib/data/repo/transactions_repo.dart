@@ -111,8 +111,10 @@ class TransactionsRepo {
         strat['title'] = totalTransactions[i]['title'];
         strat['total_count'] = totalTransactions[i]['count'];
         strat['profitable'] = totalProfitTrans[i]['count'];
-        strat['profit'] =
-            (totalProfit[i]['profit'] as double).toStringAsFixed(2);
+        totalProfit[i]['profit'] != null
+            ? strat['profit'] =
+                (totalProfit[i]['profit'] as double).toStringAsFixed(2)
+            : strat['profit'] = '0.0';
         strat['color'] = totalTransactions[i]['color'];
         result.add(strat);
       }

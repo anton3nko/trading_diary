@@ -52,8 +52,11 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           startDate: state.dateRange.start,
           endDate: state.dateRange.end,
         );
+        transactions.sort(
+          (a, b) => a.openDate.compareTo(b.openDate),
+        );
         emit(DisplayTransactionsState(
-          transactions: transactions,
+          transactions: transactions.reversed.toList(),
           dateRange: state.dateRange,
         ));
       },
