@@ -96,6 +96,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               })
                           : const Text(
                               'No Transactions For Selected Date Period...');
+                      // TODO: Советую поискать в интернете какие-нибудь svg иконки (несколько разных) для пустых списков
+                      //* а то текстовые сообщения не очень красиво смотрятся
                     }
                     return const Center(
                       child: SizedBox(

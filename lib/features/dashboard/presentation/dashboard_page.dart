@@ -4,9 +4,9 @@ import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/dashboard/widgets/dashboard_date_picker.dart';
-import 'package:trading_diary/features/dashboard/widgets/nested_tab_bar.dart';
 
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -15,16 +15,40 @@ class DashboardPage extends StatefulWidget {
   State<DashboardPage> createState() => _DashboardPageState();
 }
 
-//FIXME Вопрос - когда листаю длинный список(например табу Currency Pair),
-//то криво работает скролл. Как это исправить?
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<DashboardPage>
+    with TickerProviderStateMixin {
+  int _currentIndex = 0;
+  late TabController _nestedTabController;
+
+  @override
+  void dispose() {
+    _nestedTabController.removeListener(_handleTabIndex);
+    _nestedTabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nestedTabController = TabController(
+      length: 2,
+      vsync: this,
+    );
+    // TODO: Связал listener-ом между собой индексы табов и IndexedStack
+    _nestedTabController.addListener(_handleTabIndex);
+  }
+
+  void _handleTabIndex() {
+    setState(() {
+      _currentIndex = _nestedTabController.index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: DefaultTabController(
-        length: 2,
-        child: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -71,8 +95,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   height: 32.0,
                 ),
                 SizedBox(
-                  width: 250,
-                  height: 250,
+                  height: MediaQuery.sizeOf(context).height * 0.3,
                   child: BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
                       return state.dashboardData.isNotEmpty()
@@ -83,17 +106,45 @@ class _DashboardPageState extends State<DashboardPage> {
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text('Profit'),
+                                    Text(
+                                      'Profit',
+                                    ),
                                     SizedBox(
                                       height: 10.0,
                                     ),
-                                    Text('Transactions'),
+                                    Text(
+                                      'Transactions',
+                                    ),
                                   ],
                                 ),
                               ],
                             )
-                          : const Center(
-                              child: Text('Waiting For New Transactions...'),
+                          : Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // TODO: Посмотри, в чем разница между этим виджетом и GestureDetector
+                                  //* Тут опционально можно сделать так, чтобы после добавления транзакции попался экран
+                                  //* TransactionAddPage и обновлялся график на главной
+                                  //* Делается это через Navigator.pop(context, true) и возвращение значения в предыдущий экран
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        TransactionAddPage.id,
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.addchart_outlined,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 90,
+                                    ),
+                                  ),
+                                  const Text(
+                                    'Add New Transaction',
+                                  ),
+                                ],
+                              ),
                             );
                     },
                   ),
@@ -101,14 +152,53 @@ class _DashboardPageState extends State<DashboardPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                NestedTabBar(
-                  tabs: [
+                Container(
+                  height: 35,
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(
+                      12,
+                    ),
+                  ),
+                  child: TabBar(
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        12,
+                      ),
+                      color: Theme.of(context).splashColor.withOpacity(
+                            0.3,
+                          ),
+                    ),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    controller: _nestedTabController,
+                    tabs: const [
+                      Tab(
+                        text: "Strategy",
+                      ),
+                      Tab(
+                        text: "Currency Pair",
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                IndexedStack(
+                  //* Вот тут видишь, мы ему провайдим высоту, а без её указания его сложно использовать, поэтому заменим эту хуйню на IndexedStack
+                  index: _currentIndex,
+                  children: [
                     BlocBuilder<DashboardBloc, DashboardState>(
                         builder: (context, state) {
                       if (state is DisplayDashboardDataState) {
                         final topStrategiesData =
                             state.dashboardData.topStrategiesData;
                         return ListView.builder(
+                          // TODO: Здесь были два этих параметра ключевые, для того, чтобы избежать скролла ListView и взамен этого скроллить весь экран.
+                          //* Но малину обосрал этот NestedTabBar с фиксированной высотой TabBarView, поэтому пришлось его выпилить к хуям
+                          //* Второй опцией было сделать CustomScrollView (почитай про него, кстати) со сливерами, но это долго и муторно.
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
                           itemCount: topStrategiesData.length,
                           itemBuilder: (context, index) {
                             return CustomTile(
@@ -132,53 +222,39 @@ class _DashboardPageState extends State<DashboardPage> {
                       }
                     }),
                     BlocBuilder<DashboardBloc, DashboardState>(
-                        builder: (context, state) {
-                      if (state is DisplayDashboardDataState) {
-                        final topCurrenciesData =
-                            state.dashboardData.topCurrenciesData;
-                        return ListView.builder(
-                          itemCount: topCurrenciesData.length,
-                          itemBuilder: (context, index) {
-                            return CustomTile(
-                              title: topCurrenciesData[index]['currency_title'],
-                              iconColor:
-                                  Color(topCurrenciesData[index]['color'])
-                                      .withOpacity(1),
-                              profitableCount: topCurrenciesData[index]
-                                      ['profitable']
-                                  .toString(),
-                              totalCount: topCurrenciesData[index]
-                                      ['total_count']
-                                  .toString(),
-                              totalProfit:
-                                  topCurrenciesData[index]['profit'].toString(),
-                            );
-                          },
-                        );
-                      } else {
-                        return const Text('Waiting For New Transactions...');
-                      }
-                    }),
-                    // const Column(
-                    //   children: [
-                    //     CustomTile(
-                    //       title: 'GPBUSD',
-                    //       //onTap: () => 'onTap',
-                    //       tileColor: Colors.pink,
-                    //       profitableCount: '10',
-                    //       totalCount: '11',
-                    //       totalProfit: '12.3',
-                    //     ),
-                    //     CustomTile(
-                    //       title: 'NZDUSD',
-                    //       //onTap: () => 'onTap',
-                    //       tileColor: Colors.green,
-                    //       profitableCount: '10',
-                    //       totalCount: '11',
-                    //       totalProfit: '12.3',
-                    //     ),
-                    //   ],
-                    // ),
+                      builder: (context, state) {
+                        if (state is DisplayDashboardDataState) {
+                          final topCurrenciesData =
+                              state.dashboardData.topCurrenciesData;
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: topCurrenciesData.length,
+                            itemBuilder: (context, index) {
+                              return CustomTile(
+                                title: topCurrenciesData[index]
+                                    ['currency_title'],
+                                iconColor:
+                                    Color(topCurrenciesData[index]['color'])
+                                        .withOpacity(1),
+                                profitableCount: topCurrenciesData[index]
+                                        ['profitable']
+                                    .toString(),
+                                totalCount: topCurrenciesData[index]
+                                        ['total_count']
+                                    .toString(),
+                                totalProfit: topCurrenciesData[index]['profit']
+                                    .toString(),
+                              );
+                            },
+                          );
+                        } else {
+                          return const Text(
+                            'Waiting For New Transactions...',
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
               ],

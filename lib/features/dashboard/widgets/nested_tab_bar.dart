@@ -60,6 +60,9 @@ class _NestedTabBarState extends State<NestedTabBar>
         const SizedBox(
           height: 10,
         ),
+
+        //TODO: Вот тут видишь, мы ему провайдим высоту, а без её указания его сложно использовать, поэтому заменим эту хуйню на IndexedStack
+        //* Можешь удалить этот виджет, кста
         SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.3,
           child: TabBarView(

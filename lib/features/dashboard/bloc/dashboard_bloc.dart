@@ -8,38 +8,48 @@ part 'package:trading_diary/features/dashboard/bloc/dashboard_event.dart';
 part 'package:trading_diary/features/dashboard/bloc/dashboard_state.dart';
 
 //Для обновления данных на DashboardPage создал отдельный bloc
+// TODO: Здорово, но опять не хватает описания, что этот блок делает
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  DashboardBloc({required DashboardDataModel initialDashboardData})
-      : super(DashboardInitialState(
-          initialDashboardData: initialDashboardData,
-        )) {
-    on<FetchDashboardDataEvent>((event, emit) async {
-      var topStrategiesData = await TransactionsRepo.instance
-          .calculateTopStrategies(state.dashboardData.dateRange.start,
-              state.dashboardData.dateRange.end);
-      var topCurrenciesData =
-          await TransactionsRepo.instance.calculateTopCurrencies(
-        state.dashboardData.dateRange.start,
-        state.dashboardData.dateRange.end,
-      );
-      var dataToDisplay = state.dashboardData.copyWith(
-        topStrategiesData: topStrategiesData,
-        topCurrenciesData: topCurrenciesData,
-      );
-      final trData = dataToDisplay.calculateTrData();
-      final topStrategiesPieData =
-          dataToDisplay.calculateTopStrategiesPie(trData);
-      emit(DisplayDashboardDataState(
-        dataToDisplay: dataToDisplay.copyWith(
-            transactionsData: trData,
-            topStrategiesPieData: topStrategiesPieData),
-      ));
-    });
+  DashboardBloc({
+    required DashboardDataModel initialDashboardData,
+  }) : super(
+          DashboardInitialState(
+            initialDashboardData: initialDashboardData,
+          ),
+        ) {
+    on<FetchDashboardDataEvent>(
+      (event, emit) async {
+        var topStrategiesData = await TransactionsRepo.instance
+            .calculateTopStrategies(state.dashboardData.dateRange.start,
+                state.dashboardData.dateRange.end);
+        var topCurrenciesData =
+            await TransactionsRepo.instance.calculateTopCurrencies(
+          state.dashboardData.dateRange.start,
+          state.dashboardData.dateRange.end,
+        );
+        var dataToDisplay = state.dashboardData.copyWith(
+          topStrategiesData: topStrategiesData,
+          topCurrenciesData: topCurrenciesData,
+        );
+        final trData = dataToDisplay.calculateTrData();
+        final topStrategiesPieData =
+            dataToDisplay.calculateTopStrategiesPie(trData);
+        emit(
+          DisplayDashboardDataState(
+            dataToDisplay: dataToDisplay.copyWith(
+                transactionsData: trData,
+                topStrategiesPieData: topStrategiesPieData),
+          ),
+        );
+      },
+    );
     on<SetDashboardDateEvent>(
       (event, emit) {
         final newDashboardData =
             state.dashboardData.copyWith(dateRange: event.newDateRange);
-        emit(NewDashboardDateApplied(dataToApply: newDashboardData));
+        emit(NewDashboardDateApplied(
+          dataToApply: newDashboardData,
+        ));
         add(const FetchDashboardDataEvent());
       },
     );
