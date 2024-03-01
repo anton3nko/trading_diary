@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -15,12 +17,18 @@ class TransactionExpansionTile extends StatefulWidget {
       _TransactionExpansionTileState();
 }
 
+//TODO Добавить кнопку редактирования
 class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
+  bool isExpanded = false;
+  final ExpansionTileController _controller = ExpansionTileController();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TransactionBloc, TransactionState>(
         builder: (context, state) {
+      final transactionBloc = BlocProvider.of<TransactionBloc>(context);
       return ExpansionTile(
+        controller: _controller,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,6 +61,7 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
                 : Text('\$${widget.transaction.profit}')),
         expandedAlignment: Alignment.topLeft,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        childrenPadding: const EdgeInsets.all(10.0),
         children: [
           ListTile(
             leading:
@@ -76,6 +85,51 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
             leading: widget.transaction.comment == ''
                 ? const Text('Comment: -')
                 : Text('Comment: ${widget.transaction.comment!}'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.delete),
+                  label: const Text('Delete'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    transactionBloc.add(
+                        DeleteTransactionEvent(id: widget.transaction.id!));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(milliseconds: 500),
+                        content: Text('Deleted Transaction'),
+                      ),
+                    );
+                    _controller.collapse();
+                  },
+                ),
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              Expanded(
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          8.0,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {},
+                    icon: const Icon(Icons.edit_outlined),
+                    label: const Text('Edit')),
+              ),
+            ],
           ),
         ],
       );

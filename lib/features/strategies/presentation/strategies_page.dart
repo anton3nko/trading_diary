@@ -39,6 +39,7 @@ class _StrategiesPageState extends State<StrategiesPage> {
               padding: const EdgeInsets.all(8.0),
               height: MediaQuery.of(context).size.height,
               child: state.strategies.isNotEmpty
+                  //Добавить Divider и Убрать квадртную оконтовку
                   ? ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: state.strategies.length,
@@ -68,12 +69,14 @@ class _StrategiesPageState extends State<StrategiesPage> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                         duration: Duration(milliseconds: 500),
-                                        content: Text("Deleted Strategy"),
+                                        content: Text(
+                                          "Deleted Strategy",
+                                        ),
                                       ));
                                     },
                                     icon: const Icon(
                                       Icons.delete,
-                                      color: Colors.red,
+                                      //color: Colors.red,
                                     ))
                               ],
                             ),
