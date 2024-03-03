@@ -4,12 +4,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+//Хранит данные для отображения на Dashboard Page за заданный временной интервал:
 class DashboardDataModel extends Equatable {
+  //Временной интервал, за который отображается вся остальная информация по транзакциям
   final DateTimeRange dateRange;
+  //Выборка данных, сформированная из БД. Содержит список Топ прибыльных стратегий
   final List<Map<String, dynamic>> topStrategiesData;
+  //Выборка данных, сформированная из БД. Содержит список Топ прибыльных валютных пар
   final List<Map<String, dynamic>> topCurrenciesData;
+  //Выборка данных, сформированная на основе topStrategiesData. Содержит прибыль, общее число сделок, число плюсовых сделок
   final Map<String, dynamic> transactionsData;
+  //Выборка данных, сформированная на основе topStrategiesData. Содержит данные для AppPieChart() по Топ стратегиям
   final List<Map<String, dynamic>> topStrategiesPieData;
+  //Выборка данных, сформированная на основе topCurrensiesData. Содержит данные для AppPieChart() по Топ валютным парам
   final List<Map<String, dynamic>> topCurrenciesPieData;
 
   const DashboardDataModel({

@@ -34,7 +34,7 @@ class _DashboardPageState extends State<DashboardPage>
       length: 2,
       vsync: this,
     );
-    // TODO: Связал listener-ом между собой индексы табов и IndexedStack
+    //Связал listener-ом между собой индексы табов и IndexedStack
     _nestedTabController.addListener(_handleTabIndex);
   }
 
@@ -123,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage>
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // TODO: Посмотри, в чем разница между этим виджетом и GestureDetector
+                                  // Посмотри, в чем разница между этим виджетом и GestureDetector
                                   //* Тут опционально можно сделать так, чтобы после добавления транзакции попался экран
                                   //* TransactionAddPage и обновлялся график на главной
                                   //* Делается это через Navigator.pop(context, true) и возвращение значения в предыдущий экран
@@ -194,7 +194,7 @@ class _DashboardPageState extends State<DashboardPage>
                         final topStrategiesData =
                             state.dashboardData.topStrategiesData;
                         return ListView.builder(
-                          // TODO: Здесь были два этих параметра ключевые, для того, чтобы избежать скролла ListView и взамен этого скроллить весь экран.
+                          // Здесь были два этих параметра ключевые, для того, чтобы избежать скролла ListView и взамен этого скроллить весь экран.
                           //* Но малину обосрал этот NestedTabBar с фиксированной высотой TabBarView, поэтому пришлось его выпилить к хуям
                           //* Второй опцией было сделать CustomScrollView (почитай про него, кстати) со сливерами, но это долго и муторно.
                           physics: const NeverScrollableScrollPhysics(),

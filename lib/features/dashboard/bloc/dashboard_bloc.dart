@@ -8,8 +8,16 @@ part 'package:trading_diary/features/dashboard/bloc/dashboard_event.dart';
 part 'package:trading_diary/features/dashboard/bloc/dashboard_state.dart';
 
 //Для обновления данных на DashboardPage создал отдельный bloc
-// TODO: Здорово, но опять не хватает описания, что этот блок делает
+/*
+Состояние данного bloc'a содержит информацию(см. DashboardDataModel) для виджетов Dashobard Page для заданного временного промежутка:
+- временной интервал;
+- данные для круговой диаграммы;
+- профит, общее число сделок, прибыльные сделки;
+- топ стратегий;
+- топ валют.
+*/
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
+  //В initialDashboardData передаём начальный временной интервал(с 1 числа текущего месяца по сейчас)
   DashboardBloc({
     required DashboardDataModel initialDashboardData,
   }) : super(
