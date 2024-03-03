@@ -48,6 +48,7 @@ class _DashboardPageState extends State<DashboardPage>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(),
         body: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
@@ -81,16 +82,34 @@ class _DashboardPageState extends State<DashboardPage>
                 ),
                 const DashboardDatePicker(),
                 //Uncomment For test purposes
-                // IconButton(
-                //   onPressed: () async {
-                //     context
-                //         .read<DashboardBloc>()
-                //         .add(const FetchDashboardDataEvent());
-                //   },
-                //   icon: const Icon(
-                //     Icons.refresh,
-                //   ),
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        context
+                            .read<DashboardBloc>()
+                            .add(const FetchDashboardDataEvent());
+                      },
+                      icon: const Icon(
+                        Icons.refresh,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        context
+                            .read<BalanceBloc>()
+                            .add(const CalculateCurrentProfitEvent());
+                      },
+                      icon: const Icon(
+                        Icons.refresh,
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 32.0,
                 ),
@@ -161,6 +180,7 @@ class _DashboardPageState extends State<DashboardPage>
                     ),
                   ),
                   child: TabBar(
+                    dividerHeight: 0.0,
                     indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                         12,

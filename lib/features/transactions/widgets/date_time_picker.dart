@@ -4,26 +4,34 @@ import 'package:intl/intl.dart';
 import 'package:trading_diary/features/transactions/bloc/new_transaction_cubit.dart';
 import 'package:trading_diary/styles/styles.dart';
 
-class DateTimePickerWidget extends StatefulWidget {
-  final String initialButtonText;
+class DateTimePicker extends StatefulWidget {
+  final String? initialValue;
   final bool isRequired;
   final TextEditingController controller;
 
-  const DateTimePickerWidget(
+  const DateTimePicker(
       {super.key,
-      required this.initialButtonText,
+      this.initialValue,
       required this.isRequired,
       required this.controller});
 
   @override
-  State<DateTimePickerWidget> createState() => _DateTimePickerWidgetState();
+  State<DateTimePicker> createState() => _DateTimePickerState();
 }
 
-class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
+class _DateTimePickerState extends State<DateTimePicker> {
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   DateTime? dateTime;
   String? dateButtonText;
+
+  @override
+  void initState() {
+    if (widget.initialValue != null) {
+      widget.controller.text = widget.initialValue!;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -32,7 +40,7 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String isRequiredSymbol = widget.isRequired ? '*' : '';
+    //String isRequiredSymbol = widget.isRequired ? '*' : '';
     final vm = BlocProvider.of<NewTransactionCubit>(context);
     return Row(
       //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -69,11 +77,11 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
         ),
         Expanded(
           flex: 5,
-          child: TextField(
+          child: TextFormField(
             controller: widget.controller,
             enabled: false,
             decoration: Styles.kTextFieldDecoration.copyWith(
-              hintText: '$isRequiredSymbol${widget.initialButtonText}',
+              hintText: widget.isRequired ? '*Open Date' : 'Close Date',
             ),
           ),
         ),

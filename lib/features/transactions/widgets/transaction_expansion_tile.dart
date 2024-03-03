@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:trading_diary/domain/model/trading_transaction.dart';
+import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/presentation/transaction_add_page.dart';
+import 'package:trading_diary/features/transactions/presentation/transaction_edit_page.dart';
 
 class TransactionExpansionTile extends StatefulWidget {
   const TransactionExpansionTile({super.key, required this.transaction});
@@ -101,6 +103,9 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
                   onPressed: () {
                     transactionBloc.add(
                         DeleteTransactionEvent(id: widget.transaction.id!));
+                    context
+                        .read<BalanceBloc>()
+                        .add(const CalculateCurrentProfitEvent());
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         duration: Duration(milliseconds: 500),
@@ -123,7 +128,16 @@ class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (cx) {
+                          return TransactionEditPage(
+                            transaction: widget.transaction,
+                          );
+                        },
+                      );
+                    },
                     icon: const Icon(Icons.edit_outlined),
                     label: const Text('Edit')),
               ),

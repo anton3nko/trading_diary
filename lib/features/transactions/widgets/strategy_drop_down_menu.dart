@@ -10,11 +10,13 @@ import 'package:trading_diary/styles/styles.dart';
 class StrategyDropDownMenu extends StatelessWidget {
   final String labelText;
   final bool isRequired;
+  final Strategy? initialValue;
 
   const StrategyDropDownMenu({
     super.key,
     required this.labelText,
     required this.isRequired,
+    this.initialValue,
   });
 
   @override
@@ -27,6 +29,8 @@ class StrategyDropDownMenu extends StatelessWidget {
             builder: (context, state) {
           var newTransactionCubit = context.read<NewTransactionCubit>();
           return DropdownMenu<Strategy>(
+            initialSelection: strategiesList
+                .firstWhere((element) => element.id == initialValue?.id),
             expandedInsets: EdgeInsets.zero,
             textStyle: Styles.kTextFieldLabelStyle,
             hintText: '$isRequiredSymbol$labelText',

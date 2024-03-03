@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,20 +69,18 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const TrTypeChoiceChips(),
+                TrTypeChoiceChips(),
                 const SizedBox(
                   height: 10.0,
                 ),
-                DateTimePickerWidget(
-                  initialButtonText: 'Open Date',
+                DateTimePicker(
                   isRequired: true,
                   controller: vm.openDateController,
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                DateTimePickerWidget(
-                  initialButtonText: 'Close Date',
+                DateTimePicker(
                   isRequired: false,
                   controller: vm.closeDateController,
                 ),
@@ -100,7 +100,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 NumericTextField(
                   numericFieldController: vm.volumeFieldController,
                   inputFormatters: Styles.kDoubleUnsignedFormat,
-                  isSigned: false,
                   hintText: '*Number of lots',
                   isRequired: true,
                 ),
@@ -125,7 +124,6 @@ class _TransactionAddPageState extends State<TransactionAddPage> {
                 NumericTextField(
                   numericFieldController: vm.profitFieldController,
                   inputFormatters: Styles.kDoubleSignedFormat,
-                  isSigned: true,
                   hintText: 'Profit',
                   isRequired: false,
                 ),

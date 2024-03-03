@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:trading_diary/domain/model/strategy.dart';
 import 'package:trading_diary/domain/model/currency_pair.dart';
 
@@ -152,5 +153,15 @@ class TradingTransaction {
     );
 
     return result;
+  }
+
+  String openDateToString() {
+    return DateFormat('dd-MM-yyyy HH:mm').format(openDate);
+  }
+
+  String? closeDateToString() {
+    return closeDate == null
+        ? null
+        : DateFormat('dd-MM-yyyy HH:mm').format(closeDate!);
   }
 }

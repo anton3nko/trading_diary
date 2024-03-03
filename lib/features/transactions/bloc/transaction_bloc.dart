@@ -44,6 +44,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       (event, emit) async {
         await TransactionsRepo.instance
             .updateTransaction(transaction: event.transaction);
+        add(const FetchTransactionsEvent());
       },
     );
     on<FetchTransactionsEvent>(
