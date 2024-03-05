@@ -71,7 +71,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     }
                     if (state is DisplayTransactionsState) {
                       return state.transactions.isNotEmpty
-                          //TODO Добавить Divider
                           ? ListView.builder(
                               shrinkWrap: true,
                               itemCount: state.transactions.length,

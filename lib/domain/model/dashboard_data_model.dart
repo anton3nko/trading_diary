@@ -1,5 +1,7 @@
 //import 'dart:developer';
 
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -98,6 +100,27 @@ class DashboardDataModel extends Equatable {
     }
     //log('$strategiesPieData');
     return strategiesPieData;
+  }
+
+  List<Map<String, dynamic>> calculateTopCurrenciesPie(
+      Map<String, dynamic> trData) {
+    List<Map<String, dynamic>> currenciesPieData = [];
+    int index = 0;
+    for (var currencyData in topCurrenciesData) {
+      double persentage = trData['total_count'] == 0
+          ? 0
+          : currencyData['total_count'] / trData['total_count'] * 100;
+      Map<String, dynamic> result = {
+        'index': index,
+        'title': currencyData['currency_title'],
+        'color': currencyData['color'],
+        'value': persentage,
+      };
+      currenciesPieData.add(result);
+      index++;
+    }
+    log('$currenciesPieData');
+    return currenciesPieData;
   }
 
   bool isNotEmpty() {

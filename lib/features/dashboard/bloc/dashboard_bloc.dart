@@ -42,11 +42,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         final trData = dataToDisplay.calculateTrData();
         final topStrategiesPieData =
             dataToDisplay.calculateTopStrategiesPie(trData);
+        final topCurrenciesPieData =
+            dataToDisplay.calculateTopCurrenciesPie(trData);
         emit(
           DisplayDashboardDataState(
             dataToDisplay: dataToDisplay.copyWith(
-                transactionsData: trData,
-                topStrategiesPieData: topStrategiesPieData),
+              transactionsData: trData,
+              topStrategiesPieData: topStrategiesPieData,
+              topCurrenciesPieData: topCurrenciesPieData,
+            ),
           ),
         );
       },

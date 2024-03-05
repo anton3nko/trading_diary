@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
+import 'package:trading_diary/features/dashboard/widgets/strategies_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/dashboard/widgets/dashboard_date_picker.dart';
@@ -82,34 +82,34 @@ class _DashboardPageState extends State<DashboardPage>
                 ),
                 const DashboardDatePicker(),
                 //Uncomment For test purposes
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () async {
-                        context
-                            .read<DashboardBloc>()
-                            .add(const FetchDashboardDataEvent());
-                      },
-                      icon: const Icon(
-                        Icons.refresh,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20.0,
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        context
-                            .read<BalanceBloc>()
-                            .add(const CalculateCurrentProfitEvent());
-                      },
-                      icon: const Icon(
-                        Icons.refresh,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     IconButton(
+                //       onPressed: () async {
+                //         context
+                //             .read<DashboardBloc>()
+                //             .add(const FetchDashboardDataEvent());
+                //       },
+                //       icon: const Icon(
+                //         Icons.refresh,
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       width: 20.0,
+                //     ),
+                //     IconButton(
+                //       onPressed: () async {
+                //         context
+                //             .read<BalanceBloc>()
+                //             .add(const CalculateCurrentProfitEvent());
+                //       },
+                //       icon: const Icon(
+                //         Icons.refresh,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 const SizedBox(
                   height: 32.0,
                 ),
@@ -118,23 +118,45 @@ class _DashboardPageState extends State<DashboardPage>
                   child: BlocBuilder<DashboardBloc, DashboardState>(
                     builder: (context, state) {
                       return state.dashboardData.isNotEmpty()
-                          ? const Stack(
+                          ? Stack(
                               alignment: Alignment.center,
                               children: [
-                                AppPieChart(),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'Profit',
-                                    ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Text(
-                                      'Transactions',
-                                    ),
+                                IndexedStack(
+                                  index: _currentIndex,
+                                  children: const [
+                                    StrategiesPieChart(),
+                                    CurrenciesPieChart(),
                                   ],
+                                ),
+                                BlocBuilder<DashboardBloc, DashboardState>(
+                                  builder: (context, state) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Text(
+                                          'Profit:',
+                                        ),
+                                        Text(
+                                          '\$${state.dashboardData.transactionsData['profit']}',
+                                          style: const TextStyle(
+                                              fontSize: 25.0,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        const SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        const Text(
+                                          'Transactions:',
+                                        ),
+                                        Text(
+                                          '${state.dashboardData.transactionsData['profitable']}/${state.dashboardData.transactionsData['total_count']}',
+                                          style: const TextStyle(
+                                              fontSize: 25.0,
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    );
+                                  },
                                 ),
                               ],
                             )

@@ -1,4 +1,4 @@
-part of 'package:trading_diary/features/dashboard/widgets/app_pie_chart.dart';
+part of 'package:trading_diary/features/dashboard/widgets/strategies_pie_chart.dart';
 
 class CurrenciesPieChart extends StatefulWidget {
   const CurrenciesPieChart({super.key});

@@ -5,16 +5,16 @@ import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 
 part 'package:trading_diary/features/dashboard/widgets/currencies_pie_chart.dart';
 
-class AppPieChart extends StatefulWidget {
-  const AppPieChart({
+class StrategiesPieChart extends StatefulWidget {
+  const StrategiesPieChart({
     super.key,
   });
 
   @override
-  State<AppPieChart> createState() => _AppPieChartState();
+  State<StrategiesPieChart> createState() => _StrategiesPieChartState();
 }
 
-class _AppPieChartState extends State<AppPieChart> {
+class _StrategiesPieChartState extends State<StrategiesPieChart> {
   final _selectedSection = ValueNotifier<int?>(-1);
 
   @override
@@ -46,25 +46,6 @@ class _AppPieChartState extends State<AppPieChart> {
                             ))
                         .toList()
                     : [],
-                // sections: [
-                //   PieChartSection(
-                //     color: Colors.red.shade500,
-                //     value: 60,
-                //     selected: _selectedSection.value == 0,
-                //     strategyName: 'MACD-CCI',
-                //   ),
-                //   PieChartSection(
-                //       color: Colors.amber.shade300,
-                //       value: 30,
-                //       selected: _selectedSection.value == 1,
-                //       strategyName: 'Trend Channel'),
-                //   PieChartSection(
-                //     color: Colors.greenAccent,
-                //     value: 10,
-                //     selected: _selectedSection.value == 2,
-                //     strategyName: 'RSI',
-                //   ),
-                // ],
               ),
             );
           },

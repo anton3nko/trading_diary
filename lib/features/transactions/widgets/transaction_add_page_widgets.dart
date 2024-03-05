@@ -6,7 +6,8 @@ extension StringExtension on String {
       "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
 }
 
-//TODO Попробовать использовать эти же виджеты на TransactionEditPage
+//All widgets are adobted to be used on TransactionEditPage()
+
 //Customizable Numeric TextField for Transaction Add Page
 class NumericTextField extends StatefulWidget {
   const NumericTextField({
@@ -32,8 +33,9 @@ class NumericTextField extends StatefulWidget {
 class _NumericTextFieldState extends State<NumericTextField> {
   @override
   void initState() {
+    log('${widget.initialValue}');
     widget._numericFieldController.text =
-        widget.initialValue == 'null' ? '' : widget.initialValue!;
+        widget.initialValue == null ? '' : widget.initialValue!;
     super.initState();
   }
 
@@ -111,8 +113,10 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     log('$initialSelection');
     return DropdownMenu<CurrencyPair>(
-      initialSelection: currencies.firstWhere((element) =>
-          element.currencyPairTitle == initialSelection?.currencyPairTitle),
+      initialSelection: initialSelection != null
+          ? currencies.firstWhere((element) =>
+              element.currencyPairTitle == initialSelection!.currencyPairTitle)
+          : null,
       expandedInsets: EdgeInsets.zero,
       hintText: '*Currency Pair',
       textStyle: Styles.kTextFieldLabelStyle,

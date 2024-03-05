@@ -17,7 +17,6 @@ class TransactionExpansionTile extends StatefulWidget {
       _TransactionExpansionTileState();
 }
 
-//TODO Добавить кнопку редактирования
 class _TransactionExpansionTileState extends State<TransactionExpansionTile> {
   bool isExpanded = false;
   final ExpansionTileController _controller = ExpansionTileController();

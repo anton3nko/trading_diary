@@ -29,8 +29,10 @@ class StrategyDropDownMenu extends StatelessWidget {
             builder: (context, state) {
           var newTransactionCubit = context.read<NewTransactionCubit>();
           return DropdownMenu<Strategy>(
-            initialSelection: strategiesList
-                .firstWhere((element) => element.id == initialValue?.id),
+            initialSelection: initialValue != null
+                ? strategiesList
+                    .firstWhere((element) => element.id == initialValue?.id)
+                : null,
             expandedInsets: EdgeInsets.zero,
             textStyle: Styles.kTextFieldLabelStyle,
             hintText: '$isRequiredSymbol$labelText',
