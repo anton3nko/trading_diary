@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 import 'package:trading_diary/features/transactions/widgets/date_range_picker.dart';
@@ -93,10 +94,26 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                   },
                                 );
                               })
-                          : const Text(
-                              'No Transactions For Selected Date Period...');
-                      // TODO: Советую поискать в интернете какие-нибудь svg иконки (несколько разных) для пустых списков
-                      //* а то текстовые сообщения не очень красиво смотрятся
+                          : Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/calendar-bold.svg',
+                                    colorFilter: ColorFilter.mode(
+                                        Theme.of(context).primaryColor,
+                                        BlendMode.srcIn),
+                                    //Theme.of(context).primaryColor
+                                    height: 80.0,
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  const Text(
+                                      'No Transactions For Selected Date Period...'),
+                                ],
+                              ),
+                            );
                     }
                     return const Center(
                       child: SizedBox(

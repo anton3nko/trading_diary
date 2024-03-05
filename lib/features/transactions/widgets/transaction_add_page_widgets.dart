@@ -33,9 +33,10 @@ class NumericTextField extends StatefulWidget {
 class _NumericTextFieldState extends State<NumericTextField> {
   @override
   void initState() {
-    log('${widget.initialValue}');
-    widget._numericFieldController.text =
-        widget.initialValue == null ? '' : widget.initialValue!;
+    //log('${widget.initialValue != 'null'}');
+    widget.initialValue != 'null' && widget.initialValue != null
+        ? widget._numericFieldController.text = widget.initialValue!
+        : widget._numericFieldController.clear();
     super.initState();
   }
 
@@ -111,7 +112,7 @@ class TrCurrencyDropdownMenu extends StatelessWidget {
   final CurrencyPair? initialSelection;
   @override
   Widget build(BuildContext context) {
-    log('$initialSelection');
+    //log('$initialSelection');
     return DropdownMenu<CurrencyPair>(
       initialSelection: initialSelection != null
           ? currencies.firstWhere((element) =>

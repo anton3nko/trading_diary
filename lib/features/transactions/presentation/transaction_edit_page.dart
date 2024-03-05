@@ -1,4 +1,4 @@
-import 'dart:developer';
+//import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +42,7 @@ class _TransactionEditPageState extends State<TransactionEditPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<NewTransactionCubit, NewTransaction>(
       builder: (context, state) {
-        log('${widget.transaction.toJson()}');
+        //log('${widget.transaction.toJson()}');
         return AlertDialog(
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 5.0,

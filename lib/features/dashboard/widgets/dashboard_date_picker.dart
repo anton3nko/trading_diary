@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 
 //Вопрос. Хочу использовать этот виджет на разных страницах:
 //на Dashboard и Transactions. Выбранный диапозон дат будет свой для
@@ -21,6 +22,7 @@ class DashboardDatePicker extends StatelessWidget {
     return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
         final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+        final transactionBloc = BlocProvider.of<TransactionBloc>(context);
         return TextButton(
           onPressed: () async {
             var testDates = await showDateRangePicker(
@@ -31,6 +33,8 @@ class DashboardDatePicker extends StatelessWidget {
             );
             if (testDates != null) {
               dashboardBloc.add(SetDashboardDateEvent(newDateRange: testDates));
+              transactionBloc
+                  .add(SetTransactionsDateEvent(newDateRange: testDates));
             }
           },
           child: Text(state.dashboardData.dateRangeToString()),

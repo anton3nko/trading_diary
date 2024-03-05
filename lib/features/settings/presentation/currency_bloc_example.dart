@@ -110,10 +110,10 @@ class CurrencyRateTile extends StatelessWidget {
             country.currencyCode!.toLowerCase() == currencyCode.toLowerCase(),
       );
     } catch (error) {
-      log(
-        "Country not found by currency code:  $currencyCode",
-        name: 'CountryPickerUtils',
-      );
+      // log(
+      //   "Country not found by currency code:  $currencyCode",
+      //   name: 'CountryPickerUtils',
+      // );
     }
     return null;
   }

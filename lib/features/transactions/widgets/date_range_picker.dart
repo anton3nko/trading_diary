@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trading_diary/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:trading_diary/features/transactions/bloc/transaction_bloc.dart';
 
 //Отдельный DateRangePicker для TransactionsPage
@@ -11,6 +12,7 @@ class DateRangePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TransactionBloc, TransactionState>(
       builder: (context, state) {
+        final dashboardBloc = BlocProvider.of<DashboardBloc>(context);
         final transactionsBloc = BlocProvider.of<TransactionBloc>(context);
         return TextButton(
           onPressed: () async {
@@ -23,6 +25,7 @@ class DateRangePicker extends StatelessWidget {
             if (testDates != null) {
               transactionsBloc
                   .add(SetTransactionsDateEvent(newDateRange: testDates));
+              dashboardBloc.add(SetDashboardDateEvent(newDateRange: testDates));
             }
           },
           child: Text(

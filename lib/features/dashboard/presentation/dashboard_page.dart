@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trading_diary/features/dashboard/widgets/strategies_pie_chart.dart';
 import 'package:trading_diary/features/dashboard/widgets/custom_tile.dart';
 import 'package:trading_diary/features/settings/bloc/balance_bloc.dart';
@@ -175,10 +176,13 @@ class _DashboardPageState extends State<DashboardPage>
                                         TransactionAddPage.id,
                                       );
                                     },
-                                    child: Icon(
-                                      Icons.addchart_outlined,
-                                      color: Theme.of(context).primaryColor,
-                                      size: 90,
+                                    child: SvgPicture.asset(
+                                      'assets/chart-create.svg',
+                                      colorFilter: ColorFilter.mode(
+                                          Theme.of(context).primaryColor,
+                                          BlendMode.srcIn),
+                                      //Theme.of(context).primaryColor
+                                      height: 80.0,
                                     ),
                                   ),
                                   const Text(
