@@ -17,6 +17,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.13
   flutter_svg: ^2.0.10+1
   http: ^1.1.0
   intl: ^0.18.1
@@ -31,8 +33,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter:
+flutter_launcher_icons:
+  android: "android_icon"
+  ios: true
+  image_path: "assets/icon/icon_512.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
+flutter:
   uses-material-design: true
   assets:
     - assets/
